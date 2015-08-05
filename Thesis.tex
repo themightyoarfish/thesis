@@ -1,0 +1,48 @@
+\documentclass[titlepage,numbers=noenddot,headinclude,%1headlines,% letterpaper a4paper
+                footinclude=false,cleardoublepage=empty,
+                BCOR=5mm,paper=a4,fontsize=11pt,11pt,a4paper,american
+                ]{scrreprt}
+                \usepackage[english]{babel}
+\newcommand{\bflabel}{\aclabelfont}
+
+%********************************************************************
+% Note: Make all your adjustments in here
+%*******************************************************
+\input{classicthesis-config}
+
+%********************************************************************
+% Hyphenation
+%*******************************************************
+%\hyphenation{put special hyphenation here}
+
+% ********************************************************************
+% GO!GO!GO! MOVE IT!
+%*******************************************************
+\begin{document}
+\frenchspacing
+\raggedbottom
+%\renewcommand*{\bibname}{new name}
+%\setbibpreamble{}
+\pagenumbering{roman}
+\pagestyle{plain}
+%********************************************************************
+% Frontmatter
+%*******************************************************
+\thispagestyle{empty}
+\include{FrontBackmatter/Titlepage}
+\cleardoublepage\include{FrontBackmatter/Dedication}
+\cleardoublepage\include{FrontBackmatter/Abstract}
+\cleardoublepage\include{FrontBackmatter/Acknowledgments}
+\pagestyle{scrheadings}
+\cleardoublepage\include{FrontBackmatter/Contents}
+%********************************************************************
+% Mainmatter
+%*******************************************************
+\pagenumbering{arabic}
+%\setcounter{page}{90}
+% use \cleardoublepage here to avoid problems with pdfbookmark
+\cleardoublepage
+\include{Chapters/Chapter0}
+\end{document}
+% ********************************************************************
+

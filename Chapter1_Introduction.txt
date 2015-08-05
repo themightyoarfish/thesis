@@ -1,0 +1,17 @@
+Rephotography denotes the retrieval of the precise viewpoint used for taking a
+--- possibly historic --- photograph and capturing another image from the same
+spot, ideally with the same parameters such as focal length. This allows for
+documentation and visualisation of changes which the scene has undergone between
+the two or more captures.  For instance, one can present progress of
+construction, restoration efforts or changes in the surroundings in a visually
+striking manner. Figures fig1 and fig2 show examples.
+
+When done manually, the photographer must attempt to find the original viewpoint 
+usually by visual inspection of the original image and trying to match the
+current camera parameters --- camera position, camera rotation, focal length,
+possibly principal point --- to the original.
+The procedure is often carried out by placing the camera on a tripod and
+comparing a printout of the original image with what can be seen through the
+viewfinder or the camera screen. The number of parameters to match as well as
+the difficulty to estimate them purely from comparing images makes the process
+error-prone and tedious.

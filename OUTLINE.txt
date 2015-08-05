@@ -1,0 +1,28 @@
+Introduction – Worum geht es eigentlich?
+Previous Work – Timera, Rephoto, manuell (Beispiele zeigen)
+   Zusammenfassung
+Goals of thesis
+   Entwicklung und Evaluation des Paper-Ansatzes
+   Vereinfachungen
+Geometry of two views
+   Epipolar Geometry
+   8-Point algorithm
+   5-point algorithm
+Challenges in relative pose estimation – Skalierung, Degeneration bei zu schmaler baseline und Anderes
+   Evaluation of Bae et. al.
+      Feature detection and description - how do akaze and sift work?
+App architecture
+   iOS overview? – MVC
+   Some diagrams
+   What controllers exist
+Future Work
+   Insert facitlity to manually register old photograph
+   Load calibration data
+   Calibration of old camera
+   Different visualisations
+   Upload to webservice
+   Use AVFoundation
+   Use Feature Tracking (Kanade-Lucas-Tomasi)
+   Use Bundle Adjustment
+Conclusion
+
