@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.7.10)  6 AUG 2015 12:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.7.10)  6 AUG 2015 15:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -187,7 +187,7 @@ Language: english 2012/08/20 v3.3p English support from the babel system
 
 Package Babel Warning: The package option `english' should not be used
 (Babel)                with a more specific one (like `american') on input line
- 12.
+ 13.
 
 (./classicthesis-config.tex
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ifthen.sty
@@ -823,361 +823,42 @@ Using KOMA-command "deffootnote" for footnote setup
 Package: scrtime 2015/07/02 v3.18 KOMA-Script package (time of LaTeX run)
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/carlisle/remreset.sty)))
-(./Thesis.aux (./FrontBackmatter/Titlepage.aux) (./Chapters/Chapter0.aux))
-\openout1 = `Thesis.aux'.
+(./Thesis.aux (./FrontBackmatter/Titlepage.aux) (./Chapters/Chapter0.aux)
+(./Chapters/ChapterEND_references.aux)
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 29.
+! Package natbib Error: Bibliography not compatible with author-year citations.
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
-File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Try loading font information for T1+pplj on input line 29.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/t1pplj.fd
-File: t1pplj.fd 2004/09/06 font definitions for T1/pplj.
-)
-(/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count136
-\scratchdimen=\dimen156
-\scratchbox=\box32
-\nofMPsegments=\count137
-\nofMParguments=\count138
-\everyMPshowfont=\toks28
-\MPscratchCnt=\count139
-\MPscratchDim=\dimen157
-\MPnumerator=\count140
-\makeMPintoPDFobject=\count141
-\everyMPtoPDFconversion=\toks29
-) (/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
-)
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: hyperref package is loaded.
-Package caption Info: listings package is loaded.
-Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count142
-Package scrhack Info: undefining \float@addtolists on input line 29.
-\AtBeginShipoutBox=\box33
-Package hyperref Info: Link coloring ON on input line 29.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
-
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
-)
-\c@section@level=\count143
-)
-LaTeX Info: Redefining \ref on input line 29.
-LaTeX Info: Redefining \pageref on input line 29.
-LaTeX Info: Redefining \nameref on input line 29.
-
-(./Thesis.out) (./Thesis.out)
-\@outlinefile=\write4
-\openout4 = `Thesis.out'.
-
-LaTeX Info: Redefining \microtypecontext on input line 29.
-Package microtype Info: Generating PDF output.
-Package microtype Info: Character protrusion enabled (level 2).
-Package microtype Info: Using default protrusion set `alltext'.
-Package microtype Info: No font expansion.
-Package microtype Info: No adjustment of tracking.
-Package microtype Info: No adjustment of interword spacing.
-Package microtype Info: No adjustment of character kerning.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-ppl.cfg
-File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
-)
-\openout2 = `FrontBackmatter/Titlepage.aux'.
+(natbib)                Press <return> to continue in numerical citation style.
 
 
-(./FrontBackmatter/Titlepage.tex <uni.pdf, id=8, 2319.91719pt x 762.86807pt>
-File: uni.pdf Graphic file (type pdf)
+See the natbib package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.42 ...mand\NAT@force@numbers{}\NAT@force@numbers
+                                                  
+? d
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+H for help, X to quit.
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.42 ...mand\NAT@force@numbers{}\NAT@force@numbers
+                                                  
+Check the bibliography entries for non-compliant syntax,
+or select author-year BibTeX style, e.g. plainnat
 
-<use uni.pdf>
-Package pdftex.def Info: uni.pdf used on input line 7.
-(pdftex.def)             Requested size: 134.39795pt x 44.18701pt.
-LaTeX Font Info:    Try loading font information for U+zeur on input line 32.
- (/usr/local/texlive/2015/texmf-dist/tex/latex/eulervm/uzeur.fd
-File: uzeur.fd 2005/01/11 v4.0 (WaS)
-)
-(/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-eur.cfg
-File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
-)
-LaTeX Font Info:    Try loading font information for U+zeus on input line 32.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/eulervm/uzeus.fd
-File: uzeus.fd 2005/01/11 v4.0 (WaS)
-)
-(/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-eus.cfg
-File: mt-eus.cfg 2006/07/28 v1.2 microtype config. file: AMS Euler Script (RS)
-)
-LaTeX Font Info:    Try loading font information for U+zeuex on input line 32.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/eulervm/uzeuex.fd
-File: uzeuex.fd 2005/01/11 v4.0 (WaS)
-)
-LaTeX Font Info:    Try loading font information for OT1+zplm on input line 32.
-
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1zplm.fd
-File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
-)
-Package microtype Info: Loading generic settings for font family
-(microtype)             `zplm' (encoding: OT1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/pplj/b/n' tried instead on input line 33.
-) [1
-
-
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./uni.p
-df>]
-[1
-
-
-
-]
-Package tocbasic Info: character protrusion at toc deactivated on input line 61
-.
- (./Thesis.toc
-Package microtype Info: Character `029' is missing
-(microtype)             in font `T1/pplj/m/sc/10.95'.
-(microtype)             Ignoring protrusion settings for this character.
-)
-\tf@toc=\write5
-\openout5 = `Thesis.toc'.
-
- [2
-
-]
-\openout2 = `Chapters/Chapter0.aux'.
-
- (./Chapters/Chapter0.tex
-chapter 1.
-<gfx/1945_2014_Residenzschloss.jpg, id=41, 1291.224pt x 857.604pt>
-File: gfx/1945_2014_Residenzschloss.jpg Graphic file (type jpg)
-
-<use gfx/1945_2014_Residenzschloss.jpg>
-Package pdftex.def Info: gfx/1945_2014_Residenzschloss.jpg used on input line 1
-2.
-(pdftex.def)             Requested size: 336.0pt x 223.15498pt.
-LaTeX Font Info:    Try loading font information for TS1+pplj on input line 14.
-
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ts1pplj.fd
-File: ts1pplj.fd 2004/09/06 font definitions for TS1/pplj.
-)
-<gfx/1950_2014_Frauenkirche.jpg, id=42, 1291.224pt x 857.604pt>
-File: gfx/1950_2014_Frauenkirche.jpg Graphic file (type jpg)
-
-<use gfx/1950_2014_Frauenkirche.jpg>
-Package pdftex.def Info: gfx/1950_2014_Frauenkirche.jpg used on input line 19.
-(pdftex.def)             Requested size: 336.0pt x 223.15498pt.
-) [3
-
-
-] [4 <./gfx/1945_2014_Residenzschloss.jpg> <./gfx/1950_2014_Frauenkirche.jpg>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 64.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 64.
- (./Thesis.aux
-(./FrontBackmatter/Titlepage.aux) (./Chapters/Chapter0.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 64.
-
-
- *File List*
-scrreprt.cls    2015/07/02 v3.18 KOMA-Script document class (report)
-scrkbase.sty    2015/07/02 v3.18 KOMA-Script package (KOMA-Script-dependent bas
-ics and keyval usage)
- scrbase.sty    2015/07/02 v3.18 KOMA-Script package (KOMA-Script-independent b
-asics and keyval usage)
-  keyval.sty    2014/10/28 v1.15 key=value parser (DPC)
-scrlfile.sty    2015/07/02 v3.18 KOMA-Script package (loading files)
-tocbasic.sty    2015/07/02 v3.18 KOMA-Script package (handling toc-files)
-scrsize11pt.clo    2015/07/02 v3.18 KOMA-Script font size class option (11pt)
-typearea.sty    2015/07/02 v3.18 KOMA-Script package (type area)
-graphicx.sty    2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
-graphics.sty    2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
-    trig.sty    1999/03/16 v1.09 sin cos tan (DPC)
-graphics.cfg    2010/04/23 v1.9 graphics configuration of TeX Live
-  pdftex.def    2011/05/27 v0.06d Graphics/color for pdfTeX
-infwarerr.sty    2010/04/08 v1.3 Providing info/warning/error messages (HO)
- ltxcmds.sty    2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
- caption.sty    2013/05/02 v3.3-89 Customizing captions (AR)
-caption3.sty    2013/05/02 v1.6-88 caption3 kernel (AR)
-subcaption.sty    2013/02/03 v1.1-62 Sub-captions (AR)
-   babel.sty    2014/09/25 3.9l The Babel package
- english.ldf    2012/08/20 v3.3p English support from the babel system
- english.ldf    2012/08/20 v3.3p English support from the babel system
-classicthesis-config.tex
-  ifthen.sty    2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
-inputenc.sty    2015/03/17 v1.2c Input encoding file
-  latin9.def    2015/03/17 v1.2c Input encoding file
-  natbib.sty    2010/09/13 8.31b (PWD, AO)
- amsmath.sty    2013/01/14 v2.14 AMS math features
- amstext.sty    2000/06/29 v2.01
-  amsgen.sty    1999/11/30 v2.0
-  amsbsy.sty    1999/11/29 v1.2d
-  amsopn.sty    1999/12/14 v2.01 operator names
- fontenc.sty
-   t1enc.def    2005/09/27 v1.99g Standard LaTeX file
-textcomp.sty    2005/09/27 v1.99g Standard LaTeX package
-  ts1enc.def    2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
- scrhack.sty    2015/07/02 v3.18 KOMA-Script package 
-  xspace.sty    2014/10/28 v1.13 Space after command names (DPC,MH)
-mparhack.sty    2005/04/17 v1.4 (T. Sgouros and S. Ulrich)
-fixltx2e.sty    2015/06/22 v2.0b fixes to LaTeX (obsolete)
- acronym.sty    2015/03/21 v1.41 Support for acronyms (Tobias Oetiker)
-  suffix.sty    2006/07/15 1.5a Variant command support
- xstring.sty    2013/10/13  v1.7c  String manipulations (C Tellechea)
- relsize.sty    2013/03/29 ver 4.1
-tabularx.sty    2014/10/28 v2.10 `tabularx' package (DPC)
-   array.sty    2014/10/28 v2.4c Tabular extension package (FMi)
-listings.sty    2015/06/04 1.6 (Carsten Heinz)
- lstmisc.sty    2015/06/04 1.6 (Carsten Heinz)
-listings.cfg    2015/06/04 1.6 listings configuration
-listings.hak    2015/07/02 v3.18 KOMA-Script package (hacking package listings)
-
-lstlang0.sty
-lstlang1.sty    2015/06/04 1.6 listings language file
-lstlang2.sty    2015/06/04 1.6 listings language file
-lstlang3.sty    2015/06/04 1.6 listings language file
-lstlang0.sty
-lstlang1.sty    2015/06/04 1.6 listings language file
-lstlang2.sty    2015/06/04 1.6 listings language file
-lstlang3.sty    2015/06/04 1.6 listings language file
-lstlang0.sty
-lstlang1.sty    2015/06/04 1.6 listings language file
-lstlang2.sty    2015/06/04 1.6 listings language file
-lstlang3.sty    2015/06/04 1.6 listings language file
- lstmisc.sty    2015/06/04 1.6 (Carsten Heinz)
-hyperref.sty    2012/11/06 v6.83m Hypertext links for LaTeX
-hobsub-hyperref.sty    2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
-hobsub-generic.sty    2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
-  hobsub.sty    2012/05/28 v1.13 Construct package bundles (HO)
-ifluatex.sty    2010/03/01 v1.3 Provides the ifluatex switch (HO)
-  ifvtex.sty    2010/03/01 v1.5 Detect VTeX and its facilities (HO)
- intcalc.sty    2007/09/27 v1.1 Expandable calculations with integers (HO)
-   ifpdf.sty    2011/01/30 v2.3 Provides the ifpdf switch (HO)
-etexcmds.sty    2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
-kvsetkeys.sty    2012/04/25 v1.16 Key value parser (HO)
-kvdefinekeys.sty    2011/04/07 v1.3 Define keys (HO)
-pdftexcmds.sty    2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO)
-pdfescape.sty    2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
-bigintcalc.sty    2012/04/08 v1.3 Expandable calculations on big integers (HO)
-  bitset.sty    2011/01/30 v1.1 Handle bit-vector datatype (HO)
-uniquecounter.sty    2011/01/30 v1.2 Provide unlimited unique counter (HO)
-letltxmacro.sty    2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
- hopatch.sty    2012/05/28 v1.2 Wrapper for package hooks (HO)
-xcolor-patch.sty    2011/01/30 xcolor patch
-atveryend.sty    2011/06/30 v1.8 Hooks at the very end of document (HO)
-atbegshi.sty    2011/10/05 v1.16 At begin shipout hook (HO)
-refcount.sty    2011/10/16 v3.4 Data extraction from label references (HO)
- hycolor.sty    2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
- ifxetex.sty    2010/09/12 v0.6 Provides ifxetex conditional
- auxhook.sty    2011/03/04 v1.3 Hooks for auxiliary files (HO)
-kvoptions.sty    2011/06/30 v3.11 Key value format for package options (HO)
-  pd1enc.def    2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
-hyperref.cfg    2002/06/06 v1.2 hyperref configuration of TeXLive
-     url.sty    2013/09/16  ver 3.4  Verb mode for urls, etc.
- hpdftex.def    2012/11/06 v6.83m Hyperref driver for pdfTeX
-rerunfilecheck.sty    2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
-classicthesis.sty    2012/08/12 v4.1 Typographic style for a classic-looking th
-esis
-  xcolor.sty    2007/01/21 v2.11 LaTeX color extensions (UK)
-   color.cfg    2007/01/18 v1.5 color configuration of teTeX/TeXLive
-dvipsnam.def    2014/10/14 v3.0j Driver-dependent file (DPC,SPQR)
-mathpazo.sty    2005/04/12 PSNFSS-v9.2a Palatino w/ Pazo Math (D.Puga, WaS) 
-beramono.sty    2004/01/31 (WaS)
- eulervm.sty    2005/01/11 v4.0 (WaS)
-microtype.sty    2013/05/23 v2.5a Micro-typographical refinements (RS)
-microtype-pdftex.def    2013/05/23 v2.5a Definitions specific to pdftex (RS)
-microtype.cfg    2013/05/23 v2.5a microtype main configuration file (RS)
-booktabs.sty    2005/04/14 v1.61803 publication quality tables
-textcase.sty    2004/10/07 v0.07 Text only upper/lower case changing (DPC)
-scrpage2.sty    2015/07/02 v3.18 KOMA-Script package (page head and foot)
-titlesec.sty    2011/12/15 v2.10.0 Sectioning titles
- tocloft.sty    2013/05/02 v2.3f parameterised ToC, etc., typesetting
- scrtime.sty    2015/07/02 v3.18 KOMA-Script package (time of LaTeX run)
-remreset.sty    
-  ts1cmr.fd    2014/09/29 v2.5h Standard LaTeX font definitions
-  t1pplj.fd    2004/09/06 font definitions for T1/pplj.
-supp-pdf.mkii
-epstopdf-base.sty    2010/02/09 v2.5 Base part for package epstopdf
-  grfext.sty    2010/08/19 v1.1 Manage graphics extensions (HO)
-epstopdf-sys.cfg    2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
- nameref.sty    2012/10/27 v2.43 Cross-referencing by name of section
-gettitlestring.sty    2010/12/03 v1.4 Cleanup title references (HO)
-  Thesis.out
-  Thesis.out
-  mt-ppl.cfg    2005/11/16 v1.6 microtype config. file: Palatino (RS)
-FrontBackmatter/Titlepage.tex
-     uni.pdf    Graphic file (type pdf)
-   uzeur.fd    2005/01/11 v4.0 (WaS)
-  mt-eur.cfg    2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
-   uzeus.fd    2005/01/11 v4.0 (WaS)
-  mt-eus.cfg    2006/07/28 v1.2 microtype config. file: AMS Euler Script (RS)
-  uzeuex.fd    2005/01/11 v4.0 (WaS)
- ot1zplm.fd    2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
-Chapters/Chapter0.tex
-gfx/1945_2014_Residenzschloss.jpg
- ts1pplj.fd    2004/09/06 font definitions for TS1/pplj.
-gfx/1950_2014_Frauenkirche.jpg
- ***********
-
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 64.
-Package rerunfilecheck Info: File `Thesis.out' has not changed.
-(rerunfilecheck)             Checksum: C4379EA070817BFE15CFE81CDE036101;48.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 64.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 15456 strings out of 493093
- 241890 string characters out of 6134989
- 455496 words of memory out of 5000000
- 18593 multiletter control sequences out of 15000+600000
- 60940 words of font info for 82 fonts, out of 8000000 for 9000
+ 14199 strings out of 493093
+ 220763 string characters out of 6134989
+ 450546 words of memory out of 5000000
+ 17465 multiletter control sequences out of 15000+600000
+ 4987 words of font info for 17 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 45i,13n,67p,362b,421s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2015/texmf-dist/fonts/type1/public/amsfonts/euler/eurb10.pfb></usr/local
-/texlive/2015/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/texlive
-/2015/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/t
-exmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-di
-st/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Thesis.pdf (5 pages, 14606297 bytes).
-PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 57 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
- 11800 words of extra memory for PDF output out of 12000 (max. 10000000)
-
+ 45i,1n,67p,362b,276s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!
