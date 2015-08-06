@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.7.10)  5 AUG 2015 17:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.7.10)  6 AUG 2015 12:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -40,6 +40,12 @@ Package tocbasic Info: omitting babel extension for `lot'
 (tocbasic)             for `lot' on input line 127.
 Package tocbasic Info: defining new hook before heading of `' on input line 158
 2.
+Class scrreprt Info: You've used standard option `oneside'.
+(scrreprt)           This is correct!
+(scrreprt)           Internally I'm using `twoside=false'.
+(scrreprt)           If you'd like to set the option with \KOMAoptions,
+(scrreprt)           you'd have to use `twoside=false' there
+(scrreprt)           instead of `oneside', too.
 Package scrreprt Info: You've used standard option `11pt'.
 (scrreprt)             This is correct!
 (scrreprt)             Internally I'm using `fontsize=11pt'.
@@ -62,6 +68,12 @@ Package typearea, 2015/07/02 v3.18 KOMA-Script package (type area)
 
 \ta@bcor=\skip41
 \ta@div=\count79
+Package typearea Info: You've used standard option `oneside'.
+(typearea)             This is correct!
+(typearea)             Internally I'm using `twoside=false'.
+(typearea)             If you'd like to set the option with \KOMAoptions,
+(typearea)             you'd have to use `twoside=false' there
+(typearea)             instead of `oneside', too.
 Package typearea Info: You've used standard option `a4paper'.
 (typearea)             This is correct!
 (typearea)             Internally I'm using `paper=a4'.
@@ -104,7 +116,57 @@ LaTeX Info: Redefining \textsubscript on input line 4545.
 \c@figure=\count87
 \c@table=\count88
 \bibindent=\dimen102
-) (/usr/local/texlive/2015/texmf-dist/tex/generic/babel/babel.sty
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 94.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count89
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen105
+\captionmargin@=\dimen106
+\captionwidth=\dimen107
+\caption@tempdima=\dimen108
+\caption@indent=\dimen109
+\caption@parindent=\dimen110
+\caption@hangindent=\dimen111
+)
+Package caption Info: KOMA-Script document class.
+\c@ContinuedFloat=\count90
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
+\c@subfigure=\count91
+\c@subtable=\count92
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2014/09/25 3.9l The Babel package
 
 (/usr/local/texlive/2015/texmf-dist/tex/generic/babel-english/english.ldf
@@ -112,8 +174,8 @@ Language: english 2012/08/20 v3.3p English support from the babel system
 
 (/usr/local/texlive/2015/texmf-dist/tex/generic/babel/babel.def
 File: babel.def 2014/09/25 3.9l Babel common definitions
-\babel@savecnt=\count89
-\U@D=\dimen103
+\babel@savecnt=\count93
+\U@D=\dimen112
 )
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
@@ -125,13 +187,13 @@ Language: english 2012/08/20 v3.3p English support from the babel system
 
 Package Babel Warning: The package option `english' should not be used
 (Babel)                with a more specific one (like `american') on input line
- 6.
+ 12.
 
 (./classicthesis-config.tex
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-\c@dummy=\count90
+\c@dummy=\count94
 \abcd=\skip48
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/inputenc.sty
@@ -147,7 +209,7 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip49
 \bibsep=\skip50
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count91
+\c@NAT@ctr=\count95
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2013/01/14 v2.14 AMS math features
@@ -160,46 +222,46 @@ Package: amstext 2000/06/29 v2.01
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks17
-\ex@=\dimen104
+\ex@=\dimen113
 ))
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
-\pmbraise@=\dimen105
+\pmbraise@=\dimen114
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count92
+\inf@bad=\count96
 LaTeX Info: Redefining \frac on input line 210.
-\uproot@=\count93
-\leftroot@=\count94
+\uproot@=\count97
+\leftroot@=\count98
 LaTeX Info: Redefining \overline on input line 306.
-\classnum@=\count95
-\DOTSCASE@=\count96
+\classnum@=\count99
+\DOTSCASE@=\count100
 LaTeX Info: Redefining \ldots on input line 378.
 LaTeX Info: Redefining \dots on input line 381.
 LaTeX Info: Redefining \cdots on input line 466.
 \Mathstrutbox@=\box27
 \strutbox@=\box28
-\big@size=\dimen106
+\big@size=\dimen115
 LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
-\macc@depth=\count97
-\c@MaxMatrixCols=\count98
+\macc@depth=\count101
+\c@MaxMatrixCols=\count102
 \dotsspace@=\muskip10
-\c@parentequation=\count99
-\dspbrk@lvl=\count100
+\c@parentequation=\count103
+\dspbrk@lvl=\count104
 \tag@help=\toks18
-\row@=\count101
-\column@=\count102
-\maxfields@=\count103
+\row@=\count105
+\column@=\count106
+\maxfields@=\count107
 \andhelp@=\toks19
-\eqnshift@=\dimen107
-\alignsep@=\dimen108
-\tagshift@=\dimen109
-\tagwidth@=\dimen110
-\totwidth@=\dimen111
-\lineht@=\dimen112
+\eqnshift@=\dimen116
+\alignsep@=\dimen117
+\tagshift@=\dimen118
+\tagwidth@=\dimen119
+\totwidth@=\dimen120
+\lineht@=\dimen121
 \@envbody=\toks20
 \multlinegap=\skip52
 \multlinetaggap=\skip53
@@ -322,8 +384,8 @@ Package: suffix 2006/07/15 1.5a Variant command support
 (/usr/local/texlive/2015/texmf-dist/tex/generic/xstring/xstring.sty
 (/usr/local/texlive/2015/texmf-dist/tex/generic/xstring/xstring.tex
 \@xs@message=\write3
-\integerpart=\count104
-\decimalpart=\count105
+\integerpart=\count108
+\decimalpart=\count109
 )
 Package: xstring 2013/10/13  v1.7c  String manipulations (C Tellechea)
 )
@@ -337,71 +399,38 @@ Package: tabularx 2014/10/28 v2.10 `tabularx' package (DPC)
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/tools/array.sty
 Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
-\col@sep=\dimen113
-\extrarowheight=\dimen114
+\col@sep=\dimen122
+\extrarowheight=\dimen123
 \NC@list=\toks23
 \extratabsurround=\skip54
 \backup@length=\skip55
 )
-\TX@col@width=\dimen115
-\TX@old@table=\dimen116
-\TX@old@col=\dimen117
-\TX@target=\dimen118
-\TX@delta=\dimen119
-\TX@cols=\count106
+\TX@col@width=\dimen124
+\TX@old@table=\dimen125
+\TX@old@col=\dimen126
+\TX@target=\dimen127
+\TX@delta=\dimen128
+\TX@cols=\count110
 \TX@ftn=\toks24
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 57.
-\captionmargin=\dimen120
-\captionmargin@=\dimen121
-\captionwidth=\dimen122
-\caption@tempdima=\dimen123
-\caption@indent=\dimen124
-\caption@parindent=\dimen125
-\caption@hangindent=\dimen126
-)
-Package caption Info: KOMA-Script document class.
-\c@ContinuedFloat=\count107
-)
-(/usr/local/texlive/2015/texmf-dist/tex/latex/subfig/subfig.sty
-Package: subfig 2005/06/28 ver: 1.3 subfig package
-\c@KVtest=\count108
-\sf@farskip=\skip56
-\sf@captopadj=\dimen127
-\sf@capskip=\skip57
-\sf@nearskip=\skip58
-\c@subfigure=\count109
-\c@subfigure@save=\count110
-\c@lofdepth=\count111
-\c@subtable=\count112
-\c@subtable@save=\count113
-\c@lotdepth=\count114
-\sf@top=\skip59
-\sf@bottom=\skip60
-)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count115
+\lst@mode=\count111
 \lst@gtempboxa=\box29
 \lst@token=\toks25
-\lst@length=\count116
-\lst@currlwidth=\dimen128
-\lst@column=\count117
-\lst@pos=\count118
-\lst@lostspace=\dimen129
-\lst@width=\dimen130
-\lst@newlines=\count119
-\lst@lineno=\count120
-\lst@maxwidth=\dimen131
+\lst@length=\count112
+\lst@currlwidth=\dimen129
+\lst@column=\count113
+\lst@pos=\count114
+\lst@lostspace=\dimen130
+\lst@width=\dimen131
+\lst@newlines=\count115
+\lst@lineno=\count116
+\lst@maxwidth=\dimen132
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-\c@lstnumber=\count121
-\lst@skipnumbers=\count122
+\c@lstnumber=\count117
+\lst@skipnumbers=\count118
 \lst@framebox=\box30
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/listings/listings.cfg
@@ -464,8 +493,8 @@ Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
 (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
 Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2012/05/28 v1.13 Construct package bundles (HO)
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
@@ -511,14 +540,14 @@ Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
-\@linkdim=\dimen132
-\Hy@linkcounter=\count123
-\Hy@pagecounter=\count124
+\@linkdim=\dimen133
+\Hy@linkcounter=\count119
+\Hy@pagecounter=\count120
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 )
-\Hy@SavedSpaceFactor=\count125
+\Hy@SavedSpaceFactor=\count121
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -532,17 +561,17 @@ Package hyperref Info: Plain pages OFF on input line 4458.
 Package hyperref Info: Backreferencing OFF on input line 4463.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
-\c@Hy@tempcnt=\count126
+\c@Hy@tempcnt=\count122
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5041.
-\XeTeXLinkMargin=\dimen133
-\Fld@menulength=\count127
-\Field@Width=\dimen134
-\Fld@charsize=\dimen135
+\XeTeXLinkMargin=\dimen134
+\Fld@menulength=\count123
+\Field@Width=\dimen135
+\Fld@charsize=\dimen136
 Package hyperref Info: Hyper figures OFF on input line 6295.
 Package hyperref Info: Link nesting OFF on input line 6300.
 Package hyperref Info: Hyper index ON on input line 6303.
@@ -552,44 +581,23 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6320.
 Package hyperref Info: PDF/A mode OFF on input line 6325.
 LaTeX Info: Redefining \ref on input line 6365.
 LaTeX Info: Redefining \pageref on input line 6369.
-\Hy@abspage=\count128
-\c@Item=\count129
+\Hy@abspage=\count124
+\c@Item=\count125
 )
 
 Package hyperref Message: Driver: hpdftex.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
-\Fld@listcount=\count130
-\c@bookmark@seq@number=\count131
+\Fld@listcount=\count126
+\c@bookmark@seq@number=\count127
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 )
-\Hy@SectionHShift=\skip61
-)
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
-)
-(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
-File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
-)
-Package graphics Info: Driver file: pdftex.def on input line 94.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-\Gread@gobject=\count132
-))
-\Gin@req@height=\dimen136
-\Gin@req@width=\dimen137
+\Hy@SectionHShift=\skip56
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 199.
 Package hyperref Info: Option `linktocpage' set `true' on input line 199.
@@ -638,18 +646,18 @@ Package: eulervm 2005/01/11 v4.0 (WaS)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/microtype.sty
 Package: microtype 2013/05/23 v2.5a Micro-typographical refinements (RS)
 \MT@toks=\toks26
-\MT@count=\count133
+\MT@count=\count128
 LaTeX Info: Redefining \textls on input line 766.
-\MT@outer@kern=\dimen138
+\MT@outer@kern=\dimen137
 LaTeX Info: Redefining \textmicrotypecontext on input line 1285.
-\MT@listname@count=\count134
+\MT@listname@count=\count129
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/microtype-pdftex.def
 File: microtype-pdftex.def 2013/05/23 v2.5a Definitions specific to pdftex (RS)
 
 LaTeX Info: Redefining \lsstyle on input line 915.
 LaTeX Info: Redefining \lslig on input line 915.
-\MT@outer@space=\skip62
+\MT@outer@space=\skip57
 )
 Package microtype Info: Loading configuration file microtype.cfg.
 
@@ -676,23 +684,23 @@ Package typearea Info: These are the values describing the layout:
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2005/04/14 v1.61803 publication quality tables
-\heavyrulewidth=\dimen139
-\lightrulewidth=\dimen140
-\cmidrulewidth=\dimen141
-\belowrulesep=\dimen142
-\belowbottomsep=\dimen143
-\aboverulesep=\dimen144
-\abovetopsep=\dimen145
-\cmidrulesep=\dimen146
-\cmidrulekern=\dimen147
-\defaultaddspace=\dimen148
-\@cmidla=\count135
-\@cmidlb=\count136
-\@aboverulesep=\dimen149
-\@belowrulesep=\dimen150
-\@thisruleclass=\count137
-\@lastruleclass=\count138
-\@thisrulewidth=\dimen151
+\heavyrulewidth=\dimen138
+\lightrulewidth=\dimen139
+\cmidrulewidth=\dimen140
+\belowrulesep=\dimen141
+\belowbottomsep=\dimen142
+\aboverulesep=\dimen143
+\abovetopsep=\dimen144
+\cmidrulesep=\dimen145
+\cmidrulekern=\dimen146
+\defaultaddspace=\dimen147
+\@cmidla=\count130
+\@cmidlb=\count131
+\@aboverulesep=\dimen148
+\@belowrulesep=\dimen149
+\@thisruleclass=\count132
+\@lastruleclass=\count133
+\@thisrulewidth=\dimen150
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/textcase/textcase.sty
 Package: textcase 2004/10/07 v0.07 Text only upper/lower case changing (DPC)
@@ -718,14 +726,14 @@ Class scrreprt Warning: Usage of package `titlesec' together
 (/usr/local/texlive/2015/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \ttl@box=\box31
-\beforetitleunit=\skip63
-\aftertitleunit=\skip64
-\ttl@plus=\dimen152
-\ttl@minus=\dimen153
+\beforetitleunit=\skip58
+\aftertitleunit=\skip59
+\ttl@plus=\dimen151
+\ttl@minus=\dimen152
 \ttl@toksa=\toks27
-\titlewidth=\dimen154
-\titlewidthlast=\dimen155
-\titlewidthfirst=\dimen156
+\titlewidth=\dimen153
+\titlewidthlast=\dimen154
+\titlewidthfirst=\dimen155
 
 
 Package titlesec Warning: Non standard sectioning command detected
@@ -755,137 +763,107 @@ Package scrreprt Warning: Activating an ugly workaround for a missing
 (/usr/local/texlive/2015/texmf-dist/tex/latex/tocloft/tocloft.sty
 Package: tocloft 2013/05/02 v2.3f parameterised ToC, etc., typesetting
 Package tocloft Info: The document has chapter divisions on input line 44.
-\cftparskip=\skip65
-\cftbeforetoctitleskip=\skip66
-\cftaftertoctitleskip=\skip67
-\cftbeforepartskip=\skip68
-\cftpartnumwidth=\skip69
-\cftpartindent=\skip70
-\cftbeforechapskip=\skip71
-\cftchapindent=\skip72
-\cftchapnumwidth=\skip73
-\cftbeforesecskip=\skip74
-\cftsecindent=\skip75
-\cftsecnumwidth=\skip76
-\cftbeforesubsecskip=\skip77
-\cftsubsecindent=\skip78
-\cftsubsecnumwidth=\skip79
-\cftbeforesubsubsecskip=\skip80
-\cftsubsubsecindent=\skip81
-\cftsubsubsecnumwidth=\skip82
-\cftbeforeparaskip=\skip83
-\cftparaindent=\skip84
-\cftparanumwidth=\skip85
-\cftbeforesubparaskip=\skip86
-\cftsubparaindent=\skip87
-\cftsubparanumwidth=\skip88
-\cftbeforeloftitleskip=\skip89
-\cftafterloftitleskip=\skip90
-\cftbeforefigskip=\skip91
-\cftfigindent=\skip92
-\cftfignumwidth=\skip93
-\cftbeforelottitleskip=\skip94
-\cftafterlottitleskip=\skip95
-\cftbeforetabskip=\skip96
-\cfttabindent=\skip97
-\cfttabnumwidth=\skip98
-\cftbeforesubfigskip=\skip99
-\cftsubfigindent=\skip100
-\cftsubfignumwidth=\skip101
-\cftbeforesubtabskip=\skip102
-\cftsubtabindent=\skip103
-\cftsubtabnumwidth=\skip104
+\cftparskip=\skip60
+\cftbeforetoctitleskip=\skip61
+\cftaftertoctitleskip=\skip62
+\cftbeforepartskip=\skip63
+\cftpartnumwidth=\skip64
+\cftpartindent=\skip65
+\cftbeforechapskip=\skip66
+\cftchapindent=\skip67
+\cftchapnumwidth=\skip68
+\cftbeforesecskip=\skip69
+\cftsecindent=\skip70
+\cftsecnumwidth=\skip71
+\cftbeforesubsecskip=\skip72
+\cftsubsecindent=\skip73
+\cftsubsecnumwidth=\skip74
+\cftbeforesubsubsecskip=\skip75
+\cftsubsubsecindent=\skip76
+\cftsubsubsecnumwidth=\skip77
+\cftbeforeparaskip=\skip78
+\cftparaindent=\skip79
+\cftparanumwidth=\skip80
+\cftbeforesubparaskip=\skip81
+\cftsubparaindent=\skip82
+\cftsubparanumwidth=\skip83
+\cftbeforeloftitleskip=\skip84
+\cftafterloftitleskip=\skip85
+\cftbeforefigskip=\skip86
+\cftfigindent=\skip87
+\cftfignumwidth=\skip88
+\cftbeforelottitleskip=\skip89
+\cftafterlottitleskip=\skip90
+\cftbeforetabskip=\skip91
+\cfttabindent=\skip92
+\cfttabnumwidth=\skip93
+\cftbeforesubfigskip=\skip94
+\cftsubfigindent=\skip95
+\cftsubfignumwidth=\skip96
+\cftbeforesubtabskip=\skip97
+\cftsubtabindent=\skip98
+\cftsubtabnumwidth=\skip99
 )
-\newnumberwidth=\skip105
-\beforebibskip=\skip106
-\newchnumberwidth=\skip107
-\figurelabelwidth=\skip108
-\tablelabelwidth=\skip109
-\c@listings=\count139
-\cftbeforelistingsskip=\skip110
-\cftlistingsindent=\skip111
-\cftlistingsnumwidth=\skip112
-\c@loldepth=\count140
-\cftbeforeloltitleskip=\skip113
-\cftafterloltitleskip=\skip114
-\listingslabelwidth=\skip115
+\newnumberwidth=\skip100
+\beforebibskip=\skip101
+\newchnumberwidth=\skip102
+\figurelabelwidth=\skip103
+\tablelabelwidth=\skip104
+\c@listings=\count134
+\cftbeforelistingsskip=\skip105
+\cftlistingsindent=\skip106
+\cftlistingsnumwidth=\skip107
+\c@loldepth=\count135
+\cftbeforeloltitleskip=\skip108
+\cftafterloltitleskip=\skip109
+\listingslabelwidth=\skip110
 
 Using KOMA-command "deffootnote" for footnote setup
 (/usr/local/texlive/2015/texmf-dist/tex/latex/koma-script/scrtime.sty
 Package: scrtime 2015/07/02 v3.18 KOMA-Script package (time of LaTeX run)
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/carlisle/remreset.sty)))
-(./Thesis.aux (./FrontBackmatter/Titlepage.aux)
-(./FrontBackmatter/Dedication.aux) (./FrontBackmatter/Abstract.aux)
-(./FrontBackmatter/Acknowledgments.aux) (./FrontBackmatter/Contents.aux)
-(./Chapters/Chapter0.aux))
+(./Thesis.aux (./FrontBackmatter/Titlepage.aux) (./Chapters/Chapter0.aux))
 \openout1 = `Thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 29.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Try loading font information for T1+pplj on input line 21.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Try loading font information for T1+pplj on input line 29.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/t1pplj.fd
 File: t1pplj.fd 2004/09/06 font definitions for T1/pplj.
 )
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: subfig package v1.3 is loaded.
-Package caption Info: hyperref package is loaded.
-Package caption Info: listings package is loaded.
-Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count141
-Package scrhack Info: undefining \float@addtolists on input line 21.
-\AtBeginShipoutBox=\box32
-Package hyperref Info: Link coloring ON on input line 21.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
-
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
-)
-\c@section@level=\count142
-)
-LaTeX Info: Redefining \ref on input line 21.
-LaTeX Info: Redefining \pageref on input line 21.
-LaTeX Info: Redefining \nameref on input line 21.
-
-(./Thesis.out) (./Thesis.out)
-\@outlinefile=\write4
-\openout4 = `Thesis.out'.
-
-
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count143
-\scratchdimen=\dimen157
-\scratchbox=\box33
-\nofMPsegments=\count144
-\nofMParguments=\count145
+\scratchcounter=\count136
+\scratchdimen=\dimen156
+\scratchbox=\box32
+\nofMPsegments=\count137
+\nofMParguments=\count138
 \everyMPshowfont=\toks28
-\MPscratchCnt=\count146
-\MPscratchDim=\dimen158
-\MPnumerator=\count147
-\makeMPintoPDFobject=\count148
+\MPscratchCnt=\count139
+\MPscratchDim=\dimen157
+\MPnumerator=\count140
+\makeMPintoPDFobject=\count141
 \everyMPtoPDFconversion=\toks29
 ) (/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
@@ -902,7 +880,32 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 21.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+Package caption Info: End \AtBeginDocument code.
+\c@lstlisting=\count142
+Package scrhack Info: undefining \float@addtolists on input line 29.
+\AtBeginShipoutBox=\box33
+Package hyperref Info: Link coloring ON on input line 29.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count143
+)
+LaTeX Info: Redefining \ref on input line 29.
+LaTeX Info: Redefining \pageref on input line 29.
+LaTeX Info: Redefining \nameref on input line 29.
+
+(./Thesis.out) (./Thesis.out)
+\@outlinefile=\write4
+\openout4 = `Thesis.out'.
+
+LaTeX Info: Redefining \microtypecontext on input line 29.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -917,7 +920,7 @@ File: mt-ppl.cfg 2005/11/16 v1.6 microtype config. file: Palatino (RS)
 \openout2 = `FrontBackmatter/Titlepage.aux'.
 
 
-(./FrontBackmatter/Titlepage.tex <uni.pdf, id=4, 2319.91719pt x 762.86807pt>
+(./FrontBackmatter/Titlepage.tex <uni.pdf, id=8, 2319.91719pt x 762.86807pt>
 File: uni.pdf Graphic file (type pdf)
 
 <use uni.pdf>
@@ -960,52 +963,56 @@ LaTeX Font Info:    Font shape `T1/pplj/bx/n' in size <14.4> not available
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./uni.p
 df>]
-\openout2 = `FrontBackmatter/Dedication.aux'.
-
-
-(./FrontBackmatter/Dedication.tex)
-\openout2 = `FrontBackmatter/Abstract.aux'.
-
- (./FrontBackmatter/Abstract.tex)
-\openout2 = `FrontBackmatter/Acknowledgments.aux'.
-
-
-(./FrontBackmatter/Acknowledgments.tex)
-\openout2 = `FrontBackmatter/Contents.aux'.
-
- (./FrontBackmatter/Contents.tex)
-\openout2 = `Chapters/Chapter0.aux'.
-
-
-(./Chapters/Chapter0.tex) [1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[1
 
 
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 46.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 46.
- (./Thesis.aux (./FrontBackmatter/Titlepage.aux)
-(./FrontBackmatter/Dedication.aux) (./FrontBackmatter/Abstract.aux)
-(./FrontBackmatter/Acknowledgments.aux) (./FrontBackmatter/Contents.aux)
-(./Chapters/Chapter0.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 46.
+Package tocbasic Info: character protrusion at toc deactivated on input line 61
+.
+ (./Thesis.toc
+Package microtype Info: Character `029' is missing
+(microtype)             in font `T1/pplj/m/sc/10.95'.
+(microtype)             Ignoring protrusion settings for this character.
+)
+\tf@toc=\write5
+\openout5 = `Thesis.toc'.
+
+ [2
+
+]
+\openout2 = `Chapters/Chapter0.aux'.
+
+ (./Chapters/Chapter0.tex
+chapter 1.
+<gfx/1945_2014_Residenzschloss.jpg, id=41, 1291.224pt x 857.604pt>
+File: gfx/1945_2014_Residenzschloss.jpg Graphic file (type jpg)
+
+<use gfx/1945_2014_Residenzschloss.jpg>
+Package pdftex.def Info: gfx/1945_2014_Residenzschloss.jpg used on input line 1
+2.
+(pdftex.def)             Requested size: 336.0pt x 223.15498pt.
+LaTeX Font Info:    Try loading font information for TS1+pplj on input line 14.
+
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ts1pplj.fd
+File: ts1pplj.fd 2004/09/06 font definitions for TS1/pplj.
+)
+<gfx/1950_2014_Frauenkirche.jpg, id=42, 1291.224pt x 857.604pt>
+File: gfx/1950_2014_Frauenkirche.jpg Graphic file (type jpg)
+
+<use gfx/1950_2014_Frauenkirche.jpg>
+Package pdftex.def Info: gfx/1950_2014_Frauenkirche.jpg used on input line 19.
+(pdftex.def)             Requested size: 336.0pt x 223.15498pt.
+) [3
+
+
+] [4 <./gfx/1945_2014_Residenzschloss.jpg> <./gfx/1950_2014_Frauenkirche.jpg>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 64.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 64.
+ (./Thesis.aux
+(./FrontBackmatter/Titlepage.aux) (./Chapters/Chapter0.aux))
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 64.
 
 
  *File List*
@@ -1019,6 +1026,16 @@ scrlfile.sty    2015/07/02 v3.18 KOMA-Script package (loading files)
 tocbasic.sty    2015/07/02 v3.18 KOMA-Script package (handling toc-files)
 scrsize11pt.clo    2015/07/02 v3.18 KOMA-Script font size class option (11pt)
 typearea.sty    2015/07/02 v3.18 KOMA-Script package (type area)
+graphicx.sty    2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+graphics.sty    2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+    trig.sty    1999/03/16 v1.09 sin cos tan (DPC)
+graphics.cfg    2010/04/23 v1.9 graphics configuration of TeX Live
+  pdftex.def    2011/05/27 v0.06d Graphics/color for pdfTeX
+infwarerr.sty    2010/04/08 v1.3 Providing info/warning/error messages (HO)
+ ltxcmds.sty    2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+ caption.sty    2013/05/02 v3.3-89 Customizing captions (AR)
+caption3.sty    2013/05/02 v1.6-88 caption3 kernel (AR)
+subcaption.sty    2013/02/03 v1.1-62 Sub-captions (AR)
    babel.sty    2014/09/25 3.9l The Babel package
  english.ldf    2012/08/20 v3.3p English support from the babel system
  english.ldf    2012/08/20 v3.3p English support from the babel system
@@ -1046,9 +1063,6 @@ fixltx2e.sty    2015/06/22 v2.0b fixes to LaTeX (obsolete)
  relsize.sty    2013/03/29 ver 4.1
 tabularx.sty    2014/10/28 v2.10 `tabularx' package (DPC)
    array.sty    2014/10/28 v2.4c Tabular extension package (FMi)
- caption.sty    2013/05/02 v3.3-89 Customizing captions (AR)
-caption3.sty    2013/05/02 v1.6-88 caption3 kernel (AR)
-  subfig.sty    2005/06/28 ver: 1.3 subfig package
 listings.sty    2015/06/04 1.6 (Carsten Heinz)
  lstmisc.sty    2015/06/04 1.6 (Carsten Heinz)
 listings.cfg    2015/06/04 1.6 listings configuration
@@ -1071,8 +1085,6 @@ hyperref.sty    2012/11/06 v6.83m Hypertext links for LaTeX
 hobsub-hyperref.sty    2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
 hobsub-generic.sty    2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
   hobsub.sty    2012/05/28 v1.13 Construct package bundles (HO)
-infwarerr.sty    2010/04/08 v1.3 Providing info/warning/error messages (HO)
- ltxcmds.sty    2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 ifluatex.sty    2010/03/01 v1.3 Provides the ifluatex switch (HO)
   ifvtex.sty    2010/03/01 v1.5 Detect VTeX and its facilities (HO)
  intcalc.sty    2007/09/27 v1.1 Expandable calculations with integers (HO)
@@ -1100,11 +1112,6 @@ hyperref.cfg    2002/06/06 v1.2 hyperref configuration of TeXLive
      url.sty    2013/09/16  ver 3.4  Verb mode for urls, etc.
  hpdftex.def    2012/11/06 v6.83m Hyperref driver for pdfTeX
 rerunfilecheck.sty    2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
-graphicx.sty    2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
-graphics.sty    2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
-    trig.sty    1999/03/16 v1.09 sin cos tan (DPC)
-graphics.cfg    2010/04/23 v1.9 graphics configuration of TeX Live
-  pdftex.def    2011/05/27 v0.06d Graphics/color for pdfTeX
 classicthesis.sty    2012/08/12 v4.1 Typographic style for a classic-looking th
 esis
   xcolor.sty    2007/01/21 v2.11 LaTeX color extensions (UK)
@@ -1125,14 +1132,14 @@ titlesec.sty    2011/12/15 v2.10.0 Sectioning titles
 remreset.sty    
   ts1cmr.fd    2014/09/29 v2.5h Standard LaTeX font definitions
   t1pplj.fd    2004/09/06 font definitions for T1/pplj.
- nameref.sty    2012/10/27 v2.43 Cross-referencing by name of section
-gettitlestring.sty    2010/12/03 v1.4 Cleanup title references (HO)
-  Thesis.out
-  Thesis.out
 supp-pdf.mkii
 epstopdf-base.sty    2010/02/09 v2.5 Base part for package epstopdf
   grfext.sty    2010/08/19 v1.1 Manage graphics extensions (HO)
 epstopdf-sys.cfg    2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+ nameref.sty    2012/10/27 v2.43 Cross-referencing by name of section
+gettitlestring.sty    2010/12/03 v1.4 Cleanup title references (HO)
+  Thesis.out
+  Thesis.out
   mt-ppl.cfg    2005/11/16 v1.6 microtype config. file: Palatino (RS)
 FrontBackmatter/Titlepage.tex
      uni.pdf    Graphic file (type pdf)
@@ -1142,37 +1149,38 @@ FrontBackmatter/Titlepage.tex
   mt-eus.cfg    2006/07/28 v1.2 microtype config. file: AMS Euler Script (RS)
   uzeuex.fd    2005/01/11 v4.0 (WaS)
  ot1zplm.fd    2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
-FrontBackmatter/Dedication.tex
-FrontBackmatter/Abstract.tex
-FrontBackmatter/Acknowledgments.tex
-FrontBackmatter/Contents.tex
 Chapters/Chapter0.tex
+gfx/1945_2014_Residenzschloss.jpg
+ ts1pplj.fd    2004/09/06 font definitions for TS1/pplj.
+gfx/1950_2014_Frauenkirche.jpg
  ***********
 
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 46.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 64.
 Package rerunfilecheck Info: File `Thesis.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 46.
+(rerunfilecheck)             Checksum: C4379EA070817BFE15CFE81CDE036101;48.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 64.
  ) 
 Here is how much of TeX's memory you used:
- 15478 strings out of 493093
- 242486 string characters out of 6134989
- 455509 words of memory out of 5000000
- 18620 multiletter control sequences out of 15000+600000
- 40006 words of font info for 68 fonts, out of 8000000 for 9000
+ 15456 strings out of 493093
+ 241890 string characters out of 6134989
+ 455496 words of memory out of 5000000
+ 18593 multiletter control sequences out of 15000+600000
+ 60940 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 45i,13n,67p,362b,389s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): Page 3 has been referenced but does not exist!
-
-{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
-live/2015/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/texlive/201
-5/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/texmf
--dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-dist/f
-onts/type1/urw/palatino/uplri8a.pfb>
-Output written on Thesis.pdf (2 pages, 87237 bytes).
+ 45i,13n,67p,362b,421s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/euler/eurb10.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-di
+st/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on Thesis.pdf (5 pages, 14606265 bytes).
 PDF statistics:
- 47 PDF objects out of 1000 (max. 8388607)
- 32 compressed objects within 1 object stream
- 3 named destinations out of 1000 (max. 500000)
- 7686 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 77 PDF objects out of 1000 (max. 8388607)
+ 57 compressed objects within 1 object stream
+ 10 named destinations out of 1000 (max. 500000)
+ 11800 words of extra memory for PDF output out of 12000 (max. 10000000)
 
