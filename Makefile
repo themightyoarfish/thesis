@@ -8,4 +8,4 @@ all: $(TEX_SOURCES)
 	open "Thesis.pdf"
 
 clean:
-	rm *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log *.toc *.bbl *.blg
+	$(RM) *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log *.toc *.bbl *.blg
