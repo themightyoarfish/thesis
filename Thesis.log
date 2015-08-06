@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.7.10)  6 AUG 2015 12:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.7.10)  6 AUG 2015 12:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1158,9 +1158,6 @@ gfx/1950_2014_Frauenkirche.jpg
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 64.
 Package rerunfilecheck Info: File `Thesis.out' has not changed.
 (rerunfilecheck)             Checksum: C4379EA070817BFE15CFE81CDE036101;48.
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 64.
  ) 
 Here is how much of TeX's memory you used:
@@ -1177,7 +1174,7 @@ exlive/2015/texmf-dist/fonts/type1/public/amsfonts/euler/eurb10.pfb></usr/local
 /2015/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/t
 exmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-di
 st/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on Thesis.pdf (5 pages, 14606265 bytes).
+Output written on Thesis.pdf (5 pages, 14606297 bytes).
 PDF statistics:
  77 PDF objects out of 1000 (max. 8388607)
  57 compressed objects within 1 object stream
