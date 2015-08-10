@@ -9,14 +9,14 @@ this work.
 
 \section{Overview}
 
-Rephotography or repeat photography denotes the retrieval of the precise viewpoint used for taking a
---- possibly historic---photograph and capturing another image from the same
-spot, ideally with the same camera parameters. This allows for documentation and
-visualisation of changes which the scene has undergone between the two or more
-captures.  For instance when documenting urban development, one can present
-progress of construction, restoration efforts or changes in the surroundings in
-a visually striking manner, e.g. by blending the photographs together.
-Figures \autoref{fig1} and \autoref{fig2} show examples.
+Rephotography or repeat photography denotes the retrieval of the precise
+viewpoint used for taking a---possibly historic---photograph and capturing
+another image from the same spot, ideally with the same camera parameters. This
+allows for documentation and visualisation of changes which the scene has
+undergone between the two or more captures.  For instance when documenting urban
+development, one can present progress of construction, restoration efforts or
+changes in the surroundings in a visually striking manner, e.g. by blending the
+photographs together.  Figures \autoref{fig1} and \autoref{fig2} show examples.
 
 \begin{figure}
    \includegraphics[width=\textwidth]{gfx/1945_2014_Residenzschloss.jpg}
@@ -45,16 +45,15 @@ place limits on the accuracy with which the camera pose of the reference image
 can be reconstructed. Some corrections can be done by post-processing the images
 and warping the rephotograph with a homography to better match the original.
 
-At the time of writing, few computerized aids are available to the
-photographer (see below).
-The advancement of mobile phones and tablet computers with integrated cameras
-and larger screens presents the opportunity to develop applications which can
-assist in this endeavour, moving away from the traditional trial-and-error
-approach.  On current digital cameras\footnote{At the time of writing, no
-   commercial manufacturer produces a camera with user-modifiable firm- or
-   software. A project at Stanford \citep{Levoy2010} was discontinued
-\cite{FrankenCam}} this is impossible due to their closed infrastructure not
-permitting running user programs. 
+At the time of writing, few computerized aids are available to the photographer
+(see below).  The advancement of mobile phones and tablet computers with
+integrated cameras and larger screens presents the opportunity to develop
+applications which can assist in this endeavour, moving away from the
+traditional trial-and-error approach.  On current digital cameras\footnote{At
+   the time of writing, no commercial manufacturer produces a camera with
+   user-modifiable firm- or software. A project at Stanford \citep{Levoy2010}
+was discontinued \cite{FrankenCam}} this is impossible due to their closed
+infrastructure not permitting running user programs. 
 
 \section{Previous Approaches}
 
@@ -81,18 +80,22 @@ position and the goal position (that of the original image).
 \subsection{Computational Re-Photography}
 
 A more
-sophisticated automated approach was presented in \citep{bae2010} by MIT researchers in
-2010. In this setup, the relevant parameters of a historic image's camera are
+sophisticated automated approach was presented in by MIT researchers in
+2010. \citet{bae2010} found in preliminary studies that neither a side-by-side
+view as would be used in the manual approach, nor a linear blend provided by
+the above applications result in accurate rephotographs.
+
+In this setup, the relevant parameters of a historic image's camera are
 reconstructed, including the focal length, principal point and the six degrees
 of freedom in camera pose. This subsection will give a high-level overview,
 while a more in-depth discussion of the relevant concepts is deferred until
 \autoref{section something}.
 
-
 The software runs on a laptop connetcted to a digital camera.  After
 reconstructing the scene in 3D by use of two images captured by the user, they
-are then directed by the software to the desired viewpoint.  On the screen, the
-user is shown the current camera image alongside two arrows indicating in which
+are then directed by the software to the desired viewpoint, the user does not
+have to find it by themselves.  On the screen, they
+are shown the current camera image alongside two arrows indicating in which
 direction to move---one for movement in the sensor plane and one for movement
 along the optical axis.
 
@@ -202,12 +205,17 @@ exist.
 This work's objective can thus be summarised as follows.
 \begin{enumerate}
    \item Implement in a prototypal fashion the process from \citep{bae2010} for
-      a mobile operating system so it can be run on a smartphone or tablet
+      a mobile operating system so it can be run on a smartphone or tablet and
+      direct the user in approximate real-time.
    \item Evaluate the approach and attempt to reproduce the results.
 \end{enumerate}
 
 For a proof-of-concept application, several simplifying assumptions are made.
 Firstly, it is assumed that the ``historic'' photograph is captured with the
-same camera as the application is run on. Secondly, no strong visual differences
-between the reference and current scenes are assumed so that the reference image
-is accessible to the same feature detection algorithm. 
+same camera as the application is run on and that the camera is calibrated.
+Secondly, no strong visual differences between the reference and current scenes
+are assumed so that the reference image is accessible to the same feature
+detection algorithm without the user manually labelling correspondences. 
+
+The application targets iOS 8 and current hardware, as image processing is
+computationally intense, and has been tested on an iPad Air 2.
