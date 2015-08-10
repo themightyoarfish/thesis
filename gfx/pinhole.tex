@@ -1,0 +1,29 @@
+\begin{tikzpicture}[every node/.style={outer sep=0,inner sep=0},
+   label distance=5pt]
+   \usetikzlibrary{calc}
+   \fill (0,0) circle (2pt) node[label=below:{$C$}] (C) {};
+   \draw[->,name path=y-axis] (C) -- ++(0,4cm);
+   \draw[->,name path=x-axis] (C) -- ++(8cm,0);
+
+   \fill (7cm,3cm) circle (2pt) node[label=above right:{$\mathbf{X}$}] (X) {};
+
+   \draw[name path=image plane] (3cm,1.7cm) -- ++(0,-2*1.7cm);
+
+   \draw[|-|] (0,-2cm) -- (3cm,-2cm) node[midway,below=1em] (f) {$f$};
+
+   \draw[name path=ray] (C) -- (X);
+   \fill[name intersections={of=ray and image plane}]
+   (intersection-1) circle (2pt) coordinate (c);
+   \node[label=above left:{$x$}] (x) at (c) {};
+
+   \draw[dashed] (0,3cm) node[left=1em] {$Y$} -- (X) -- (7cm,0)
+   node[below=1em]
+   {$Z$};
+
+   % \draw[|-|] (0,-3cm) -- (7cm,-3cm) node[midway,below=1em] (Z) {$Z$};
+
+   \draw[|-|,name intersections={of=x-axis and image plane}] (x) ++(1em,0) --
+   ($(intersection-1) + (1em,0)$) node [right=1em,midway] {$f \cdot
+   \frac{Y}{Z}$};
+
+\end{tikzpicture}

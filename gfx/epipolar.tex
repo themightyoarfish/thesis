@@ -1,0 +1,48 @@
+\begin{tikzpicture}[every node/.style={outer sep=0,inner sep=0},
+   label distance=5pt]
+   \def\baseline{9cm}
+   \draw[fill] (0,0) circle (2pt) node[label=below left:{$c_1$}] (c1) {};
+   \draw[fill] (\baseline,0) circle (2pt) node[label=below left:{$c_2$}] (c2) {};
+
+   \newcommand{\sensorplane}[1]{
+      \path[name path=#1,draw] (1cm,0.5cm) -- (1cm,2.5cm) -- (3.5cm,1cm) -- (3.5cm,-1cm) -- cycle
+   }
+   \begin{scope}
+      \sensorplane{plane1};
+   \end{scope}
+
+   \begin{scope}[yscale=1,xscale=-1,xshift=-\baseline]
+      \sensorplane{plane2};
+   \end{scope}
+
+   \fill (0.5*\baseline,3cm) circle (2pt) node[label=above:{$\mathbf{X}_1$}]
+   (X1) {};
+
+   \draw (c1) -- ++(3cm,0) [fill] circle (2pt) node[label=above:{$e_1$}] (e1)
+   {} coordinate (c);
+   \draw[dotted] (c) -- (3.5cm,0) coordinate (c);
+   \draw[solid] (c) -- (\baseline-3.5cm,0) coordinate (c);
+   \draw[dotted] (c) -- (\baseline-3cm,0) coordinate (c);
+   \draw[fill] (c) circle (2pt) node[label=above:{$e_2$}] (e2) {} -- (c2);
+
+   % lines from camera center to x
+   \path[name path=c1 to X1] (c1) -- (X1) coordinate[pos=.3] (c);
+   \draw[solid,fill] (c1) -- (c) coordinate (x1) circle (2pt);
+   \node[label=above:{$x_1$}] (x1) at (c) {};
+   \draw[dotted,name intersections={of=c1 to X1 and plane1}] (c) --
+   (intersection-2) coordinate (c);
+   \draw[solid] (c) -- (X1);
+
+   \path[name path=c2 to X1] (c2) -- (X1) coordinate[pos=.3] (c);
+   \draw[solid,fill] (c2) -- (c) coordinate (x2) circle (2pt);
+   \node[label=above:{$x_2$}] (x2) at (c) {};
+   \draw[dotted,name intersections={of=c2 to X1 and plane2}] (c) --
+   (intersection-2) coordinate (c);
+   \draw[solid] (c) -- (X1);
+
+   % draw epilines
+   \draw[blue,text=black] (e2) -- (x2) node[midway,label=above:{$l_2$}] (label-l2) {};
+
+   \draw[blue,text=black] (e1) -- (x1) node[midway,label=above:{$l_1$}] (label-l1) {};
+
+\end{tikzpicture}
