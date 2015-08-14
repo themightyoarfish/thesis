@@ -10,7 +10,7 @@ Geometry of two views
    5-point algorithm
 Challenges in relative pose estimation – Skalierung, Degeneration bei zu schmaler baseline und Anderes
    Evaluation of Bae et. al.
-      Feature detection and description - how do akaze and sift work?
+      Feature detection and description - how do AKAZE and SIFT work?
 App architecture
    iOS overview? – MVC
    Some diagrams

@@ -5,15 +5,15 @@ all: $(TEX_SOURCES)
 	bibtex "Thesis";
 	$(TEX_CMD) "Thesis.tex";
 	$(TEX_CMD) "Thesis.tex";
-	open "Thesis.pdf"
+	open -g -a Skim "Thesis.pdf"
 
 once: $(TEX_SOURCES)
 	$(TEX_CMD) "Thesis.tex";
-	open "Thesis.pdf"
+	open -g -a Skim "Thesis.pdf"
 
 clean:
 	$(RM) *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*aux gfx/*.log *.toc *.bbl *.blg *.out
 
 %.pdf: gfx/%.tex
-	$(TEX_CMD) -jobname $(basename $@) -output-directory gfx '\documentclass{standalone} \usepackage{tikz} \begin{document} \input{' $< '} \end{document}';
-	open gfx/$*.pdf
+	$(TEX_CMD) -jobname $(basename $@) -output-directory gfx '\documentclass{standalone} \usepackage[dvipsnames]{xcolor} \usepackage{tikz} \begin{document} \input{' $< '} \end{document}';
+	open -g -a Skim gfx/$*.pdf

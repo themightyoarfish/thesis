@@ -3,6 +3,7 @@
    BCOR=5mm,paper=a4,fontsize=11pt,11pt,a4paper,american
 ]{scrreprt}
 
+\usepackage[dvipsnames]{xcolor}
 \usepackage{marginnote}
 \makeatletter
 \let\oldmarginnote\marginnote
@@ -23,10 +24,9 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{tikz}
-\usepackage{showframe}
 \usepackage{mathtools}
 \usepackage{stackengine}\stackMath
-\usetikzlibrary{intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
+\usetikzlibrary{arrows.meta, calc, intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
 \usepackage{IEEEtrantools}
 \expandafter\def\csname ver@subfig.sty\endcsname{}
 \bibliographystyle{apa}

@@ -1,6 +1,7 @@
+\usetikzlibrary{intersections, calc, arrows.meta}
 \begin{tikzpicture}[every node/.style={outer sep=0,inner sep=0},
    label distance=5pt]
-   \def\baseline{9cm}
+   \def\baseline{10cm}
    \draw[fill] (0,0) circle (2pt) node[label=below left:{$c_1$}] (c1) {};
    \draw[fill] (\baseline,0) circle (2pt) node[label=below left:{$c_2$}] (c2) {};
 
@@ -41,8 +42,12 @@
    \draw[solid] (c) -- (X1);
 
    % draw epilines
-   \draw[blue,text=black] (e2) -- (x2) node[midway,label=above:{$l_2$}] (label-l2) {};
+   \draw[RoyalBlue,text=black] (e2) -- (x2) node[midway,label=above:{$l_2$}] (label-l2) {};
 
-   \draw[blue,text=black] (e1) -- (x1) node[midway,label=above:{$l_1$}] (label-l1) {};
+   \draw[RoyalBlue,text=black] (e1) -- (x1) node[midway,label=above:{$l_1$}] (label-l1) {};
+
+   % draw relative rotation and translation
+   \draw[-{Latex}] ($(c1) + (2em,-2em)$) to[bend right=50] node[below=1em, midway]
+   {$R$, $t$} ($(c2) + (-2em,-2em)$);
 
 \end{tikzpicture}
