@@ -1,0 +1,123 @@
+\chapter{Epipolar Geometry}
+
+This chapter will introduce the geometry of one and two views, the epipolar geometry and
+how it can be used to recover relative camera position from two images of the
+same scene. It largely follows \citep[chapters 6,7]{h&z2004}.
+
+\section{Camera Models}
+
+Given a camera $C$ whose center of projection is the origin and a point $\mathbf{X}$
+in camera-centric coordinates, the central projection of $\mathbf{X}$ onto $C$'s
+image plane is depicted in a side-view in \autoref{pinhole}. If $\mathbf{X} = (X,Y,Z)$, then
+$x=\left(f \frac{X}{Z}, f \frac{Y}{Z}, f\right)$ by use of the intercept
+theorem, with $\left(fX, fY\right)^T$ being the coordinates in the image plane.
+
+\begin{figure}[h]
+   {\centering      
+      \input{gfx/pinhole.tex}
+      \caption{Central projection for a pinhole camera}
+   \label{pinhole}}
+\end{figure}
+
+
+When representing the points as homogeneous quantities, the central projection
+can be expressed by a matrix multiplication. 
+\marginnote{Homogeneous vectors are
+the elements of projective geometry. They can be obtained from cartesian
+coordinates by appending a 1-element. All projective entities which differ only
+by a scalar factor are equivalent, one writes $\mathbf{x} \sim \mathbf{y}$ if
+$\mathbf{x} = \lambda\mathbf{y}, \lambda \neq 0$. This has the added effect that
+points at infinity can be represented by vectors whose last coordinate is zero.}
+This can be written with homogeneous coordinates as
+\begin{IEEEeqnarray*}{rClCl}
+   \left(
+      \begin{array}{c}
+         f\frac{X}{Z} \\ f\frac{Y}{Z}\\ 1
+      \end{array}
+   \right) & \sim &
+      \left(
+         \begin{array}{c}
+            fX \\ fY \\ Z
+         \end{array}
+      \right) & = & \underbrace{\addstackgap[6pt]{\left(
+         \begin{array}{cccc}
+            f & 0 & 0 & 0 \\
+            0 & f & 0 & 0 \\
+            0 & 0 & 1 & 0
+         \end{array}
+\right)}}_{\text{Projection Matrix of $C$}} \left(\begin{array}{c} X \\ Y \\ Z \\ 1 \end{array}\right)
+\end{IEEEeqnarray*}
+
+or in short.
+\begin{equation*}
+   \mathbf{x} = P\mathbf{X}
+\end{equation*}
+
+The above situation is a special case wherein the camera centre $C$ defines the
+origin and the optical and image axes are the coordinate axes. Thus the rotation
+and translation of the camera relative to this coordinate system is zero. More
+generally, there might be a world coordinate frame with different origin 
+and different axes, so that a coordinate transform must be applied to $\mbf{X}$
+before the projection. 
+
+Let $R \in \mathbb{R}^{3\times3}$ be a rotation matrix
+giving the camera's rotation relative to the world frame and $t \in
+\mathbb{R}^{3\times1}$ its translation such that
+
+\begin{equation*}
+   \mbf{X}_{\text{cam}} = R \mbf{X}_{\text{world}} + t
+\end{equation*}
+
+Then the projection of a point $\mbf{X}$
+in world coordinates onto the image plane becomes
+
+\begin{IEEEeqnarray*}{rCl}
+   \mbf{x} = K\cdot\left[R \mid t\right] \mbf{X}
+\end{IEEEeqnarray*}
+
+
+Real cameras are not ideal pinhole cameras. Furthermore, it is useful to have
+the dimension of all values be pixel units.
+A camera has five intrinsic parameters and can be written in matrix form as
+\begin{IEEEeqnarray*}{rCl}
+   K & = & \left(
+   \begin{array}{ccc}
+      f_x & s     & c_x \\
+      0   & f_y   & c_y \\
+      0   &       & 1
+   \end{array}
+\right)
+\end{IEEEeqnarray*}
+where $f_x$ and $f_y$ are the focal lengths in $x$- and $y$-directions expressed
+in pixel units ($f_x$ and $f_y$ are not necessarily identical, if the sensor has
+non-square pixels), $s$ the sensor skew (the pixels may not be rectangular;
+their edges may not be perpendicular) which is usually zero, and the coordinates
+of the principal point $(c_x,c_y)$ with respect to the origin of the image plane
+(usually placed at the upper left corner). 
+
+The intrinsic camera parameters assembled in $K$ are therefore essential to
+relate world points to image points which will be important for this
+application. In theory, these parameters could be obtained from the camera's
+vendor who knows the precise manufacturing specification. In practice, only the
+focal lengths $f_x, f_y$ are known, in most cases only one with the assumption
+of square pixels, which may not be completely accurate. Usually, the principal
+point is assumed to be at the sensor centre and the pixels are assumed to be
+rectangular. In practice however, there are variances introduces by different
+causes such as imprecise manufacturing or physical impacts which may decentre
+the lens such that the principal point is no longer at the centre. The
+
+Epipolar geometry is the geometry which relates the image points in two views of
+the same scene. \autoref{epipolar} shows the basic setup. 
+
+
+\begin{figure}[h]
+   {\centering      
+      \input{gfx/epipolar.tex}
+      \caption{Basic epipolar geometry}
+   \label{epipolar}}
+\end{figure}
+
+Given camera centers $c_1$ and $c_2$ with their respective image planes (moved
+to the front of the camera, otherwise the image would be mirrored at the
+principal point) and a point $\mathbf{X}_1$ in world
+coordinates, it is projected onto

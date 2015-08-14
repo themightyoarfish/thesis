@@ -7,6 +7,10 @@ all: $(TEX_SOURCES)
 	$(TEX_CMD) "Thesis.tex";
 	open "Thesis.pdf"
 
+once: $(TEX_SOURCES)
+	$(TEX_CMD) "Thesis.tex";
+	open "Thesis.pdf"
+
 clean:
 	$(RM) *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*aux gfx/*.log *.toc *.bbl *.blg *.out
 

@@ -1,12 +1,31 @@
-\documentclass[ oneside,titlepage,numbers=noenddot,headinclude,%1headlines,% letterpaper a4paper
+\documentclass[ twoside,titlepage,numbers=noenddot,headinclude,%1headlines,% letterpaper a4paper
    footinclude=false,
    BCOR=5mm,paper=a4,fontsize=11pt,11pt,a4paper,american
 ]{scrreprt}
 
+\usepackage{marginnote}
+\makeatletter
+\let\oldmarginnote\marginnote
+\renewcommand*{\marginnote}[1]{%
+   \begingroup%
+   \ifodd\value{page}
+     \if@firstcolumn\else\reversemarginpar\fi
+   \else
+     \if@firstcolumn\reversemarginpar\fi
+   \fi
+   \oldmarginnote{#1}%
+   \endgroup%
+}
+\makeatother
+
+\usepackage{marginfix}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{tikz}
+\usepackage{showframe}
+\usepackage{mathtools}
+\usepackage{stackengine}\stackMath
 \usetikzlibrary{intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
 \usepackage{IEEEtrantools}
 \expandafter\def\csname ver@subfig.sty\endcsname{}
@@ -14,19 +33,23 @@
 
 \usepackage[english]{babel}
 
+\newcommand{\mbf}[1]{\mathbf{#1}}
 
-\newcommand{\bflabel}{\aclabelfont}
+\newcommand{\bflabel}{\aclabelfont} % forgot what this is for
 
 %********************************************************************
 % Note: Make all your adjustments in here
 %*******************************************************
 \input{classicthesis-config}
 
+
 %********************************************************************
 % Hyphenation
 %*******************************************************
 %\hyphenation{put special hyphenation here}
 
+
+% \marginparsep=-1cm
 \begin{document}
 \frenchspacing
 \raggedbottom
