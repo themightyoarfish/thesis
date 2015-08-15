@@ -1,7 +1,7 @@
 \chapter{Introduction}
 
 This chapter will introduce the notion of rephotography, elaborate on the
-process of how to make such a photograph and evaluate existing approaches to
+process of how to make such a photograph and survey existing approaches to
 simplify it. These include two applications for mobile operating systems which
 will be briefly discussed. Furthermore, a summary of more sophisticated work by
 MIT researchers will be given, leading to the problem statement and the goal of
@@ -9,7 +9,7 @@ this work.
 
 \section{Overview}
 
-Rephotography or repeat photography denotes the retrieval of the precise
+\emph{Rephotography} or repeat photography denotes the retrieval of the precise
 viewpoint used for taking a---possibly historic---photograph and capturing
 another image from the same spot, ideally with the same camera parameters. This
 allows for documentation and visualisation of changes which the scene has
@@ -45,14 +45,15 @@ place limits on the accuracy with which the camera pose of the reference image
 can be reconstructed. Some corrections can be done by post-processing the images
 and warping the rephotograph with a homography to better match the original.
 
-At the time of writing, few computerized aids are available to the photographer
+At the time of writing, few computerised aids are available to the photographer
 (see below).  The advancement of mobile phones and tablet computers with
 integrated cameras and larger screens presents the opportunity to develop
 applications which can assist in this endeavour, moving away from the
-traditional trial-and-error approach.  On current digital cameras\footnote{At
-   the time of writing, no commercial manufacturer produces a camera with
+traditional trial-and-error approach.  On current digital cameras
+\footnote{At the time of writing, no commercial manufacturer produces a camera with
    user-modifiable firm- or software. A project at Stanford \citep{Levoy2010}
-was discontinued \cite{FrankenCam}} this is impossible due to their closed
+was discontinued \cite{FrankenCam}} 
+this is impossible due to their closed
 infrastructure not permitting running user programs. 
 
 \section{Previous Approaches}
@@ -76,7 +77,6 @@ necessity to move the eyes from printout to camera, but it is still the user's
 responsibility to determine the necessary motion between the current camera
 position and the goal position (that of the original image). 
 
-
 \subsection{Computational Re-Photography}
 
 A more
@@ -89,7 +89,7 @@ In this setup, the relevant parameters of a historic image's camera are
 reconstructed, including the focal length, principal point and the six degrees
 of freedom in camera pose. This subsection will give a high-level overview,
 while a more in-depth discussion of the relevant concepts is deferred until
-\autoref{section something}.
+\autoref{chapter something}.
 
 The software runs on a laptop connetcted to a digital camera.  After
 reconstructing the scene in 3D by use of two images captured by the user, they
@@ -99,7 +99,7 @@ are shown the current camera image alongside two arrows indicating in which
 direction to move---one for movement in the sensor plane and one for movement
 along the optical axis.
 
-Bae et. al identify five primary obstacles in viewpoint reconstruction of a
+\citet*{bae2010} identify five primary obstacles in viewpoint reconstruction of a
 historic photograph.
 \begin{enumerate}
    \item The necessary camera motion has six degrees of freedom---three for
@@ -178,7 +178,7 @@ the goal could be communicated.
 
 A key observation in this regard is that the actual scale of the translation is
 irrelevant, it is sufficient that there be a way to make the scale consistent
-accross iterations. That is, it is unnecessary to known whether the goal is a
+accross iterations. That is, it is unnecessary to know whether the goal is a
 specific distance aways, if one can ensure that the translations computed one
 after the other can be somehow meaningfully compared. For this, Bae et. al
 observe that when triangulating 3D coordinates from corresponding points, their

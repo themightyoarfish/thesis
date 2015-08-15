@@ -3,32 +3,35 @@
    BCOR=5mm,paper=a4,fontsize=11pt,11pt,a4paper,american
 ]{scrreprt}
 
+\usepackage{chngcntr}
+
 \usepackage[dvipsnames]{xcolor}
 \usepackage{marginnote}
-\makeatletter
-\let\oldmarginnote\marginnote
-\renewcommand*{\marginnote}[1]{%
-   \begingroup%
-   \ifodd\value{page}
-     \if@firstcolumn\else\reversemarginpar\fi
-   \else
-     \if@firstcolumn\reversemarginpar\fi
-   \fi
-   \oldmarginnote{#1}%
-   \endgroup%
-}
-\makeatother
+\renewcommand{\marginfont}{\small}
+% \makeatletter
+% \let\oldmarginnote\marginnote
+% \renewcommand*{\marginnote}[1]{%
+%    \begingroup%
+%    \ifodd\value{page}
+%      \if@firstcolumn\reversemarginpar\fi
+%    \else
+%      \if@firstcolumn\else\reversemarginpar\fi
+%    \fi
+%    \oldmarginnote{#1}%
+%    \endgroup%
+% }
+% \makeatother
 
-\usepackage{marginfix}
+% \usepackage{marginfix}
 \usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
+% \usepackage{caption}
+% \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{mathtools}
 \usepackage{stackengine}\stackMath
 \usetikzlibrary{arrows.meta, calc, intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
 \usepackage{IEEEtrantools}
-\expandafter\def\csname ver@subfig.sty\endcsname{}
+% \expandafter\def\csname ver@subfig.sty\endcsname{}
 \bibliographystyle{apa}
 
 \usepackage[english]{babel}
@@ -41,6 +44,11 @@
 % Note: Make all your adjustments in here
 %*******************************************************
 \input{classicthesis-config}
+\counterwithin{figure}{chapter}
+\counterwithin{equation}{chapter}
+
+\let\originaleqref\eqref
+\renewcommand{\eqref}{equation~\originaleqref}
 
 
 %********************************************************************
@@ -62,7 +70,6 @@
 %*******************************************************
 \thispagestyle{empty}
 \include{FrontBackmatter/Titlepage}
-% \cleardoublepage\include{FrontBackmatter/Dedication}
 % \cleardoublepage\include{FrontBackmatter/Abstract}
 % \cleardoublepage\include{FrontBackmatter/Acknowledgments}
 
@@ -71,7 +78,6 @@
 %********************************************************************
 % Mainmatter
 %*******************************************************
-\pagenumbering{arabic}
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
@@ -83,6 +89,8 @@
 % \end{center}
 
 \tableofcontents
+
+\pagenumbering{arabic}
 
 \include{Chapters/Chapter0_Introduction}
 

@@ -1,8 +1,10 @@
 \chapter{Camera Geometry}
 
-This chapter will introduce the geometry of one and two views (the epipolar geometry) and
+This chapter will introduce the geometry of image projection, largely following
+\citep[chapters 6,7]{h&z2004} and the geometry of two views (the epipolar
+geometry, \citet[chapter 5.1]{ma2003}) and
 how it can be used to recover relative camera position from two images of the
-same scene. It largely follows \citep[chapters 6,7]{h&z2004}.
+same scene. It largely follows.
 
 \section{Camera Models}
 
@@ -16,6 +18,13 @@ to the optical centre.  If $\mbf{X} = (X,Y,Z)$, then $x=\left(f \frac{X}{Z},
 f \frac{Y}{Z}, f\right)$ by use of the intercept theorem, with $\left(fX,
 fY\right)^T$ being the coordinates in the image plane.
 
+\marginnote{Homogeneous vectors are
+the elements of projective geometry. They can be obtained from cartesian
+coordinates by appending a 1-element. All projective entities which differ only
+by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
+$\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
+points at infinity can be represented by vectors whose last coordinate is zero.}
+
 \begin{figure}[h]
    {\centering      
       \input{gfx/pinhole.tex}
@@ -26,14 +35,8 @@ fY\right)^T$ being the coordinates in the image plane.
 
 When representing the points as homogeneous quantities, the central projection
 can be expressed by a matrix multiplication. 
-\marginnote{Homogeneous vectors are
-the elements of projective geometry. They can be obtained from cartesian
-coordinates by appending a 1-element. All projective entities which differ only
-by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
-$\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
-points at infinity can be represented by vectors whose last coordinate is zero.}
 This can be written with homogeneous coordinates as
-\begin{IEEEeqnarray*}{rClCl}
+\begin{IEEEeqnarray}{rClCl}
    \left(
       \begin{array}{c}
          f\frac{X}{Z} \\ f\frac{Y}{Z}\\ 1
@@ -50,15 +53,15 @@ This can be written with homogeneous coordinates as
             0 & 0 & 1 & 0
          \end{array}
 \right)}}_{\text{Projection Matrix of $C$}} \left(\begin{array}{c} X \\ Y \\ Z \\ 1 \end{array}\right)
-\end{IEEEeqnarray*}
+\end{IEEEeqnarray}
 
-or in short.
+or in short
 \begin{equation}
    \mbf{x} = P\mbf{X}
 \end{equation}
 
 The above situation is a special case wherein the camera centre $C$ defines the
-origin and the optical and image axes are the coordinate axes. Thus the rotation
+origin and the optical and image axes are the coordinate axes. Thus, the rotation
 and translation of the camera relative to this coordinate system is zero. More
 generally, there might be a world coordinate frame with different origin 
 and different axes, so that a coordinate transform must be applied to $\mbf{X}$
@@ -75,15 +78,15 @@ giving the camera's rotation relative to the world frame and $t \in
 Then the projection of a point $\mbf{X}$
 in world coordinates onto the image plane becomes
 
-\begin{IEEEeqnarray*}{rCl}
+\begin{IEEEeqnarray}{rCl}
    \mbf{x} = K\cdot\left[R \mid t\right] \mbf{X}
-\end{IEEEeqnarray*}
+\end{IEEEeqnarray}
 
 
 Real cameras are not ideal pinhole cameras. Furthermore, it is useful to have
 the dimension of all values be pixel units.
 A camera has five intrinsic parameters and can be written in matrix form as
-\begin{IEEEeqnarray*}{rCl}
+\begin{IEEEeqnarray}{rCl}
    K & = & \left(
    \begin{array}{ccc}
       f_x & s     & c_x \\
@@ -91,7 +94,7 @@ A camera has five intrinsic parameters and can be written in matrix form as
       0   &       & 1
    \end{array}
 \right)
-\end{IEEEeqnarray*}
+\end{IEEEeqnarray}
 where $f_x$ and $f_y$ are the focal lengths in $x$- and $y$-directions expressed
 in pixel units ($f_x$ and $f_y$ are not necessarily identical, if the sensor has
 non-square pixels), $s$ the sensor skew (the pixels may not be rectangular;
@@ -103,7 +106,7 @@ intersection of the image plane with the optical axis.
 The intrinsic camera parameters assembled in $K$ are therefore essential to
 relate world points to image points which will be important for this
 application. In theory, these parameters could be obtained from the camera's
-vendor who knows the precise manufacturing specification. In practice, only the
+vendor who knows the precise manufacturing specifications. In practice, only the
 focal lengths $f_x, f_y$ are known, in most cases only one with the assumption
 of square pixels. Usually, the principal
 point is assumed to be at the sensor centre and the pixels are assumed to be
@@ -111,7 +114,7 @@ rectangular. In practice however, there are variances introduced by different
 causes such as imprecise manufacturing or physical impacts which may decentre
 the lens such that the principal point is no longer at the centre. 
 
-A further compilcation is introduces by the camera lens which will often have a
+A further compilcation is introduced by the camera lens which will often have a
 non-negligible distortion, most prominently radial distorion as depicted in
 \autoref{distortion}. It can be modeled by the application of a 
 distortion factor to the ideal undistorted image coordinates $(\tilde{x}, \tilde{y})$.
@@ -151,13 +154,21 @@ Epipolar geometry is the geometry which relates the image points in two views of
 the same scene. \autoref{epipolar} shows the basic setup. 
 
 We consider a scene viewed by two cameras with optical centres $c_1$ and $c_2$,
-world points $\mbf{X}_i$, where the subscript denotes the coordinate
+where $c_1$ defines the origin,
+world points $\mbf{X}_i\in\mathbb{R}^3$, where the subscript denotes the coordinate
 frame---the first camera, arbitrarily chosen to be the left one, or the second
-camera---and image points $\mbf{x}_i$ which are the projections of $\mbf{X}_i$
-onto the image planes and thus correspond to the same world point. 
+camera---and homogeneous image points $\mbf{x}_i$ which are the projections of $\mbf{X}_i$
+onto the image planes and thus correspond to the same world point. The cameras
+are related by a rigid body transform $(R,T)$, where $R$ is a $3\times3$
+rotation matrix and $T$ the translation between the camera centres. Throughout
+this work, the direction of coordinate frame transformation will be such that
+\begin{equation}\label{eq:camera_transform}
+   \mbf{X}_2 = R\mbf{X}_1 + T.
+\end{equation}
+
 It is obvious that the following relation holds
-\begin{equation}
-   \lambda_i\mbf{x}_i = \mbf{X}_i
+\begin{equation}\label{eq:project_world_point}
+   \lambda_i\mbf{x}_i = \mbf{X}_i, ~\lambda_i > 0
 \end{equation}
 that is, the world point lies on a ray through the optical centre and the image
 point. 
@@ -165,9 +176,76 @@ point.
 \begin{figure}[h]
    {\centering      
       \input{gfx/epipolar.tex}
-      \caption{Basic epipolar geometry}
+      \caption{Basic epipolar geometry with camera centres $c_1$, $c_2$, image
+      points $\mbf{x}_1$, $\mbf{x}_2$, a world point $\mbf{X}_1$, epipoles
+   $e_1$, $e_2$ and epipolar lines $l_1$, $l_2$}
    \label{epipolar}}
 \end{figure}
 
-Given camera centers $c_1$ and $c_2$ with their respective image planes  and a point $\mbf{X}_1$ in world
-coordinates, it is projected onto
+Given the corresponding points $\mbf{x}_i$ in two images, the ultimate goal is
+to retrieve the euclidean transform $(R,T)$.
+
+Starting from \eqref{eq:camera_transform}, one can derive
+\begin{IEEEeqnarray*}{rClls}
+   \mbf{X}_2 & = & R\mbf{X}_1 + T & \hspace {2cm} \\
+   \lambda_2\mbf{x}_2 & = & R\lambda_1\mbf{x}_1 + T & & (by \eqref{eq:project_world_point}) \\
+   \lambda_2\widehat{T}\mbf{x}_2 & = & \widehat{T}R\lambda_1\mbf{x}_1 + \widehat{T}T & &
+   $\widehat{T}\in\mathbb{R}^{3\times3}$ with $\widehat{T}\mbf{x} = T \times
+   \mbf{x}$ \\
+   \lambda_2\mbf{x}_2\widehat{T}\mbf{x}_2 & = &
+   \mbf{x}_2\widehat{T}R\lambda_1\mbf{x}_1 + 0 & & $T \times T = 0$ \\
+   \lambda_2\cdot 0 & = &
+   \mbf{x}_2\widehat{T}R\lambda_1\mbf{x}_1 & & $\widehat{T}\mbf{x}_2$ is
+   perpendicular to $\mbf{x}_2$ \\
+   0 & = & \mbf{x}_2\underbrace{\widehat{T}R}_{E}\mbf{x}_1
+   \label{eq:epiconstraint}\IEEEyesnumber
+\end{IEEEeqnarray*}
+
+The product $E=\widehat{T}R$ is the essential matrix and the constraint it
+imposes on corresponding image points the essential constraint
+\citep[see][chapter 5]{ma2003}. 
+
+An intuition for the essential matrix can be
+obtained from \autoref{epipolar}. Given an image point in one frame $\mbf{x}_1$,
+in attempting to find the point $\mbf{x}_2$ corresponding to the same world
+point $\mbf{X}_1$, the epipolar geometry restricts the search space to one
+dimension---the epipolar line of $\mbf{x}_1$ in the second camera's image plane.
+The camera centres and the world point define an epipolar plane. The
+backprojection of $\mbf{x}_1$ is the ray through $\mbf{x}_1$ and the optical
+centre $c_1$. All points on this ray are mapped to the same point on the image
+plane of $c_2$. Depending on how far away the world point $\mbf{X}_1$ is from $c_1$, its
+image on the second camera's image plane will vary---but it will be on the
+intersection of the image plane and the epipolar plane, the epipolar line of
+$\mbf{x}_1$. The line $l_1$ may be identified with its coimage (the orthogonal
+complement of its preimage) $l_1 = e_1 \times \mbf{x}_2$ so that
+
+\begin{equation} \label{eq:epiline}
+   \forall\mbf{x}: \mbf{x}\in l_1 \Leftrightarrow \mbf{x}\cdot l_1 = 0.
+\end{equation} 
+
+The coimage of the epipolar line is the vector perpendicular to the epipolar plane,
+so every vector in this plane will have an inner product of $0$ with this
+vector. Constrained to vectors in the image planes, this means that all vectors on the
+epipolar line will have an inner product of $0$ with this vector $l_1$.
+Referring back to \eqref{eq:epiconstraint}, it can be seen that multiplication
+with $E$ will yield a term $\mbf{x}_2E = l$ which fulfills 
+\begin{equation}
+   l \cdot \mbf{x}_1 = 0,
+\end{equation}
+which is precisely the relation stated in \eqref{eq:epiline}. The essential
+matrix thus maps an image point onto its epipolar line in the other image.
+
+\section{Essential Matrix Estimation}
+
+Estimating the essential matrix between two
+cameras and decomposing it into relative rotation and translation is a necessity
+in the endeavour to communicate a necessary camera movement to the application's
+user. The most prominent algorithms in this regard are the 8-Point algorithm due
+to \citet{longuet-higgins1987} and the 5-Point algorithm proposed by
+\citet{nister2004}. To illustrate the mathematical tractability of the problem,
+the former will be presented below.
+
+\subsection{The 8-Point Algorithm}
+
+
+
