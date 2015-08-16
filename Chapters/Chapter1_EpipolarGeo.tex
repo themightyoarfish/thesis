@@ -285,7 +285,7 @@ so every vector in this plane will have an inner product of $0$ with this
 vector. Constrained to vectors in the image planes, this means that all vectors on the
 epipolar line will have an inner product of $0$ with this vector $l_1$.
 Referring back to \eqref{eq:epiconstraint}, it can be seen that multiplication
-with $E$ will yield a term $\mbf{x}_2^TE = l$ which fulfills 
+with $E$ will yield a term $\mbf{x}_2^TE = l$ which fulfils 
 \begin{equation}
    l \cdot \mbf{x}_1 = 0,
 \end{equation}
@@ -311,7 +311,7 @@ factor is equivalent so that one degree of freedom is removed and at most eight
 remain. If one were to formulate constraints on the elements as a system of
 linear equations, eight of those should be sufficient to uniquely determine an
 essential matrix. An improvement suggested in \citep{hartley1997} is the
-precpocessing of the input data (the image coordinates) by translation and
+preprocessing of the input data (the image coordinates) by translation and
 scaling. This improves the robustness of the algorithm, but will be omitted
 here.
 
@@ -342,23 +342,30 @@ If $n$ correspondences are given, they each contribute one row to
 \end{array} \right] \mbf{e} = 0 \nonumber\\*\label{eq:stacked_essential}
 \end{IEEEeqnarray}
 
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
 For eight noise-free point correspondences in general position, there is a
-unique solution, but in practice, one uses more correspondences and the system
-is overdetermined, so a least-squares-solution minimising $\vert\vert A\mbf{e}
-\vert\vert = \sum_{ij} (A\mbf{e})_{ij}^2$ is sought. 
+unique solution (up to scale) besides the trivial zero, but in practice, one uses more correspondences and the system
+is overdetermined, so a least-squares-solution minimising $\norm{ A\mbf{e} } = \sum_{ij} (A\mbf{e})_{ij}^2$ is sought. 
 The solution is unique up to scale, since all multiples of $\mbf{e}$ will
-satisfy \eqref{eq:stacked_essential}. One therfore introduces the constraint
-$\vert\vert \mbf{e} \vert\vert = 1$ which also excludes a trivial zero solution.
+satisfy \eqref{eq:stacked_essential}. One therefore introduces the constraint
+$\norm{ \mbf{e} } = 1$ which also excludes a trivial zero solution.
 
 This solution vector is the singular
 vector with the smallest singular value in the singular value decomposition of
-$A$ or equivalently, the smallest eigenvector of $A^TA$ \citep[see]{hartley1997}
+$A$ or equivalently, the smallest eigenvector of $A^TA$ \citep[see][]{hartley1997}
 and thus can be found by Singular Value Decomposition.
 
-\subsection{Further Algorihtms}
+\subsection{Further Algorithms}
 
 The 8-Point Algorithm is mathematically straightforward and linear, but in
-practice it suffers from noise \citep[e.g.][see]{chen2000} and in real
+practice it suffers from noise \citep[see][]{luong1993} and in real
 applications approaches the robustness of other methods only in its normalised
-form from \citep{hartley1997}. As such, many other methods exist. A review of
-many methods is given in \citep{zhang1998}.
+form from \citep{hartley1997} (not related to \emph{normalised image
+coordinates}). Therefore, many other methods exist. A review of some is given in \citep{zhang1998}.
+
+It has been noted above that $E$ can have at most eight degrees of freedom. In
+reality, it has only five, as rotation and translation have three degrees of
+freedom each, and one is lost due to the indeterminable scale. In theory five
+constraints from five pairs of image points thus are sufficient for finding $E$.
+A solution was put forth by \citet{nister2004}, 
