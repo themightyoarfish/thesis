@@ -8,15 +8,15 @@ same scene. It largely follows.
 
 \section{Camera Models}
 
-Given a camera $C$ whose center of projection is the origin and a point
-$\mbf{X}$ in camera-centric coordinates, the central projection of
-$\mbf{X}$ onto $C$'s image plane is depicted in a side-view in
-\autoref{pinhole}.  The image plane is virtually moved to the front of the
-camera, otherwise the image would be mirrored at the principal point as in real
-cameras.  Let $f$ be the focal length, which is the distance of the image plane
-to the optical centre.  If $\mbf{X} = (X,Y,Z)$, then $x=\left(f \frac{X}{Z},
-f \frac{Y}{Z}, f\right)$ by use of the intercept theorem, with $\left(fX,
-fY\right)^T$ being the coordinates in the image plane.
+The camera model used is the ideal pinhole camera model which postulates several
+idealised assumptions.
+\begin{enumerate}
+   \item The aperture size is infinitely small
+   \item There are no lens effects (\emph{thin lens} assumption)
+   \item The angle of view is arbitrarily large
+   \item All world points projected onto the image plane are in focus, owing to
+      the small aperture
+\end{enumerate}
 
 \marginnote{Homogeneous vectors are
 the elements of projective geometry. They can be obtained from cartesian
@@ -24,6 +24,16 @@ coordinates by appending a 1-element. All projective entities which differ only
 by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
 $\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
 points at infinity can be represented by vectors whose last coordinate is zero.}
+
+Given a camera $C$ whose center of projection is the origin and a point
+$\mbf{X}$ in camera-centric coordinates, the central projection of
+$\mbf{X}$ onto $C$'s image plane is depicted in a side-view in
+\autoref{pinhole}.  The image plane is virtually moved to the front of the
+camera, otherwise the image would be mirrored at the principal point as in real
+cameras.  Let $f$ be the focal length, which is the distance of the image plane
+to the optical centre.  If $\mbf{X} = (X,Y,Z)$, then $x=\left(f \frac{X}{Z},
+f \frac{Y}{Z}, f\right)$ by use of the intercept theorem.%, with $\left(fX, fY\right)^T$ being the coordinates in the image plane.
+
 
 \begin{figure}[h]
    {\centering      
@@ -36,12 +46,7 @@ points at infinity can be represented by vectors whose last coordinate is zero.}
 When representing the points as homogeneous quantities, the central projection
 can be expressed by a matrix multiplication. 
 This can be written with homogeneous coordinates as
-\begin{IEEEeqnarray}{rClCl}
-   \left(
-      \begin{array}{c}
-         f\frac{X}{Z} \\ f\frac{Y}{Z}\\ 1
-      \end{array}
-   \right) & \sim &
+\begin{IEEEeqnarray}{rCl} \label{eq:projection}
       \left(
          \begin{array}{c}
             fX \\ fY \\ Z
@@ -57,8 +62,27 @@ This can be written with homogeneous coordinates as
 
 or in short
 \begin{equation}
-   \mbf{x} = P\mbf{X}
+   \mbf{x} \sim P\mbf{X}
 \end{equation}
+
+% If the unit of the coordinatesystem is chosen to be $f$, then the image plane is
+% $Z = f$ and 
+% \eqref{eq:projection} becomes
+% \begin{IEEEeqnarray}{rCl}
+%       \left(
+%          \begin{array}{c}
+%             X \\ Y \\ \frac{z}{f}
+%          \end{array}
+%       \right) & = & \addstackgap[6pt]{\left(
+%          \begin{array}{cccc}
+%             1 & 0 & 0 & 0 \\
+%             0 & 1 & 0 & 0 \\
+%             0 & 0 & \frac{1}{f} & 0
+%          \end{array}
+% \right)} \left(\begin{array}{c} X \\ Y \\ Z \\ 1 \end{array}\right)
+% \end{IEEEeqnarray}
+
+\subsection{Camera Extrinsics}
 
 The above situation is a special case wherein the camera centre $C$ defines the
 origin and the optical and image axes are the coordinate axes. Thus, the rotation
@@ -79,33 +103,64 @@ Then the projection of a point $\mbf{X}$
 in world coordinates onto the image plane becomes
 
 \begin{IEEEeqnarray}{rCl}
-   \mbf{x} = K\cdot\left[R \mid t\right] \mbf{X}
+   \mbf{x} & = & P \mbf{X}\\
+   \mbf{x} & = & \left(\begin{array}{ccc}
+   f & 0 & 0 \\
+   0 & f & 0 \\
+   0 & 0 & 1
+   \end{array}\right) \left[R \mid t\right] \mbf{X} \label{eq:projection_rt}
 \end{IEEEeqnarray}
 
+\subsection{Camera Intrinsics}
+\label{subsec:intrinsics}
 
-Real cameras are not ideal pinhole cameras. Furthermore, it is useful to have
-the dimension of all values be pixel units.
-A camera has five intrinsic parameters and can be written in matrix form as
+Above, the resulting image points $\mbf{x}$ were in \emph{normalised} image
+coordinates. In particular, the
+principal point---the
+intersection of the image plane with the optical axis---was assumed to be
+$(0,0)$. But generally, image coordinates are expressed in pixels relative to
+the upper left corner of the sensor. To convert between normalised and pixel
+coordinates, 
+the camera's five intrinsic parameters and can be written in matrix form and
+premultiplied in \eqref{eq:projection_rt} as
 \begin{IEEEeqnarray}{rCl}
-   K & = & \left(
+   \mbf{x} & = & \left(
    \begin{array}{ccc}
-      f_x & s     & c_x \\
-      0   & f_y   & c_y \\
+      s_x & s     & c_x \\
+      0   & s_y   & c_y \\
       0   &       & 1
-   \end{array}
-\right)
+   \end{array} 
+\right) \left(\begin{array}{ccc}
+   f & 0 & 0 \\
+   0 & f & 0 \\
+   0 & 0 & 1
+\end{array}\right) \left[R \mid t\right] \mbf{X}
 \end{IEEEeqnarray}
-where $f_x$ and $f_y$ are the focal lengths in $x$- and $y$-directions expressed
-in pixel units ($f_x$ and $f_y$ are not necessarily identical, if the sensor has
+where $s_x$ and $s_y$ are the focal lengths in $x$- and $y$-directions expressed
+in pixel units per world unit (e.g. cm; $s_x$ and $s_y$ are not necessarily identical, if the sensor has
 non-square pixels), $s$ the sensor skew (the pixels may not be rectangular;
 their edges may not be perpendicular) which is usually zero, and the coordinates
 of the principal point $(c_x,c_y)$ with respect to the origin of the image plane
-which usually placed at the upper left corner. The principal point is the
-intersection of the image plane with the optical axis.
-
-The intrinsic camera parameters assembled in $K$ are therefore essential to
+which usually placed at the upper left corner.
+The intrinsic camera parameters are assembled in
+\begin{IEEEeqnarray}{rCl}
+   K & = & \left(\begin{array}{ccc}
+   fs_x & s & c_x \\
+   0 & fs_y & c_y \\
+   0 & 0 & 1
+\end{array}\right)  
+\end{IEEEeqnarray}
+are therefore essential to
 relate world points to image points which will be important for this
-application. In theory, these parameters could be obtained from the camera's
+application. The normalised coordinates $\hat{\mbf{x}}$ for a pixel coordinate
+$\mbf{x}$ can be computed as
+\begin{equation}
+   \hat{\mbf{x}} = K^{-1}\mbf{x},
+\end{equation}
+which will remove the effects of the calibration parameters and thus make the
+image coordinates independent of the camera's internal characteristics.
+
+In theory, these parameters could be obtained from the camera's
 vendor who knows the precise manufacturing specifications. In practice, only the
 focal lengths $f_x, f_y$ are known, in most cases only one with the assumption
 of square pixels. Usually, the principal
@@ -166,7 +221,7 @@ this work, the direction of coordinate frame transformation will be such that
    \mbf{X}_2 = R\mbf{X}_1 + T.
 \end{equation}
 
-It is obvious that the following relation holds
+It is obvious that the following relation holds,
 \begin{equation}\label{eq:project_world_point}
    \lambda_i\mbf{x}_i = \mbf{X}_i, ~\lambda_i > 0
 \end{equation}
@@ -185,19 +240,21 @@ point.
 Given the corresponding points $\mbf{x}_i$ in two images, the ultimate goal is
 to retrieve the euclidean transform $(R,T)$.
 
-Starting from \eqref{eq:camera_transform}, one can derive
+In case the image coordinates for both cameras are normalised (c.f.
+\autoref{subsec:intrinsics}), they have equal units, so
+starting from \eqref{eq:camera_transform}, one can derive
 \begin{IEEEeqnarray*}{rClls}
    \mbf{X}_2 & = & R\mbf{X}_1 + T & \hspace {2cm} \\
    \lambda_2\mbf{x}_2 & = & R\lambda_1\mbf{x}_1 + T & & (by \eqref{eq:project_world_point}) \\
    \lambda_2\widehat{T}\mbf{x}_2 & = & \widehat{T}R\lambda_1\mbf{x}_1 + \widehat{T}T & &
    $\widehat{T}\in\mathbb{R}^{3\times3}$ with $\widehat{T}\mbf{x} = T \times
    \mbf{x}$ \\
-   \lambda_2\mbf{x}_2\widehat{T}\mbf{x}_2 & = &
-   \mbf{x}_2\widehat{T}R\lambda_1\mbf{x}_1 + 0 & & $T \times T = 0$ \\
+   \lambda_2\mbf{x}_2^T\widehat{T}\mbf{x}_2 & = &
+   \mbf{x}_2^T\widehat{T}R\lambda_1\mbf{x}_1 + 0 & & $T \times T = 0$ \\
    \lambda_2\cdot 0 & = &
-   \mbf{x}_2\widehat{T}R\lambda_1\mbf{x}_1 & & $\widehat{T}\mbf{x}_2$ is
+   \mbf{x}_2^T\widehat{T}R\lambda_1\mbf{x}_1 & & $\widehat{T}\mbf{x}_2$ is
    perpendicular to $\mbf{x}_2$ \\
-   0 & = & \mbf{x}_2\underbrace{\widehat{T}R}_{E}\mbf{x}_1
+   0 & = & \mbf{x}_2^T\underbrace{\widehat{T}R}_{E}\mbf{x}_1
    \label{eq:epiconstraint}\IEEEyesnumber
 \end{IEEEeqnarray*}
 
@@ -217,10 +274,10 @@ plane of $c_2$. Depending on how far away the world point $\mbf{X}_1$ is from $c
 image on the second camera's image plane will vary---but it will be on the
 intersection of the image plane and the epipolar plane, the epipolar line of
 $\mbf{x}_1$. The line $l_1$ may be identified with its coimage (the orthogonal
-complement of its preimage) $l_1 = e_1 \times \mbf{x}_2$ so that
+complement of its preimage) $l_1 = e_1 \times \mbf{x}_2 \in \mathbb{R}^3$ so that
 
 \begin{equation} \label{eq:epiline}
-   \forall\mbf{x}: \mbf{x}\in l_1 \Leftrightarrow \mbf{x}\cdot l_1 = 0.
+   \forall\mbf{x}: \mbf{x}\in l_1 \Leftrightarrow \mbf{x}^T\cdot l_1 = 0.
 \end{equation} 
 
 The coimage of the epipolar line is the vector perpendicular to the epipolar plane,
@@ -228,7 +285,7 @@ so every vector in this plane will have an inner product of $0$ with this
 vector. Constrained to vectors in the image planes, this means that all vectors on the
 epipolar line will have an inner product of $0$ with this vector $l_1$.
 Referring back to \eqref{eq:epiconstraint}, it can be seen that multiplication
-with $E$ will yield a term $\mbf{x}_2E = l$ which fulfills 
+with $E$ will yield a term $\mbf{x}_2^TE = l$ which fulfills 
 \begin{equation}
    l \cdot \mbf{x}_1 = 0,
 \end{equation}
@@ -240,12 +297,68 @@ matrix thus maps an image point onto its epipolar line in the other image.
 Estimating the essential matrix between two
 cameras and decomposing it into relative rotation and translation is a necessity
 in the endeavour to communicate a necessary camera movement to the application's
-user. The most prominent algorithms in this regard are the 8-Point algorithm due
-to \citet{longuet-higgins1987} and the 5-Point algorithm proposed by
+user. The most prominent algorithms in this regard are the 8-Point algorithm
+introduced in its original form by \citet{longuet-higgins1987} and improved upon
+by \citet{hartley1997}, and the 5-Point algorithm proposed by
 \citet{nister2004}. To illustrate the mathematical tractability of the problem,
 the former will be presented below.
 
 \subsection{The 8-Point Algorithm}
 
+The essential matrix has nine elements, but since all image coordinates are
+projective quantities, the set of all essential matrices differing by a constant
+factor is equivalent so that one degree of freedom is removed and at most eight
+remain. If one were to formulate constraints on the elements as a system of
+linear equations, eight of those should be sufficient to uniquely determine an
+essential matrix. An improvement suggested in \citep{hartley1997} is the
+precpocessing of the input data (the image coordinates) by translation and
+scaling. This improves the robustness of the algorithm, but will be omitted
+here.
 
+For each point correspondence $\{\mbf{x}_1 = (x_1,y_1,1),\mbf{x}_2 = (x_2, y_2,
+1)\}$, one linear equation
+\begin{equation}
+   \mbf{x}_2^T E \mbf{x}_1 = 0
+\end{equation}
+is generated, which can be rewritten as
+\begin{IEEEeqnarray*}{rCcCcCc}
+   0 & = & x_2 x_1 e_{11} & + & x_2 y_1 e_{12}  & + &  x_2 e_{13} \\
+     & + & y_2 x_1 e_{21} & + & y_2 y_1 e_{22} & + & y_2 e_{23} \\
+     & + & x_1 e_{31} & + & y_1 e_{32} & + & e_{33} \label{eq:linear_equation}
+   \IEEEyesnumber
+\end{IEEEeqnarray*}
+Let $\mbf{e}$ denote the vector of $E$'s entries in row-major order, then
+\begin{equation}
+   0 = \left( x_2 x_1, x_2 y_1, x_2, y_2 x_1, y_2 y_1, y_2, x_1, y_1,
+   1\right)\cdot\mbf{e}
+\end{equation}
 
+If $n$ correspondences are given, they each contribute one row to
+\begin{IEEEeqnarray}{rCl}
+   A\mbf{e} & = & \left[ \begin{array}{ccccccccc}
+      x_2^1 x_1^1 & x_2^1 y_1^1 & x_2^1 & y_2^1 x_1^1 & y_2^1 y_1^1 & y_2^1 & x_1^1 & y_1^1 & 1 \\
+   \vdots & & & & & & & & \vdots \\
+      x_2^n x_1^n & x_2^n y_1^n & x_2^n & y_2^n x_1^n & y_2^n y_1^n & y_2^n & x_1^n & y_1^n & 1
+\end{array} \right] \mbf{e} = 0 \nonumber\\*\label{eq:stacked_essential}
+\end{IEEEeqnarray}
+
+For eight noise-free point correspondences in general position, there is a
+unique solution, but in practice, one uses more correspondences and the system
+is overdetermined, so a least-squares-solution minimising $\vert\vert A\mbf{e}
+\vert\vert = \sum_{ij} (A\mbf{e})_{ij}^2$ is sought. 
+The solution is unique up to scale, since all multiples of $\mbf{e}$ will
+satisfy \eqref{eq:stacked_essential}. One therfore introduces the constraint
+$\vert\vert \mbf{e} \vert\vert = 1$ which also excludes a trivial zero solution.
+
+This solution vector is the singular
+vector with the smallest singular value in the singular value decomposition of
+$A$ or equivalently, the smallest eigenvector of $A^TA$ \citep[see]{hartley1997}
+and thus can be found by Singular Value Decomposition.
+
+\subsection{Further Algorihtms}
+
+The 8-Point Algorithm is mathematically straightforward and linear, but in
+practice it suffers from noise \citep[e.g.][see]{chen2000} and in real
+applications approaches the robustness of other methods only in its normalised
+form from \citep{hartley1997}. As such, many other methods exist. A review of
+many methods is given in \citep{zhang1998}.
