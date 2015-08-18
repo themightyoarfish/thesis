@@ -4,45 +4,27 @@
 ]{scrreprt}
 
 \usepackage{chngcntr}
-
 \usepackage[dvipsnames]{xcolor}
 \usepackage{marginnote}
-\renewcommand{\marginfont}{\small}
-% \makeatletter
-% \let\oldmarginnote\marginnote
-% \renewcommand*{\marginnote}[1]{%
-%    \begingroup%
-%    \ifodd\value{page}
-%      \if@firstcolumn\reversemarginpar\fi
-%    \else
-%      \if@firstcolumn\else\reversemarginpar\fi
-%    \fi
-%    \oldmarginnote{#1}%
-%    \endgroup%
-% }
-% \makeatother
-
-% \usepackage{marginfix}
 \usepackage{graphicx}
-% \usepackage{caption}
-% \usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{mathtools}
 \usepackage{stackengine}\stackMath
 \usetikzlibrary{arrows.meta, calc, intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
 \usepackage{IEEEtrantools}
+\usepackage[english]{babel}
+\usepackage{setspace}
+\usepackage[lined,boxed,linesnumbered]{algorithm2e}
+
 % \expandafter\def\csname ver@subfig.sty\endcsname{}
 \bibliographystyle{apa}
-
-\usepackage[english]{babel}
 
 \newcommand{\mbf}[1]{\mathbf{#1}}
 
 \newcommand{\bflabel}{\aclabelfont} % forgot what this is for
 
-%********************************************************************
-% Note: Make all your adjustments in here
-%*******************************************************
+\renewcommand{\marginfont}{\small}
+
 \input{classicthesis-config}
 \counterwithin{figure}{chapter}
 \counterwithin{equation}{chapter}
@@ -50,21 +32,12 @@
 \let\originaleqref\eqref
 \renewcommand{\eqref}{equation~\originaleqref}
 
-
-%********************************************************************
-% Hyphenation
-%*******************************************************
-%\hyphenation{put special hyphenation here}
-
-
-% \marginparsep=-1cm
 \begin{document}
-\frenchspacing
+
 \raggedbottom
-%\renewcommand*{\bibname}{new name}
-%\setbibpreamble{}
 \pagenumbering{roman}
 \pagestyle{plain}
+
 %********************************************************************
 % Frontmatter
 %*******************************************************

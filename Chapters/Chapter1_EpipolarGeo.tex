@@ -205,6 +205,8 @@ methods exist \citep[e.g][]{zhang2000} but will not be examined here.
 
 \section{Epipolar Geometry}
 
+\label{sec:epipolar}
+
 Epipolar geometry is the geometry which relates the image points in two views of
 the same scene. \autoref{epipolar} shows the basic setup. 
 
@@ -258,8 +260,8 @@ starting from \eqref{eq:camera_transform}, one can derive
    \label{eq:epiconstraint}\IEEEyesnumber
 \end{IEEEeqnarray*}
 
-The product $E=\widehat{T}R$ is the essential matrix and the constraint it
-imposes on corresponding image points the essential constraint
+The product $E=\widehat{T}R$ is the \emph{essential matrix} and the constraint it
+imposes on corresponding image points the \emph{essential constraint}
 \citep[see][chapter 5]{ma2003}. 
 
 An intuition for the essential matrix can be
@@ -362,10 +364,61 @@ The 8-Point Algorithm is mathematically straightforward and linear, but in
 practice it suffers from noise \citep[see][]{luong1993} and in real
 applications approaches the robustness of other methods only in its normalised
 form from \citep{hartley1997} (not related to \emph{normalised image
-coordinates}). Therefore, many other methods exist. A review of some is given in \citep{zhang1998}.
+coordinates}).
 
 It has been noted above that $E$ can have at most eight degrees of freedom. In
 reality, it has only five, as rotation and translation have three degrees of
 freedom each, and one is lost due to the indeterminable scale. In theory five
 constraints from five pairs of image points thus are sufficient for finding $E$.
-A solution was put forth by \citet{nister2004}, 
+A solution was put forth by \citet{nister2004}, improved in
+\citep{stewenius-engels-nister2006}. The algorithm is nonlinear and
+thus much less easily understood and implemented, involving computing the roots
+of a ten degree polynomial, and requires only five points, but can also be
+applied to more. It can be considered a state-of-the-art solution to the
+relative pose estimation problem; its performance in overdetermined cases in the
+presence of noise compares favourably to other
+direct methods requiring six \citep{pizarro2003}, seven or eight points.
+
+Many other methods exist. Some---like the algorithms described above---find a
+globally optimal solution in closed form---, while others employ heuristic
+methods to iteratively approach a local optimum. A review is given in \citep{zhang1998}.
+
+Direct methods such as the five-point or eight-point algorithms are frequently
+used in schemes like RANSAC, which make the estimation more robust to outliers
+(correspondences which are imprecise or incorrect). For a number of iterations,
+a hypothesis for $E$ is computed on a minimal number of correspondences and then
+evauluated on the whole data set. If the inliers in the data far outweigh the
+outliers, it is probable that a noise-free subsample is selected. The best hypothesis is kept.
+The simplified algorithm is shown in \autoref{alg:ransac}
+\citep[c.f.][chapter 4.8]{h&z2004} and requires an error measure for $E$.
+
+\begin{algorithm}
+   \caption{Simplified RANSAC scheme for essential matrix estimation}
+   \label{alg:ransac}
+   \KwData{$n$ point correspondences}
+   \KwResult{a best-fitting essential matrix}
+   Let $c_{\text{best}} := 0$\;
+   \For{$i := 0$, $i < maxIter$}{
+      Select randomly a minimal number of points to estimate $E_i$\;
+      Compute error measure for $E_i$ on all $n$ points\;
+      Let $C_i$ be the set of point pairs whose error does not exceed $\varepsilon$\;
+      \If{$|C_i| > c_{\text{best}}$} {
+         $c_{\text{best}} := |C_i|$\;
+         $E_{\text{best}} := E_i$\;
+      }
+   }
+   Return $E_{\text{best}}$
+\end{algorithm}
+
+\section{Decomposing The Essential Matrix}
+
+One step remains to recover the relative camera pose from corresponding points.
+As per the derivation in \autoref{sec:epipolar}, the rotation and translation
+between the two cameras is encoded in $E$. Given an essential Matrix,
+\citet[chapter 9.6]{h&z2004} show that there are four mathematically valid
+decompositions of $E$ into $R$ and $T$, corresponding to four distinct
+geometrical scenarios \citep[see][chapter 9.6]{h&z2004}. Only one of the
+solutions will place a point $\mbf{X}_2 = R\mbf{X}_1 + T$ in front of both
+cameras, the others cannot be realised in practice.  Triangulating one point
+from its corresponding image points in the two views will therefore reveal the
+one correct solution, with the translation scale unkown.
