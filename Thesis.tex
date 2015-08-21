@@ -1,34 +1,50 @@
-\documentclass[ twoside,titlepage,numbers=noenddot,headinclude,%1headlines,% letterpaper a4paper
-   footinclude=false,
-   BCOR=5mm,paper=a4,fontsize=11pt,11pt,a4paper,american
+\documentclass[
+   twoside,
+   titlepage,
+   numbers=noenddot,
+   headinclude,
+   %1headlines,
+   % letterpaper a4paper
+   footinclude=false, % no footer
+   BCOR=5mm,
+   paper=a4,
+   fontsize=11pt,
+   11pt,
+   a4paper,
+   american
 ]{scrreprt}
 
-\usepackage{chngcntr}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{multirow}
 \usepackage{marginnote}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
 \usepackage{mathtools}
-\usepackage{stackengine}\stackMath
+\usepackage{stackengine}\stackMath % to use \stackgap for \underbrace spacing
 \usetikzlibrary{arrows.meta, calc, intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
 \usepackage{IEEEtrantools}
 \usepackage[english]{babel}
-\usepackage{setspace}
+\usepackage{setspace} % for adjustment of line spacing
 \usepackage[lined,boxed,linesnumbered]{algorithm2e}
 
 % \expandafter\def\csname ver@subfig.sty\endcsname{}
 \bibliographystyle{apa}
 
-\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}} % shortcut for vector notation
 
-\newcommand{\bflabel}{\aclabelfont} % forgot what this is for
+\newcommand{\bflabel}{\aclabelfont} % without this, compile error
 
 \renewcommand{\marginfont}{\small}
 
-\input{classicthesis-config}
-\counterwithin{figure}{chapter}
-\counterwithin{equation}{chapter}
+\input{classicthesis-config} % all custom classicthesis config stuff
 
+\usepackage{chngcntr} % defines \counterwithin
+\counterwithin{figure}{chapter} % number figures as chaptno.figno
+\counterwithin{equation}{chapter} % number equations as chaptno.eqno 
+
+\SetAlCapSkip{1ex} % algorithm2e distance between caption an algorithm
 \let\originaleqref\eqref
 \renewcommand{\eqref}{equation~\originaleqref}
 
@@ -68,6 +84,8 @@
 \include{Chapters/Chapter0_Introduction}
 
 \include{Chapters/Chapter1_EpipolarGeo}
+
+\include{Chapters/ChapterX_Evaluation}
 
 \include{Chapters/ChapterEND_references}
 

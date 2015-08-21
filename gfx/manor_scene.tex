@@ -1,0 +1,39 @@
+\begin{tikzpicture}
+   \begin{axis}[
+         xmin = -2,
+         xmax = 20,
+         ymin = -10,
+         ymax = 16,
+         xlabel = $x$,
+         ylabel = $y$,
+         every node near coord/.append style={anchor=5} % hacky way putting nodes below points instead of above
+      ]
+      \addplot+[
+         nodes near coords,
+         only marks,
+         point meta=explicit symbolic,
+      ]
+      coordinates {
+         (0,0)   [0]
+         (2,0)   [1]
+         (4,2)   [2]
+         (4,4)   [3]
+         (8,-5)  [4]
+         (10,4)  [5]
+         (16,-6) [6]
+         (10,15) [manor]
+      };
+
+      \coordinate (manor) at (axis cs:10,15);
+
+      \foreach \x / \y in {0/0,2/0,4/2,4/4,8/-5,10/4,16/-6,10/15}
+      {
+         \edef\temp{
+            \noexpand\node[outer sep=0,inner sep=0] (foo) at (axis cs:\x,\y) {}; 
+            \noexpand\draw[->] (foo) -- ($ (foo) !.5cm! (manor) $);
+         }
+         \temp
+      }
+
+   \end{axis}
+\end{tikzpicture}

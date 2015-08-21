@@ -275,21 +275,21 @@ centre $c_1$. All points on this ray are mapped to the same point on the image
 plane of $c_2$. Depending on how far away the world point $\mbf{X}_1$ is from $c_1$, its
 image on the second camera's image plane will vary---but it will be on the
 intersection of the image plane and the epipolar plane, the epipolar line of
-$\mbf{x}_1$. The line $l_1$ may be identified with its coimage (the orthogonal
-complement of its preimage) $l_1 = e_1 \times \mbf{x}_2 \in \mathbb{R}^3$ so that
+$\mbf{x}_1$. The line $l_2$ may be identified with its coimage (the orthogonal
+complement of its preimage) $l_2 = e_2 \times \mbf{x}_2 \in \mathbb{R}^3$ so that
 
 \begin{equation} \label{eq:epiline}
-   \forall\mbf{x}: \mbf{x}\in l_1 \Leftrightarrow \mbf{x}^T\cdot l_1 = 0.
+   \forall\mbf{x}: \mbf{x}\in l_2 \Leftrightarrow \mbf{x}\cdot l_2 = 0.
 \end{equation} 
 
 The coimage of the epipolar line is the vector perpendicular to the epipolar plane,
 so every vector in this plane will have an inner product of $0$ with this
 vector. Constrained to vectors in the image planes, this means that all vectors on the
-epipolar line will have an inner product of $0$ with this vector $l_1$.
+epipolar line will have an inner product of $0$ with this vector $l_2$.
 Referring back to \eqref{eq:epiconstraint}, it can be seen that multiplication
-with $E$ will yield a term $\mbf{x}_2^TE = l$ which fulfils 
+with $E$ will yield a term $\mbf{x}_2^TE = l_2$ which fulfils 
 \begin{equation}
-   l \cdot \mbf{x}_1 = 0,
+   \mbf{x}_1 \cdot l_2 = 0,
 \end{equation}
 which is precisely the relation stated in \eqref{eq:epiline}. The essential
 matrix thus maps an image point onto its epipolar line in the other image.
@@ -317,21 +317,21 @@ preprocessing of the input data (the image coordinates) by translation and
 scaling. This improves the robustness of the algorithm, but will be omitted
 here.
 
-For each point correspondence $\{\mbf{x}_1 = (x_1,y_1,1),\mbf{x}_2 = (x_2, y_2,
+For each point correspondence $\{\mbf{x}_1 = (x_1^i,y_1^i,1),\mbf{x}_2 = (x_2^i, y_2^i,
 1)\}$, one linear equation
 \begin{equation}
    \mbf{x}_2^T E \mbf{x}_1 = 0
 \end{equation}
 is generated, which can be rewritten as
 \begin{IEEEeqnarray*}{rCcCcCc}
-   0 & = & x_2 x_1 e_{11} & + & x_2 y_1 e_{12}  & + &  x_2 e_{13} \\
-     & + & y_2 x_1 e_{21} & + & y_2 y_1 e_{22} & + & y_2 e_{23} \\
-     & + & x_1 e_{31} & + & y_1 e_{32} & + & e_{33} \label{eq:linear_equation}
+   0 & = & x_2^i x_1^i e_{11} & + & x_2^i y_1^i e_{12}  & + &  x_2^i e_{13} \\
+     & + & y_2^i x_1^i e_{21} & + & y_2^i y_1^i e_{22} & + & y_2^i e_{23} \\
+     & + & x_1^i e_{31} & + & y_1^i e_{32} & + & e_{33} \label{eq:linear_equation}
    \IEEEyesnumber
 \end{IEEEeqnarray*}
 Let $\mbf{e}$ denote the vector of $E$'s entries in row-major order, then
 \begin{equation}
-   0 = \left( x_2 x_1, x_2 y_1, x_2, y_2 x_1, y_2 y_1, y_2, x_1, y_1,
+   0 = \left( x_2^i x_1^i, x_2^i y_1^i, x_2^i, y_2^i x_1^i, y_2^i y_1^i, y_2^i, x_1^i, y_1^i,
    1\right)\cdot\mbf{e}
 \end{equation}
 
@@ -355,8 +355,8 @@ $\norm{ \mbf{e} } = 1$ which also excludes a trivial zero solution.
 
 This solution vector is the singular
 vector with the smallest singular value in the singular value decomposition of
-$A$ or equivalently, the smallest eigenvector of $A^TA$ \citep[see][]{hartley1997}
-and thus can be found by Singular Value Decomposition.
+$A$ or equivalently, the smallest eigenvector of $A^TA$
+\citep[see][]{hartley1997}.
 
 \subsection{Further Algorithms}
 
@@ -392,22 +392,24 @@ outliers, it is probable that a noise-free subsample is selected. The best hypot
 The simplified algorithm is shown in \autoref{alg:ransac}
 \citep[c.f.][chapter 4.8]{h&z2004} and requires an error measure for $E$.
 
+
+   \SetAlCapSkip{1ex}
 \begin{algorithm}
    \caption{Simplified RANSAC scheme for essential matrix estimation}
    \label{alg:ransac}
    \KwData{$n$ point correspondences}
    \KwResult{a best-fitting essential matrix}
-   Let $c_{\text{best}} := 0$\;
-   \For{$i := 0$, $i < maxIter$}{
+   Let $c_{\text{best}} \coloneqq 0$\;
+   \For{$i \coloneqq 0$, $i < maxIter$}{
       Select randomly a minimal number of points to estimate $E_i$\;
       Compute error measure for $E_i$ on all $n$ points\;
       Let $C_i$ be the set of point pairs whose error does not exceed $\varepsilon$\;
       \If{$|C_i| > c_{\text{best}}$} {
-         $c_{\text{best}} := |C_i|$\;
-         $E_{\text{best}} := E_i$\;
+         $c_{\text{best}} \coloneqq |C_i|$\;
+         $E_{\text{best}} \coloneqq E_i$\;
       }
    }
-   Return $E_{\text{best}}$
+   return $E_{\text{best}}$
 \end{algorithm}
 
 \section{Decomposing The Essential Matrix}

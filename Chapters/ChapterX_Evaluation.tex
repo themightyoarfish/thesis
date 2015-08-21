@@ -1,0 +1,97 @@
+\chapter{Evaluation}
+
+The approach has been evaluated on two realistic datasets. The most important
+questions are whether the direction of the necessary translation is correctly
+identified and its scale decreasing with distance to the target.
+For both sets of images, the ground-truth translation between each image and the
+first frame has been measured with centimetre accuracy, while the ground-truth
+rotation has been estimated from manually labeled correspondence as it is
+difficult to measure without the proper instruments. Since for the case of
+noise-free correspondences in a non-degenerate configuration, relative pose
+estimation algorithms are mathematically correct, this has been deemed
+sufficiently accurate to evaluate the procedure. For each image pair, 19--27
+correspondences have been labeled, of which the majority is used for pose
+recovery. For pose recovery, RANSAC is used in conjunction with the five-point
+solver, a point is considered an inlier for a given essential matrix if its
+distance to its epipolar line is no more than three pixels. These parameters
+lead to the majority of points being inliers of the pose recovery, the few
+outliers can be explained by imprecise labeling.
+
+In both data sets, the translation was mostly in the horizontal direction and
+along the optical axis; the vertical translation is thus neglected. Similarly,
+rotation was applied mainly around the vertical axis.
+
+In order to idealise the condition, the reference photograph has been used to
+fill the role of the second frame for world scale computation. In reality, since
+the reference location is unknown, the reference world scale is obtained from a
+position somewhat off.
+
+\section{Train Station Data Set}
+
+A schematic bird's eye view of the captures is shown in \autoref{fig:train_data_scenario}.
+
+\begin{figure}
+   {\centering      
+      \input{gfx/bahnhof_scene.tex}
+   \caption{Schematic representation of the train data set. Lengths and angles are not
+   precise.}
+   \label{fig:train_data_scenario}}
+\end{figure}
+\autoref{tab:train_data} summarises the ground truth for the five images.
+
+\subsection{Scale Estimation}
+
+\autoref{fig:train_dist_ratio} shows how the average distance of points to the first
+frame's camera varies with the second image used for triangulation. The plot
+illustrates that---especially at full resolution---the ratio based on feature
+matching closely mirrors the real value. The difference increases with
+decreasing image scale, but the the slope of the graphs is quite similar. This
+shows that indeed with increasing distance to the first frame, the ratio
+decreases, allowing a deduction as to how close the camera is to the target, at
+least with respect to previous iterations. The situation is somewhat worse at
+the smallest scale with the ratio between the fifth third and fourth images
+barely decreasing.
+
+\newcolumntype{m}{>{$}c<{$}}
+
+\begin{table}
+  \caption{Ground truth for the train data. Image 0 is the reference frame,
+  translations and rotations are given as in \eqref{eq:camera_transform}.}
+  \begin{tabular}{cmmm}
+     \toprule
+     Image        & \text{Translation to reference} & \text{Rotation to reference} & \text{ratio}\\
+     number       & [x,y,z]                         & [\theta_x, \theta_y, \theta_z]
+     \\
+     \midrule
+     0 & [0      , 0 , 0]      & [0        , 0       , 0]       & 0\\
+     1 & [ .9053 , 0 , .4246 ] & [ -3.3779 , -9.3779 , 1.05121] & 3.8936\\
+     2 & [ .9986 , 0 , .0512 ] & [ -1.3274 , -5.7134 , -.1884 ] & 1.6461\\
+     3 & [ .9993 , 0 , .0361 ] & [ -1.7156 , -2.4761 , .3469  ] & 1.0965\\
+     4 & [ .9950 , 0 , .0995 ] & [ .054606 , -4.4867 , .2452  ] & 1.0343\\
+  \end{tabular}
+  \label{tab:train_data}
+\end{table}
+
+\begin{figure}
+   {\centering      
+      \input{gfx/train_dist_ratio_plot.tex}
+   \caption{Evolution of the distance ratio between images in the Train Station
+   data set}
+   \label{fig:train_dist_ratio}}
+\end{figure}
+
+\section{Manor Data Set}
+
+The schematic positions for the seven manor captures (including reference
+photograph) are shown in \autoref{fig:manor_data_scenario}. In contrast to the
+train station, there is prominent movement along the optical axis.
+
+\begin{figure}
+   {\centering      
+      \input{gfx/manor_scene.tex}
+   \caption{Schematic representation of the manor data set. Lengths and angles are not
+   precise.}
+   \label{fig:manor_data_scenario}}
+\end{figure}
+
+
