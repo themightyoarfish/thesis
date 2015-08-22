@@ -1,0 +1,49 @@
+\pgfplotstableread[col sep=space]{data/bahnhof_detector_KAZE_resize_2_ratio_0.800000.dat}\datatable
+\begin{tikzpicture}
+   \begin{axis}[
+         xlabel={\vphantom{Image Number}},
+         xtick=data,
+         cycle list name=mylist,
+         scale=.7,
+         yticklabels={},
+      ]
+
+      % original size
+      \addplot table[
+         x expr=\coordindex,
+         y=realthetax,
+      ] {\datatable};
+      \addlegendentry{True $\theta_x$}
+      \addplot table[
+         x expr=\coordindex,
+         y=realthetay,
+      ] {\datatable};
+      \addlegendentry{True $\theta_y$}
+      \addplot table[
+         x expr=\coordindex,
+         y=realthetaz,
+      ] {\datatable};
+      \addlegendentry{True $\theta_z$}
+
+      % half size
+      \addplot table[
+         x expr=\coordindex,
+         y=thetax,
+      ] {\datatable};
+      \addlegendentry{$\theta_x$}
+      \addplot table[
+         x expr=\coordindex,
+         y=thetay,
+      ] {\datatable};
+      \addlegendentry{$\theta_y$}
+      \addplot table[
+         x expr=\coordindex,
+         y=thetaz,
+      ] {\datatable};
+      \addlegendentry{$\theta_z$}
+
+   \end{axis}
+\end{tikzpicture}
+
+
+
