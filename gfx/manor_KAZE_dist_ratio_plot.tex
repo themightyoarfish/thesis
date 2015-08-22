@@ -1,0 +1,42 @@
+\pgfplotstableread[col sep=space]{data/gut_rosenkrantz_detector_KAZE_resize_1_ratio_0.800000.dat}\datatablenoresize
+\pgfplotstableread[col sep=space]{data/gut_rosenkrantz_detector_KAZE_resize_2_ratio_0.800000.dat}\datatableresize
+\pgfplotstableread[col sep=space]{data/gut_rosenkrantz_detector_KAZE_resize_4_ratio_0.800000.dat}\datatabledoubleresize
+\begin{tikzpicture}
+   \begin{axis}[
+         xlabel={Image Number},
+         ylabel={Distance ratio},
+         % xtick=data,
+         % xticklabels from table={\datatable}{fname},
+         legend pos=north west,
+      ]
+
+      % original size
+      \addplot table[
+         x expr=\coordindex,
+         y=realdist_ratio,
+      ] {\datatablenoresize};
+      \addlegendentry{Ground truth}
+
+      \addplot table[
+         x expr=\coordindex,
+         y=dist_ratio,
+      ] {\datatablenoresize};
+      \addlegendentry{$s=1$}
+
+      % scaled by 2
+      \addplot table[
+         x expr=\coordindex,
+         y=dist_ratio,
+      ] {\datatableresize};
+      \addlegendentry{$s=2$}
+
+      % scaled by 4
+      \addplot table[
+         x expr=\coordindex,
+         y=dist_ratio,
+      ] {\datatabledoubleresize};
+      \addlegendentry{$s=4$}
+
+   \end{axis}
+\end{tikzpicture}
+

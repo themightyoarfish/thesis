@@ -33,15 +33,15 @@ A schematic bird's eye view of the captures is shown in \autoref{fig:train_data_
 \begin{figure}
    {\centering      
       \input{gfx/bahnhof_scene.tex}
-   \caption{Schematic representation of the train data set. Lengths and angles are not
-   precise.}
+      \caption{Schematic representation of the train data set. Lengths and angles are not
+      precise.}
    \label{fig:train_data_scenario}}
 \end{figure}
 \autoref{tab:train_data} summarises the ground truth for the five images.
 
 \subsection{Scale Estimation}
 
-\autoref{fig:train_dist_ratio} shows how the average distance of points to the first
+\autoref{fig:train_KAZE_dist_ratio} shows how the average distance of points to the first
 frame's camera varies with the second image used for triangulation. The plot
 illustrates that---especially at full resolution---the ratio based on feature
 matching closely mirrors the real value. The difference increases with
@@ -55,29 +55,29 @@ barely decreasing.
 \newcolumntype{m}{>{$}c<{$}}
 
 \begin{table}
-  \caption{Ground truth for the train data. Image 0 is the reference frame,
-  translations and rotations are given as in \eqref{eq:camera_transform}.}
-  \begin{tabular}{cmmm}
-     \toprule
-     Image        & \text{Translation to reference} & \text{Rotation to reference} & \text{ratio}\\
-     number       & [x,y,z]                         & [\theta_x, \theta_y, \theta_z]
-     \\
-     \midrule
-     0 & [0      , 0 , 0]      & [0        , 0       , 0]       & 0\\
-     1 & [ .9053 , 0 , .4246 ] & [ -3.3779 , -9.3779 , 1.05121] & 3.8936\\
-     2 & [ .9986 , 0 , .0512 ] & [ -1.3274 , -5.7134 , -.1884 ] & 1.6461\\
-     3 & [ .9993 , 0 , .0361 ] & [ -1.7156 , -2.4761 , .3469  ] & 1.0965\\
-     4 & [ .9950 , 0 , .0995 ] & [ .054606 , -4.4867 , .2452  ] & 1.0343\\
-  \end{tabular}
-  \label{tab:train_data}
+   \caption{Ground truth for the train data. Image 0 is the reference frame,
+   translations and rotations are given as in \eqref{eq:camera_transform}.}
+   \begin{tabular}{cmmm}
+      \toprule
+      Image        & \text{Translation to reference} & \text{Rotation to reference} & \text{ratio}\\
+      number       & [x,y,z]                         & [\theta_x, \theta_y, \theta_z]
+      \\
+      \midrule
+      0 & [0      , 0 , 0]      & [0        , 0       , 0]       & 1\\
+      1 & [ .9053 , 0 , .4246 ] & [ -3.3779 , -9.3779 , 1.05121] & 3.8936\\
+      2 & [ .9986 , 0 , .0512 ] & [ -1.3274 , -5.7134 , -.1884 ] & 1.6461\\
+      3 & [ .9993 , 0 , .0361 ] & [ -1.7156 , -2.4761 , .3469  ] & 1.0965\\
+      4 & [ .9950 , 0 , .0995 ] & [ .054606 , -4.4867 , .2452  ] & 1.0343\\
+   \end{tabular}
+   \label{tab:train_data}
 \end{table}
 
 \begin{figure}
    {\centering      
-      \input{gfx/train_dist_ratio_plot.tex}
-   \caption{Evolution of the distance ratio between images in the Train Station
-   data set}
-   \label{fig:train_dist_ratio}}
+      \input{gfx/train_KAZE_dist_ratio_plot.tex}
+      \caption{Evolution of the distance ratio between images in the Train Station
+      data set with KAZE features}
+   \label{fig:train_KAZE_dist_ratio}}
 \end{figure}
 
 \section{Manor Data Set}
@@ -89,9 +89,85 @@ train station, there is prominent movement along the optical axis.
 \begin{figure}
    {\centering      
       \input{gfx/manor_scene.tex}
-   \caption{Schematic representation of the manor data set. Lengths and angles are not
-   precise.}
+      \caption{Schematic representation of the manor data set. Lengths and angles are not
+      precise.}
    \label{fig:manor_data_scenario}}
 \end{figure}
 
+\begin{table}
+   \caption{Ground truth for the manor data. Image 0 is the reference frame,
+   translations and rotations are given as in \eqref{eq:camera_transform}.}
+   \begin{tabular}{cmmm}
+      \toprule
+      Image        & \text{Translation to reference} & \text{Rotation to reference} & \text{ratio}\\
+      number       & [x,y,z]                         & [\theta_x, \theta_y, \theta_z]
+      \\
+      \midrule
+      0 & [0       , 0  , 0]        & [0 , 0        , 0]                & 1      \\
+      1 & [ 1      , 0  , 0       ] & [ -1.7857   , -5.4827  , 2.1073 ] & 1.1401  \\
+      2 & [ 0.8944 , 0. , 0.4472  ] & [ -2.1428   , -6.5773  , 1.6584 ] & 1.3437  \\
+      3 & [ 0.7071 , 0. , 0.7071  ] & [ 0.7263    , -5.0686  , 2.6176 ] & 1.3254  \\
+      4 & [ 0.8479 , 0. , -0.5299 ] & [ -1.4146   , -10.7998 , 2.2250 ] & 1.5168  \\
+      5 & [ 0.9284 , 0. , 0.3713  ] & [ -0.1887   , -16.6670 , 1.2211 ] & 2.5495  \\
+      6 & [ 0.9363 , 0. , -0.3511 ] & [ -0.8725   , -18.0933 , 1.5385 ] & 2.0155  \\
+   \end{tabular}
+   \label{tab:manor_data}
+\end{table}
 
+\begin{figure}
+   {\centering      
+      \input{gfx/manor_KAZE_dist_ratio_plot.tex}
+      \caption{Evolution of the distance ratio between images in the Manor Station
+      data set with KAZE features}
+   \label{fig:manor_KAZE_dist_ratio}}
+\end{figure}
+
+\begin{figure}
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/manor_KAZE_angles_plot_resize1.tex}
+      \label{fig:manor_KAZE_rotation_1}
+      \caption{$s=1$}
+   \end{subfigure}
+   \quad
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/manor_KAZE_angles_plot_resize2.tex}
+      \label{fig:manor_KAZE_rotation_2}
+      \caption{$s=2$}
+   \end{subfigure}\\[3ex]
+   \begin{subfigure}{\linewidth}
+      \centering      
+      \input{gfx/manor_KAZE_angles_plot_resize4.tex}
+      \label{fig:manor_KAZE_rotation_4}
+      \caption{$s=4$}
+   \end{subfigure}
+
+   \caption{Angles of rotation relative to reference with
+   KAZE features on full, quater and sixteenth resolution}
+\end{figure}
+
+\begin{figure}
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/manor_SIFT_angles_plot_resize1.tex}
+      \label{fig:manor_SIFT_rotation_1}
+      \caption{$s=1$}
+   \end{subfigure}
+   \quad
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/manor_SIFT_angles_plot_resize2.tex}
+      \label{fig:manor_SIFT_rotation_2}
+      \caption{$s=2$}
+   \end{subfigure}\\[3ex]
+   \begin{subfigure}{\linewidth}
+      \centering      
+      \input{gfx/manor_SIFT_angles_plot_resize4.tex}
+      \label{fig:manor_SIFT_rotation_4}
+      \caption{$s=4$}
+   \end{subfigure}
+
+   \caption{Angles of rotation relative to reference with
+   SIFT features on full, quater and sixteenth resolution}
+\end{figure}

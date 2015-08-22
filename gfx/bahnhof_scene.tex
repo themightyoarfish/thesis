@@ -6,12 +6,14 @@
          ymax = 6,
          xlabel = $x$,
          ylabel = $y$,
-         every node near coord/.append style={yshift=-0.5cm,anchor=-10} % hacky way putting nodes below points instead of above
+         every node near coord/.append style={yshift=-0.5cm,anchor=-10}, % hacky way putting nodes below points instead of above,
       ]
       \addplot+[
          nodes near coords,
          only marks,
          point meta=explicit symbolic,
+         mark=*,
+         black,
       ]
       coordinates {
          (0,0)        [0]
@@ -28,7 +30,7 @@
       {
          \edef\temp{
             \noexpand\node[outer sep=0,inner sep=0] (foo) at (axis cs:\x,\y) {}; 
-         \noexpand\draw[->] (foo) -- ($ (foo) !1cm! (station) $);
+         \noexpand\draw[->] (foo) -- ($ (foo) !.5cm! (station) $);
       }
          \temp
       }

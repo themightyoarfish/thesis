@@ -14,12 +14,36 @@
    american
 ]{scrreprt}
 
+\usepackage{subcaption}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{multirow}
 \usepackage{marginnote}
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\pgfplotscreateplotcyclelist{color list}{%
+    red,blue,black,brown,teal,orange,violet,cyan,green!70!black,magenta,gray}
+\pgfplotscreateplotcyclelist{mylist}{
+   black        \\%
+   teal          \\%
+   orange         \\%
+   black , densely dashed\\%
+   teal   , densely dashed\\%
+   orange , densely dashed\\%
+}
+\pgfplotsset{
+   every axis plot/.append style={line width=1.5pt},
+   cycle list name=color list,
+         legend style={
+            legend pos=south west,
+            font=\tiny,
+            legend style={row sep=-4pt},
+            fill=white, 
+            fill opacity=0.6,
+            draw opacity=1,
+            text opacity=1,
+         }
+}
 \usepackage{pgfplotstable}
 \usepackage{mathtools}
 \usepackage{stackengine}\stackMath % to use \stackgap for \underbrace spacing
@@ -78,6 +102,10 @@
 % \end{center}
 
 \tableofcontents
+
+\listoftables
+
+\listoffigures
 
 \pagenumbering{arabic}
 
