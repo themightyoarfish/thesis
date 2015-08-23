@@ -3,11 +3,11 @@
 \pgfplotstableread[col sep=space]{data/gut_rosenkrantz_detector_SIFT_resize_4_ratio_0.800000.dat}\datatabledoubleresize
 \begin{tikzpicture}
    \begin{axis}[
-         xlabel={Image Number},
-         ylabel={Distance ratio},
-         % xtick=data,
-         % xticklabels from table={\datatable}{fname},
+         xlabel=\vphantom{Image Number},
+         yticklabel pos=right,
+         xtick=data,
          legend pos=north west,
+         scale=.7,
       ]
 
       % original size

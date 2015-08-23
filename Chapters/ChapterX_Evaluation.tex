@@ -210,19 +210,21 @@ train station, there is prominent movement along the optical axis.
 \end{table}
 
 \begin{figure}
-   {\centering      
+   \begin{subfigure}{.5\linewidth}
+      \centering      
       \input{gfx/manor_KAZE_dist_ratio_plot.tex}
+      \label{fig:manor_KAZE_dist_ratio}
       \caption{Evolution of the distance ratio between images in the Manor Station
       data set with KAZE features}
-   \label{fig:manor_KAZE_dist_ratio}}
-\end{figure}
-
-\begin{figure}
-   {\centering      
+   \end{subfigure}
+   \quad\begin{subfigure}{.5\linewidth}
+      \centering      
       \input{gfx/manor_SIFT_dist_ratio_plot.tex}
+      \label{fig:manor_SIFT_dist_ratio}
       \caption{Evolution of the distance ratio between images in the Manor Station
       data set with SIFT features}
-   \label{fig:manor_SIFT_dist_ratio}}
+   \end{subfigure}
+   \label{fig:manor_dist_ratio}
 \end{figure}
 
 \begin{figure}
