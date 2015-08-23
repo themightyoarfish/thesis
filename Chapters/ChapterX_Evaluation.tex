@@ -26,6 +26,19 @@ fill the role of the second frame for world scale computation. In reality, since
 the reference location is unknown, the reference world scale is obtained from a
 position somewhat off.
 
+The following graphics illustrate three things
+\begin{enumerate}
+   \item The difference between the computed necessary rotation and the actually
+      necessary one
+   \item The difference in direction of the computed necessary translation and
+      the actually necessary one
+   \item The correlation between the true ratio of distances obtained by
+      measuring camera movement and the average distance ratio computed with first
+      and second (or in this case reference) frames, once based on manually
+      labeled correspondences and thrice based on autmatic feature matching, at
+      three different scales
+\end{enumerate}
+
 \section{Train Station Data Set}
 
 A schematic bird's eye view of the captures is shown in \autoref{fig:train_data_scenario}.
@@ -140,6 +153,26 @@ barely decreasing.
    SIFT features on full, quater and sixteenth resolution}
 \end{figure}
 
+The deviation of computed necessary translation and actually necessary
+translation measured in degrees is shown in \autoref{train_direction}.
+\begin{figure}
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/train_KAZE_direction.tex}
+      \caption{Angular difference between necessary translation and algorithmic
+      estimate based on KAZE.}
+      \label{fig:train_KAZE_direction}
+   \end{subfigure}
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/train_SIFT_direction.tex}
+      \caption{Angular difference between necessary translation and algorithmic
+      estimate based on SIFT.}
+      \label{fig:train_SIFT_direction}
+   \end{subfigure}
+   \label{fig:train_direction}
+\end{figure}
+
 \FloatBarrier
 
 \section{Manor Data Set}
@@ -240,4 +273,22 @@ train station, there is prominent movement along the optical axis.
 
    \caption{Angles of rotation relative to reference with
    SIFT features on full, quater and sixteenth resolution}
+\end{figure}
+
+\begin{figure}
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/manor_KAZE_direction.tex}
+      \caption{Angular difference between necessary translation and algorithmic
+      estimate based on KAZE.}
+      \label{fig:manor_KAZE_direction}
+   \end{subfigure}
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+      \input{gfx/manor_SIFT_direction.tex}
+      \caption{Angular difference between necessary translation and algorithmic
+      estimate based on SIFT.}
+      \label{fig:manor_SIFT_direction}
+   \end{subfigure}
+   \label{fig:manor_direction}
 \end{figure}

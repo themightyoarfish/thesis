@@ -25,30 +25,43 @@
 %% Pgfplots stuffs %%
 \usepackage{pgfplots}
 \pgfplotscreateplotcyclelist{color list}{%
-    red,blue,black,brown,teal,orange,violet,cyan,green!70!black,magenta,gray}
+   mark=*,red            \\%
+   mark=*,blue           \\%
+   mark=*,black          \\%
+   mark=*,brown          \\%
+   mark=*,teal           \\%
+   mark=*,orange         \\%
+   mark=*,violet         \\%
+   mark=*,cyan           \\%
+   mark=*,green!70!black \\%
+   mark=*,magenta        \\%
+   mark=*,gray           \\%
+}
 \pgfplotscreateplotcyclelist{mylist}{
-   black        \\%
-   teal          \\%
-   orange         \\%
-   black , densely dashed\\%
-   teal   , densely dashed\\%
-   orange , densely dashed\\%
+   mark=*,black        \\%
+   mark=*,teal          \\%
+   mark=*,orange         \\%
+   mark options=solid,mark=o,black,densely dashed\\%
+   mark options=solid,mark=o,teal,densely dashed\\%
+   mark options=solid,mark=o,orange,densely dashed\\%
 }
 \pgfplotsset{
-   every axis plot/.append style={line width=1.5pt},
+   every axis plot/.append style={line width=1.2pt},
    cycle list name=color list,
-         legend style={
-            legend pos=south west,
-            font=\tiny,
-            legend style={row sep=-4pt},
-            fill=white, 
-            fill opacity=0.6,
-            draw opacity=1,
-            text opacity=1,
-         }
+   legend style={
+      legend pos=south west,
+      font=\tiny,
+      legend style={row sep=-4pt},
+      fill=white, 
+      fill opacity=0.6,
+      draw opacity=1,
+      text opacity=1,
+   }
 }
-\usepgfplotslibrary{external} 
-\tikzexternalize[prefix=gfx/]
+
+% compile plots to external file and then include -> faster compilation
+% \usepgfplotslibrary{external} 
+% \tikzexternalize[prefix=gfx/]
 %% End Pgfplots stuffs %%
 
 \usepackage{pgfplotstable}

@@ -1,0 +1,104 @@
+\pgfplotstableread[col sep=space]{data/gut_rosenkrantz_detector_SIFT_resize_1_ratio_0.800000.dat}\datatablenoresize
+\pgfplotstableread[col sep=space]{data/gut_rosenkrantz_detector_SIFT_resize_2_ratio_0.800000.dat}\datatableresize
+\pgfplotstableread[col
+sep=space]{data/gut_rosenkrantz_detector_SIFT_resize_4_ratio_0.800000.dat}\datatabledoubleresize
+\begin{tikzpicture}
+   \begin{axis}[
+         xlabel=\vphantom{Image Number},
+         % ylabel={Angular difference},
+         yticklabel pos=right,
+         xtick=data,
+         legend pos=north east,
+         scale=.6,
+      ]
+      \pgfplotstablegetrowsof{\datatablenoresize}
+      \pgfmathsetmacro\yfin{\pgfmathresult - 6}
+      \pgfmathsetmacro\yini{0}
+
+
+      % original size
+      \addplot table[
+         skip coords between index={\yini}{\yfin},
+         x expr=\coordindex,
+         y expr={
+            acos(
+            (
+            \thisrow{x}*\thisrow{realx} +
+            \thisrow{y}*\thisrow{realy} +
+            \thisrow{z}*\thisrow{realz}
+            ) / 
+            (
+            sqrt(
+            (\thisrow{x})^2 +
+            (\thisrow{y})^2 +
+            (\thisrow{z})^2
+            ) * 
+            sqrt(
+            (\thisrow{realx})^2 +
+            (\thisrow{realy})^2 +
+            (\thisrow{realz})^2
+            )
+            )
+            )
+         }
+      ] {\datatablenoresize};
+      \addlegendentry{$s=1$}
+
+      % quarter size
+      \addplot table[
+         skip coords between index={\yini}{\yfin},
+         x expr=\coordindex,
+         y expr={
+            acos(
+            (
+            \thisrow{x}*\thisrow{realx} +
+            \thisrow{y}*\thisrow{realy} +
+            \thisrow{z}*\thisrow{realz}
+            ) / 
+            (
+            sqrt(
+            (\thisrow{x})^2 +
+            (\thisrow{y})^2 +
+            (\thisrow{z})^2
+            ) * 
+            sqrt(
+            (\thisrow{realx})^2 +
+            (\thisrow{realy})^2 +
+            (\thisrow{realz})^2
+            )
+            )
+            )
+         }
+      ] {\datatableresize};
+      \addlegendentry{$s=2$}
+
+      % sixteenth size
+      \addplot table[
+         skip coords between index={\yini}{\yfin},
+         x expr=\coordindex,
+         y expr={
+            acos(
+            (
+            \thisrow{x}*\thisrow{realx} +
+            \thisrow{y}*\thisrow{realy} +
+            \thisrow{z}*\thisrow{realz}
+            ) / 
+            (
+            sqrt(
+            (\thisrow{x})^2 +
+            (\thisrow{y})^2 +
+            (\thisrow{z})^2
+            ) * 
+            sqrt(
+            (\thisrow{realx})^2 +
+            (\thisrow{realy})^2 +
+            (\thisrow{realz})^2
+            )
+            )
+            )
+         }
+      ] {\datatabledoubleresize};
+      \addlegendentry{$s=4$}
+   \end{axis}
+\end{tikzpicture}
+
