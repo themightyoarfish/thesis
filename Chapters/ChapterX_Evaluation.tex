@@ -73,11 +73,21 @@ barely decreasing.
 \end{table}
 
 \begin{figure}
-   {\centering      
-      \input{gfx/train_KAZE_dist_ratio_plot.tex}
-      \caption{Evolution of the distance ratio between images in the Train Station
-      data set with KAZE features}
-   \label{fig:train_KAZE_dist_ratio}}
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+         \input{gfx/train_KAZE_dist_ratio_plot.tex}
+         \caption{Evolution of the distance ratio between images in the Train Station
+         data set with KAZE features}
+      \label{fig:train_KAZE_dist_ratio}
+   \end{subfigure}
+   \quad
+   \begin{subfigure}{.5\linewidth}
+      \centering      
+         \input{gfx/train_SIFT_dist_ratio_plot.tex}
+         \caption{Evolution of the distance ratio between images in the Train Station
+         data set with SIFT features}
+      \label{fig:train_SIFT_dist_ratio}
+   \end{subfigure}
 \end{figure}
 
 \begin{figure}
@@ -130,6 +140,8 @@ barely decreasing.
    SIFT features on full, quater and sixteenth resolution}
 \end{figure}
 
+\FloatBarrier
+
 \section{Manor Data Set}
 
 The schematic positions for the seven manor captures (including reference
@@ -170,6 +182,14 @@ train station, there is prominent movement along the optical axis.
       \caption{Evolution of the distance ratio between images in the Manor Station
       data set with KAZE features}
    \label{fig:manor_KAZE_dist_ratio}}
+\end{figure}
+
+\begin{figure}
+   {\centering      
+      \input{gfx/manor_SIFT_dist_ratio_plot.tex}
+      \caption{Evolution of the distance ratio between images in the Manor Station
+      data set with SIFT features}
+   \label{fig:manor_SIFT_dist_ratio}}
 \end{figure}
 
 \begin{figure}

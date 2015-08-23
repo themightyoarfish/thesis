@@ -1,5 +1,5 @@
 TEX_SOURCES=Thesis.tex Chapters/*.tex classicthesis-config.tex FrontBackMatter/*.tex
-TEX_CMD=pdflatex
+TEX_CMD=pdflatex -shell-escape
 
 all: $(TEX_SOURCES)
 	$(TEX_CMD) "Thesis.tex";
@@ -12,7 +12,7 @@ once: $(TEX_SOURCES)
 	open -g -a Skim "Thesis.pdf"
 
 clean:
-	$(RM) *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*aux gfx/*.log *.toc *.bbl *.blg *.out
+	$(RM) *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*aux gfx/*.log *.toc *.bbl *.blg *.out gfx/*figure*.pdf gfx/*.dpth gfx/*.md5
 
 %.pdf: gfx/%.tex
 	$(TEX_CMD) -jobname $(basename $@) -output-directory gfx '\documentclass{standalone} \usepackage[dvipsnames]{xcolor} \usepackage{tikz,pgfplots} \begin{document} \input{' $< '} \end{document}';

@@ -1,14 +1,16 @@
-\pgfplotstableread[col sep=space]{data/bahnhof_detector_KAZE_resize_1_ratio_0.800000.dat}\datatablenoresize
-\pgfplotstableread[col sep=space]{data/bahnhof_detector_KAZE_resize_2_ratio_0.800000.dat}\datatableresize
-\pgfplotstableread[col sep=space]{data/bahnhof_detector_KAZE_resize_4_ratio_0.800000.dat}\datatabledoubleresize
+\pgfplotstableread[col sep=space]{data/bahnhof_detector_SIFT_resize_1_ratio_0.800000.dat}\datatablenoresize
+\pgfplotstableread[col sep=space]{data/bahnhof_detector_SIFT_resize_2_ratio_0.800000.dat}\datatableresize
+\pgfplotstableread[col sep=space]{data/bahnhof_detector_SIFT_resize_4_ratio_0.800000.dat}\datatabledoubleresize
 \begin{tikzpicture}
    \begin{axis}[
-         xlabel={Image Number},
-         ylabel={Distance ratio},
+         xlabel=\vphantom{Image Number},
+         % ylabel={Distance ratio},
+         ymax=10,
+         yticklabel pos=right,
          xtick=data,
-         % xticklabels from table={\datatable}{fname}
-         scale=.6,
+         % xticklabels from table={\datatable}{fname},
          legend pos=north east,
+         scale=.6,
       ]
 
       % original size
@@ -18,21 +20,21 @@
       ] {\datatablenoresize};
       \addlegendentry{Ground truth}
 
-      \addplot table[
+      \addplot+[dashed] table[
          x expr=\coordindex,
          y=dist_ratio,
       ] {\datatablenoresize};
       \addlegendentry{$s=1$}
 
       % scaled by 2
-      \addplot table[
+      \addplot+[dashed] table[
          x expr=\coordindex,
          y=dist_ratio,
       ] {\datatableresize};
       \addlegendentry{$s=2$}
 
-      % scaled by 2
-      \addplot table[
+      % scaled by 4
+      \addplot+[dashed] table[
          x expr=\coordindex,
          y=dist_ratio,
       ] {\datatabledoubleresize};
@@ -40,3 +42,6 @@
 
    \end{axis}
 \end{tikzpicture}
+
+
+

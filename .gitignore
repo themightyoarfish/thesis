@@ -6,3 +6,10 @@
 *.toc
 *.bbl
 .DS_Store
+*.dpth
+*.md5
+gfx/*.pdf
+*.auxlock
+*.lof
+*.lot
+*.slnc

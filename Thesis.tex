@@ -14,12 +14,15 @@
    american
 ]{scrreprt}
 
+\usepackage{placeins}
 \usepackage{subcaption}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{multirow}
 \usepackage{marginnote}
 \usepackage{graphicx}
 \usepackage{tikz}
+
+%% Pgfplots stuffs %%
 \usepackage{pgfplots}
 \pgfplotscreateplotcyclelist{color list}{%
     red,blue,black,brown,teal,orange,violet,cyan,green!70!black,magenta,gray}
@@ -44,6 +47,10 @@
             text opacity=1,
          }
 }
+\usepgfplotslibrary{external} 
+\tikzexternalize[prefix=gfx/]
+%% End Pgfplots stuffs %%
+
 \usepackage{pgfplotstable}
 \usepackage{mathtools}
 \usepackage{stackengine}\stackMath % to use \stackgap for \underbrace spacing
