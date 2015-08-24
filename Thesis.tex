@@ -46,7 +46,11 @@
    mark options=solid,mark=o,orange,densely dashed\\%
 }
 \pgfplotsset{
-   every axis plot/.append style={line width=1.2pt},
+   every axis plot/.append style=
+   {
+      line width=1.2pt,
+      mark options=solid,
+   },
    cycle list name=color list,
    legend style={
       legend pos=south west,

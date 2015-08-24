@@ -26,6 +26,12 @@ fill the role of the second frame for world scale computation. In reality, since
 the reference location is unknown, the reference world scale is obtained from a
 position somewhat off.
 
+In all plots $s$ refers to the scale at which the relative pose is computed.
+Besides the full resolution, the images are scaled down by factor of $2$ (both
+dimensions are halved, resulting in quarter size) and $4$ (sixteenth size). The
+resolutions evaluated are thus $3264\times2448$, $1632\times1224$, and
+$816\times612$.
+
 The following graphics illustrate three things
 \begin{enumerate}
    \item The difference between the computed necessary rotation and the actually
@@ -41,32 +47,22 @@ The following graphics illustrate three things
 
 \section{Train Station Data Set}
 
-A schematic bird's eye view of the captures is shown in \autoref{fig:train_data_scenario}.
+In this series, the camera was moved horizontally from the reference to the
+right while also coming closer to the building.
+A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene}.
 
 \begin{figure}
    {\centering      
       \input{gfx/bahnhof_scene.tex}
       \caption{Schematic representation of the train data set. Lengths and angles are not
       precise.}
-   \label{fig:train_data_scenario}}
+   \label{fig:train_scene}}
 \end{figure}
 \autoref{tab:train_data} summarises the ground truth for the five images.
 
 \subsection{Scale Estimation}
 
-\autoref{fig:train_KAZE_dist_ratio} shows how the average distance of points to the first
-frame's camera varies with the second image used for triangulation. The plot
-illustrates that---especially at full resolution---the ratio based on feature
-matching closely mirrors the real value. The difference increases with
-decreasing image scale, but the the slope of the graphs is quite similar. This
-shows that indeed with increasing distance to the first frame, the ratio
-decreases, allowing a deduction as to how close the camera is to the target, at
-least with respect to previous iterations. The situation is somewhat worse at
-the smallest scale with the ratio between the fifth third and fourth images
-barely decreasing.
-
-\newcolumntype{m}{>{$}c<{$}}
-
+\newcolumntype{m}{>{$}c<{$}} % math column
 \begin{table}
    \caption{Ground truth for the train data. Image 0 is the reference frame,
    translations and rotations are given as in \eqref{eq:camera_transform}.}
@@ -85,108 +81,168 @@ barely decreasing.
    \label{tab:train_data}
 \end{table}
 
+\autoref{fig:train_dist_ratio} shows how the average distance of points to the
+first frame's camera varies with the second image used for triangulation. The
+plot illustrates that---especially at full resolution---the ratio based on
+feature matching closely mirrors the real value. The difference increases with
+decreasing image scale, but the the slope of the graphs is quite similar. This
+shows that indeed with increasing distance to the first frame, the ratio
+decreases, allowing a deduction as to how close the camera is to the target, at
+least with respect to previous iterations, which is the primary objective. 
+The decrease in ratio closely correlates with the the decrease in distance which
+is apparent on inspection of \autoref{fig:train_scene}. For instance, the viewpoints
+3 and 4 are much closer together than e.g. 2 and 3, and the difference in ratios
+is much smaller between 3 and 4 as well. 
+
+The correlation is higher for KAZE
+features than for SIFT ones, where a strong spike for image 1 can be observed.
+For SIFT, the decrease of ratio between images 2 and 3 is also hardly visible at
+$s=2$. The unusual spike for image 1 poses the problem that the visualisation
+would tell the user that they need to move disporoportionally far compared to
+the other images. Since the error in this case is corrected for the next image,
+this may not be a big problem, but will affect user experience. For SIFT
+features, one can also observe that the scale of the images appears to be less
+relevant, possibly an indication for the better scale invariance of the
+descriptor.
+
+Generally, it can be concluded that on this data set, KAZE features are an
+appropriate means of estimating the scale of relative camera translation.
+
 \begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
-         \input{gfx/train_KAZE_dist_ratio_plot.tex}
-         \caption{Evolution of the distance ratio between images in the Train Station
-         data set with KAZE features}
+      \input{gfx/train_KAZE_dist_ratio_plot.tex}
+      \caption{KAZE features}
       \label{fig:train_KAZE_dist_ratio}
    \end{subfigure}
    \quad
    \begin{subfigure}{.5\linewidth}
       \centering      
-         \input{gfx/train_SIFT_dist_ratio_plot.tex}
-         \caption{Evolution of the distance ratio between images in the Train Station
-         data set with SIFT features}
+      \input{gfx/train_SIFT_dist_ratio_plot.tex}
+      \caption{SIFT features}
       \label{fig:train_SIFT_dist_ratio}
    \end{subfigure}
+   \caption{Train Station data set: Evolution of the distance ratio between images}
+   \label{fig:train_dist_ratio}
 \end{figure}
+
+\subsection{Rotation Estimation}
+
+\autoref{fig:train_rotation_KAZE} and \autoref{fig:train_rotation_SIFT} illustrate the
+difference between the actually necessary camera rotation and the computed one
+for KAZE and SIFT features, respectively. Rotations about the optical an X axes
+are small and thus not very interesting and the deviation is small. 
+
+Focusing on the Y-rotation, it is obvious is that the estimation
+quality decreases especially for $s=4$, but the difference does not exceed 5
+degrees and thus the estimate is very usable, especially since for reasonably
+quick updates, mostly the direction of necessary rotation is important, not the
+absolute magnitude.
+
+The performance of SIFT is even better for scales $s=1$ and $s=2$, but slightly
+worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
 
 \begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_angles_plot_resize1.tex}
-      \label{fig:train_KAZE_rotation_1}
       \caption{$s=1$}
+      \label{fig:train_KAZE_rotation_1}
    \end{subfigure}
    \quad
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_angles_plot_resize2.tex}
-      \label{fig:train_KAZE_rotation_2}
       \caption{$s=2$}
+      \label{fig:train_KAZE_rotation_2}
    \end{subfigure}\\[3ex]
    \begin{subfigure}{\linewidth}
       \centering      
       \input{gfx/train_KAZE_angles_plot_resize4.tex}
-      \label{fig:train_KAZE_rotation_4}
       \caption{$s=4$}
+      \label{fig:train_KAZE_rotation_4}
    \end{subfigure}
-
-   \caption{Angles of rotation relative to reference with
+   \caption{Train Station data set: Angles of rotation relative to reference with
    KAZE features on full, quater and sixteenth resolution}
+   \label{fig:train_rotation_KAZE}
 \end{figure}
 
 \begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_SIFT_angles_plot_resize1.tex}
-      \label{fig:train_SIFT_rotation_1}
       \caption{$s=1$}
+      \label{fig:train_SIFT_rotation_1}
    \end{subfigure}
    \quad
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_SIFT_angles_plot_resize2.tex}
-      \label{fig:train_SIFT_rotation_2}
       \caption{$s=2$}
+      \label{fig:train_SIFT_rotation_2}
    \end{subfigure}\\[3ex]
    \begin{subfigure}{\linewidth}
       \centering      
       \input{gfx/train_SIFT_angles_plot_resize4.tex}
-      \label{fig:train_SIFT_rotation_4}
       \caption{$s=4$}
+      \label{fig:train_SIFT_rotation_4}
    \end{subfigure}
-
    \caption{Angles of rotation relative to reference with
    SIFT features on full, quater and sixteenth resolution}
+   \label{fig:train_rotation_SIFT}
 \end{figure}
 
-The deviation of computed necessary translation and actually necessary
-translation measured in degrees is shown in \autoref{train_direction}.
+\subsection{Translation Estimation}
+
+Finally and most importantly, the directions of the necessary translation must
+be evaluated. \autoref{fig:train_direction} plots the angular difference in
+degree between the actual necessary translation and the computed one. The
+reference frame $0$ is omitted since the translation vector to compare with is
+$(0,0,0)$.
+
 \begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_direction.tex}
-      \caption{Angular difference between necessary translation and algorithmic
-      estimate based on KAZE.}
+      \caption{KAZE features}
       \label{fig:train_KAZE_direction}
    \end{subfigure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_SIFT_direction.tex}
-      \caption{Angular difference between necessary translation and algorithmic
-      estimate based on SIFT.}
+      \caption{SIFT features}
       \label{fig:train_SIFT_direction}
    \end{subfigure}
+   \caption{Angular difference between necessary translation and algorithmic
+   estimate}
    \label{fig:train_direction}
 \end{figure}
+
+It is obvious that the estimates are completely useless, the difference
+exceeds $80$ degrees in all cases. The results are so staggeringly bad as to be
+suggestive of user error, though none could be found. With these estimates, the
+user will be sent into an entirely wrong direction.
 
 \FloatBarrier
 
 \section{Manor Data Set}
 
+Seven images (including the reference photo) have been taken with movement to
+the right and backwards as well as forwards. The motif was always centred in the
+frame, thus there is prominent rotation around the Y-Axis. 
 The schematic positions for the seven manor captures (including reference
-photograph) are shown in \autoref{fig:manor_data_scenario}. In contrast to the
-train station, there is prominent movement along the optical axis.
+photograph) are shown in \autoref{fig:manor_scene}. In contrast to the
+train station, there is more significant movement along the optical axis.
+
+% Since the distance to the reference increases with image index, the distance
+% ratio should also increase.
 
 \begin{figure}
    {\centering      
       \input{gfx/manor_scene.tex}
       \caption{Schematic representation of the manor data set. Lengths and angles are not
       precise.}
-   \label{fig:manor_data_scenario}}
+   \label{fig:manor_scene}}
 \end{figure}
 
 \begin{table}
