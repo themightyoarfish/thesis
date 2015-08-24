@@ -16,7 +16,7 @@
 
 \usepackage{placeins}
 \usepackage{subcaption}
-\usepackage[dvipsnames]{xcolor}
+\usepackage[dvipsnames,table]{xcolor}
 \usepackage{multirow}
 \usepackage{marginnote}
 \usepackage{graphicx}
@@ -46,6 +46,8 @@
    mark options=solid,mark=o,orange,densely dashed\\%
 }
 \pgfplotsset{
+   grid style={dotted,gray},
+   every axis/.append style={grid=both},
    every axis plot/.append style=
    {
       line width=1.2pt,

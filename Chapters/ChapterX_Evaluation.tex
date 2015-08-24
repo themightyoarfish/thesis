@@ -51,10 +51,10 @@ In this series, the camera was moved horizontally from the reference to the
 right while also coming closer to the building.
 A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene}.
 
-\begin{figure}
+\begin{figure}[h]
    {\centering      
       \input{gfx/bahnhof_scene.tex}
-      \caption{Schematic representation of the train data set. Lengths and angles are not
+      \caption{Schematic representation of the Train Station data set. Lengths and angles are not
       precise.}
    \label{fig:train_scene}}
 \end{figure}
@@ -63,20 +63,24 @@ A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene
 \subsection{Scale Estimation}
 
 \newcolumntype{m}{>{$}c<{$}} % math column
-\begin{table}
+\rowcolors{2}{gray!5}{white} % alternating colours
+
+\begin{table}[h]
    \caption{Ground truth for the train data. Image 0 is the reference frame,
-   translations and rotations are given as in \eqref{eq:camera_transform}.}
+      translations and rotations are given as in \eqref{eq:camera_transform}
+   relative to the reference frame.}
    \begin{tabular}{cmmm}
       \toprule
-      Image        & \text{Translation to reference} & \text{Rotation to reference} & \text{ratio}\\
+      \rowcolor{white}
+      Image        & \text{Relative translation} & \text{Relative Rotation} & \text{ratio}\\
       number       & [x,y,z]                         & [\theta_x, \theta_y, \theta_z]
       \\
       \midrule
-      0 & [0      , 0 , 0]      & [0        , 0       , 0]       & 1\\
-      1 & [ .9053 , 0 , .4246 ] & [ -3.3779 , -9.3779 , 1.05121] & 3.8936\\
-      2 & [ .9986 , 0 , .0512 ] & [ -1.3274 , -5.7134 , -.1884 ] & 1.6461\\
-      3 & [ .9993 , 0 , .0361 ] & [ -1.7156 , -2.4761 , .3469  ] & 1.0965\\
-      4 & [ .9950 , 0 , .0995 ] & [ .054606 , -4.4867 , .2452  ] & 1.0343\\
+      0 & [0      , 0 , 0]      & [0        , 0       , 0]       & 1      \\
+      1 & [ .9053 , 0 , .4246 ] & [ -3.3779 , -9.3779 , 1.05121] & 3.8936 \\
+      2 & [ .9986 , 0 , .0512 ] & [ -1.3274 , -5.7134 , -.1884 ] & 1.6461 \\
+      3 & [ .9993 , 0 , .0361 ] & [ -1.7156 , -2.4761 , .3469  ] & 1.0965 \\
+      4 & [ .9950 , 0 , .0995 ] & [ .054606 , -4.4867 , .2452  ] & 1.0343 \\\bottomrule
    \end{tabular}
    \label{tab:train_data}
 \end{table}
@@ -108,7 +112,7 @@ descriptor.
 Generally, it can be concluded that on this data set, KAZE features are an
 appropriate means of estimating the scale of relative camera translation.
 
-\begin{figure}
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_dist_ratio_plot.tex}
@@ -142,7 +146,7 @@ absolute magnitude.
 The performance of SIFT is even better for scales $s=1$ and $s=2$, but slightly
 worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
 
-\begin{figure}
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_angles_plot_resize1.tex}
@@ -167,7 +171,7 @@ worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
    \label{fig:train_rotation_KAZE}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_SIFT_angles_plot_resize1.tex}
@@ -187,8 +191,7 @@ worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
       \caption{$s=4$}
       \label{fig:train_SIFT_rotation_4}
    \end{subfigure}
-   \caption{Angles of rotation relative to reference with
-   SIFT features on full, quater and sixteenth resolution}
+   \caption{Train Station data set: Angles of rotation relative to reference with SIFT features}
    \label{fig:train_rotation_SIFT}
 \end{figure}
 
@@ -200,7 +203,7 @@ degree between the actual necessary translation and the computed one. The
 reference frame $0$ is omitted since the translation vector to compare with is
 $(0,0,0)$.
 
-\begin{figure}
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_direction.tex}
@@ -213,15 +216,14 @@ $(0,0,0)$.
       \caption{SIFT features}
       \label{fig:train_SIFT_direction}
    \end{subfigure}
-   \caption{Angular difference between necessary translation and algorithmic
-   estimate}
+   \caption{Train Station data set: Angular difference between actually necessary translation and algorithmic estimate}
    \label{fig:train_direction}
 \end{figure}
 
 It is obvious that the estimates are completely useless, the difference
 exceeds $80$ degrees in all cases. The results are so staggeringly bad as to be
-suggestive of user error, though none could be found. With these estimates, the
-user will be sent into an entirely wrong direction.
+suggestive of conceptual or mathematical error, though none could be found. With
+these estimates, the user will be sent into an entirely wrong direction.
 
 \FloatBarrier
 
@@ -232,58 +234,78 @@ the right and backwards as well as forwards. The motif was always centred in the
 frame, thus there is prominent rotation around the Y-Axis. 
 The schematic positions for the seven manor captures (including reference
 photograph) are shown in \autoref{fig:manor_scene}. In contrast to the
-train station, there is more significant movement along the optical axis.
+train station set, there is more significant movement along the optical axis.
+
+The ground truth data is summarised in \autoref{tab:manor_data}.
 
 % Since the distance to the reference increases with image index, the distance
 % ratio should also increase.
 
-\begin{figure}
+\begin{figure}[h]
    {\centering      
       \input{gfx/manor_scene.tex}
-      \caption{Schematic representation of the manor data set. Lengths and angles are not
+      \caption{Schematic representation of the Manor data set. Lengths and angles are not
       precise.}
    \label{fig:manor_scene}}
 \end{figure}
 
-\begin{table}
+
+\begin{table}[h]
    \caption{Ground truth for the manor data. Image 0 is the reference frame,
-   translations and rotations are given as in \eqref{eq:camera_transform}.}
+      translations and rotations are given as in \eqref{eq:camera_transform}
+   relative to the reference frame.}
    \begin{tabular}{cmmm}
       \toprule
-      Image        & \text{Translation to reference} & \text{Rotation to reference} & \text{ratio}\\
+      \rowcolor{white}
+      Image        & \text{Relative translation} & \text{Relative Rotation} & \text{ratio}\\
       number       & [x,y,z]                         & [\theta_x, \theta_y, \theta_z]
       \\
       \midrule
-      0 & [0       , 0  , 0]        & [0 , 0        , 0]                & 1      \\
+      0 & [0       , 0  , 0]        & [0 , 0        , 0]                & 1       \\
       1 & [ 1      , 0  , 0       ] & [ -1.7857   , -5.4827  , 2.1073 ] & 1.1401  \\
       2 & [ 0.8944 , 0. , 0.4472  ] & [ -2.1428   , -6.5773  , 1.6584 ] & 1.3437  \\
       3 & [ 0.7071 , 0. , 0.7071  ] & [ 0.7263    , -5.0686  , 2.6176 ] & 1.3254  \\
       4 & [ 0.8479 , 0. , -0.5299 ] & [ -1.4146   , -10.7998 , 2.2250 ] & 1.5168  \\
       5 & [ 0.9284 , 0. , 0.3713  ] & [ -0.1887   , -16.6670 , 1.2211 ] & 2.5495  \\
-      6 & [ 0.9363 , 0. , -0.3511 ] & [ -0.8725   , -18.0933 , 1.5385 ] & 2.0155  \\
+      6 & [ 0.9363 , 0. , -0.3511 ] & [ -0.8725   , -18.0933 , 1.5385 ] & 2.0155  \\\bottomrule
    \end{tabular}
    \label{tab:manor_data}
 \end{table}
 
-\begin{figure}
+\subsection{Scale Estimation}
+
+The evolution of the translation scale is shown in \autoref{fig:manor_dist_ratio}.
+It is apparent that the movement purely along the optical axis between images
+$2$ and $3$ is a problem. As the real distance to the target marginally
+increases, so should the ratio, but it decreases instead. Frames $5$ and $6$
+illustrate a problem with the scale estimation procedure itself. For it to work
+precisely, only movement along the line between first and reference frames is
+assumed, as a decreased distance to the first frame is interpreted as an
+increased distance to the reference frame, which is not necessarily the case as
+shown here.
+
+Generally is can be stated that the estimates are less close than those for the
+train data set, but also that large movement along the optical axis shows the
+limits of this simple approach at scale estimation.
+
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_KAZE_dist_ratio_plot.tex}
+      \caption{KAZE features}
       \label{fig:manor_KAZE_dist_ratio}
-      \caption{Evolution of the distance ratio between images in the Manor Station
-      data set with KAZE features}
    \end{subfigure}
    \quad\begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_SIFT_dist_ratio_plot.tex}
+      \caption{SIFT features (logarithmic $Y$-axis)}
       \label{fig:manor_SIFT_dist_ratio}
-      \caption{Evolution of the distance ratio between images in the Manor Station
-      data set with SIFT features}
    \end{subfigure}
+   \caption{Manor data set: Evolution of the distance ratio between images}
    \label{fig:manor_dist_ratio}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_KAZE_angles_plot_resize1.tex}
@@ -303,12 +325,11 @@ train station, there is more significant movement along the optical axis.
       \label{fig:manor_KAZE_rotation_4}
       \caption{$s=4$}
    \end{subfigure}
-
-   \caption{Angles of rotation relative to reference with
-   KAZE features on full, quater and sixteenth resolution}
+   \caption{Manor data set: Angles of rotation relative to reference with
+   KAZE features}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_SIFT_angles_plot_resize1.tex}
@@ -328,25 +349,23 @@ train station, there is more significant movement along the optical axis.
       \label{fig:manor_SIFT_rotation_4}
       \caption{$s=4$}
    \end{subfigure}
-
-   \caption{Angles of rotation relative to reference with
-   SIFT features on full, quater and sixteenth resolution}
+   \caption{Manor data set: Angles of rotation relative to reference with
+   SIFT features}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_KAZE_direction.tex}
-      \caption{Angular difference between necessary translation and algorithmic
-      estimate based on KAZE.}
+      \caption{KAZE features}
       \label{fig:manor_KAZE_direction}
    \end{subfigure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_SIFT_direction.tex}
-      \caption{Angular difference between necessary translation and algorithmic
-      estimate based on SIFT.}
+      \caption{SIFT features}
       \label{fig:manor_SIFT_direction}
    \end{subfigure}
+   \caption{Manor data set: Angular difference between actually necessary translation and estimate}
    \label{fig:manor_direction}
 \end{figure}
