@@ -6,12 +6,9 @@
    %1headlines,
    % letterpaper a4paper
    footinclude=false, % no footer
-   BCOR=5mm,
    paper=a4,
    fontsize=11pt,
    11pt,
-   a4paper,
-   american
 ]{scrreprt}
 
 \usepackage{placeins}
@@ -25,13 +22,13 @@
 %% Pgfplots stuffs %%
 \usepackage{pgfplots}
 \pgfplotscreateplotcyclelist{color list}{%
-   mark=*,red            \\%
-   mark=*,blue           \\%
    mark=*,black          \\%
-   mark=*,brown          \\%
-   mark=*,teal           \\%
+   mark=*,RoyalBlue           \\%
+   mark=*,webgreen         \\%
+   mark=*,webbrown\\%
    mark=*,orange         \\%
-   mark=*,violet         \\%
+   mark=*,blue           \\%
+   mark=*,brown          \\%
    mark=*,cyan           \\%
    mark=*,green!70!black \\%
    mark=*,magenta        \\%
@@ -39,11 +36,11 @@
 }
 \pgfplotscreateplotcyclelist{mylist}{
    mark=*,black        \\%
-   mark=*,teal          \\%
-   mark=*,orange         \\%
+   mark=*,RoyalBlue          \\%
+   mark=*,webgreen         \\%
    mark options=solid,mark=o,black,densely dashed\\%
-   mark options=solid,mark=o,teal,densely dashed\\%
-   mark options=solid,mark=o,orange,densely dashed\\%
+   mark options=solid,mark=o,RoyalBlue,densely dashed\\%
+   mark options=solid,mark=o,webgreen,densely dashed\\%
 }
 \pgfplotsset{
    grid style={dotted,gray},
@@ -138,6 +135,8 @@
 \include{Chapters/Chapter0_Introduction}
 
 \include{Chapters/Chapter1_EpipolarGeo}
+
+\include{Chapters/Chapter2_Challenges}
 
 \include{Chapters/ChapterX_Evaluation}
 

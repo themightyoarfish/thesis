@@ -2,7 +2,7 @@
 
 This chapter will introduce the geometry of image projection, largely following
 \citep[chapters 6,7]{h&z2004} and the geometry of two views (the epipolar
-geometry, \citet[chapter 5.1]{ma2003}) and
+geometry, \citet[ch. 5.1]{ma2003}) and
 how it can be used to recover relative camera position from two images of the
 same scene. 
 
@@ -177,7 +177,7 @@ distortion factor to the ideal undistorted image coordinates $(\tilde{x}, \tilde
 \begin{figure}
    {\centering      
       \input{gfx/distortion.tex}
-   \caption{Radially distorted image on the left, the corrected image on the
+      \caption[Radial distortion]{Radially distorted image on the left, the corrected image on the
    right.}
    \label{distortion}}
 \end{figure}
@@ -197,7 +197,7 @@ approximated as an exponential with a Taylor expansion
 \begin{equation}
    L(r) = 1 + \sum\limits_{i=1}^k \kappa_i r^i
 \end{equation}
-for a given $k$ \citep[see][chapter 7.4]{h&z2004}. The intrinsic camera
+for a given $k$ \citep[see][ch. 7.4]{h&z2004}. The intrinsic camera
 parameters which consist in the entries of $K$ and distortion coefficients
 $\kappa_i$ must be determined in order to accurately relate world coordinates to
 image coordinates. They can be found by calibrating the camera. Different
@@ -233,7 +233,7 @@ point.
 \begin{figure}[h]
    {\centering      
       \input{gfx/epipolar.tex}
-      \caption{Basic epipolar geometry with camera centres $c_1$, $c_2$, image
+      \caption[Basic epipolar geometry]{Basic epipolar geometry with camera centres $c_1$, $c_2$, image
       points $\mbf{x}_1$, $\mbf{x}_2$, a world point $\mbf{X}_1$, epipoles
    $e_1$, $e_2$ and epipolar lines $l_1$, $l_2$}
    \label{epipolar}}
@@ -262,7 +262,7 @@ starting from \eqref{eq:camera_transform}, one can derive
 
 The product $E=\widehat{T}R$ is the \emph{essential matrix} and the constraint it
 imposes on corresponding image points the \emph{essential constraint}
-\citep[see][chapter 5]{ma2003}. 
+\citep[see][ch. 5]{ma2003}. 
 
 An intuition for the essential matrix can be
 obtained from \autoref{epipolar}. Given an image point in one frame $\mbf{x}_1$,
@@ -346,12 +346,14 @@ If $n$ correspondences are given, they each contribute one row to
 
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 
-For eight noise-free point correspondences in general position, there is a
-unique solution (up to scale) besides the trivial zero, but in practice, one uses more correspondences and the system
-is overdetermined, so a least-squares-solution minimising $\norm{ A\mbf{e} } = \sum_{ij} (A\mbf{e})_{ij}^2$ is sought. 
-The solution is unique up to scale, since all multiples of $\mbf{e}$ will
-satisfy \eqref{eq:stacked_essential}. One therefore introduces the constraint
-$\norm{ \mbf{e} } = 1$ which also excludes a trivial zero solution.
+For eight noise-free point correspondences in non-degenerate general position, there is a
+unique solution (up to scale) besides the trivial zero, but in practice, one
+uses more correspondences and the system is overdetermined, so a
+least-squares-solution minimising $\norm{ A\mbf{e} } = \sum_{ij}
+(A\mbf{e})_{ij}^2$ is sought.  The solution is unique up to scale, since all
+multiples of $\mbf{e}$ will satisfy \eqref{eq:stacked_essential}. One therefore
+introduces the constraint $\norm{ \mbf{e} } = 1$ which also excludes a trivial
+zero solution.
 
 This solution vector is the singular
 vector with the smallest singular value in the singular value decomposition of
@@ -390,7 +392,7 @@ a hypothesis for $E$ is computed on a minimal number of correspondences and then
 evauluated on the whole data set. If the inliers in the data far outweigh the
 outliers, it is probable that a noise-free subsample is selected. The best hypothesis is kept.
 The simplified algorithm is shown in \autoref{alg:ransac}
-\citep[c.f.][chapter 4.8]{h&z2004} and requires an error measure for $E$.
+\citep[c.f.][ch. 4.8]{h&z2004} and requires an error measure for $E$.
 
 
    \SetAlCapSkip{1ex}
@@ -417,9 +419,9 @@ The simplified algorithm is shown in \autoref{alg:ransac}
 One step remains to recover the relative camera pose from corresponding points.
 As per the derivation in \autoref{sec:epipolar}, the rotation and translation
 between the two cameras is encoded in $E$. Given an essential Matrix,
-\citet[chapter 9.6]{h&z2004} show that there are four mathematically valid
+\citet[ch. 9.6]{h&z2004} show that there are four mathematically valid
 decompositions of $E$ into $R$ and $T$, corresponding to four distinct
-geometrical scenarios \citep[see][chapter 9.6]{h&z2004}. Only one of the
+geometrical scenarios \citep[see][ch. 9.6]{h&z2004}. Only one of the
 solutions will place a point $\mbf{X}_2 = R\mbf{X}_1 + T$ in front of both
 cameras, the others cannot be realised in practice.  Triangulating one point
 from its corresponding image points in the two views will therefore reveal the

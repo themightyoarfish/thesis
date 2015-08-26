@@ -23,12 +23,13 @@
          (8,-5)  [4]
          (10,4)  [5]
          (16,-6) [6]
+         (16,2)  [first frame]
          (10,15) [manor]
       };
 
       \coordinate (manor) at (axis cs:10,15);
 
-      \foreach \x / \y in {0/0,2/0,4/2,4/4,8/-5,10/4,16/-6,10/15}
+      \foreach \x / \y in {0/0,2/0,4/2,4/4,8/-5,10/4,16/-6,16/2}
       {
          \edef\temp{
             \noexpand\node[outer sep=0,inner sep=0] (foo) at (axis cs:\x,\y) {}; 

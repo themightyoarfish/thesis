@@ -5,17 +5,17 @@ questions are whether the direction of the necessary translation is correctly
 identified and its scale decreasing with distance to the target.
 For both sets of images, the ground-truth translation between each image and the
 first frame has been measured with centimetre accuracy, while the ground-truth
-rotation has been estimated from manually labeled correspondence as it is
+rotation has been estimated from manually labelled correspondence as it is
 difficult to measure without the proper instruments. Since for the case of
 noise-free correspondences in a non-degenerate configuration, relative pose
 estimation algorithms are mathematically correct, this has been deemed
 sufficiently accurate to evaluate the procedure. For each image pair, 19--27
-correspondences have been labeled, of which the majority is used for pose
+correspondences have been labelled, of which the majority is used for pose
 recovery. For pose recovery, RANSAC is used in conjunction with the five-point
 solver, a point is considered an inlier for a given essential matrix if its
 distance to its epipolar line is no more than three pixels. These parameters
 lead to the majority of points being inliers of the pose recovery, the few
-outliers can be explained by imprecise labeling.
+outliers can be explained by imprecise labelling.
 
 In both data sets, the translation was mostly in the horizontal direction and
 along the optical axis; the vertical translation is thus neglected. Similarly,
@@ -40,8 +40,7 @@ The following graphics illustrate three things
       the actually necessary one
    \item The correlation between the true ratio of distances obtained by
       measuring camera movement and the average distance ratio computed with first
-      and second (or in this case reference) frames, once based on manually
-      labeled correspondences and thrice based on autmatic feature matching, at
+      and second (or in this case reference) frames based on automatic feature matching, at
       three different scales
 \end{enumerate}
 
@@ -54,7 +53,7 @@ A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene
 \begin{figure}[h]
    {\centering      
       \input{gfx/bahnhof_scene.tex}
-      \caption{Schematic representation of the Train Station data set. Lengths and angles are not
+      \caption[Schematic of the train scene]{Schematic representation of the Train Station data set. Lengths and angles are not
       precise.}
    \label{fig:train_scene}}
 \end{figure}
@@ -66,7 +65,7 @@ A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene
 \rowcolors{2}{gray!5}{white} % alternating colours
 
 \begin{table}[h]
-   \caption{Ground truth for the train data. Image 0 is the reference frame,
+   \caption[Train data ground truth]{Ground truth for the train data. Image 0 is the reference frame,
       translations and rotations are given as in \eqref{eq:camera_transform}
    relative to the reference frame.}
    \begin{tabular}{cmmm}
@@ -89,44 +88,44 @@ A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene
 first frame's camera varies with the second image used for triangulation. The
 plot illustrates that---especially at full resolution---the ratio based on
 feature matching closely mirrors the real value. The difference increases with
-decreasing image scale, but the the slope of the graphs is quite similar. This
+decreasing image scale, but the slope of the graphs is quite similar. This
 shows that indeed with increasing distance to the first frame, the ratio
 decreases, allowing a deduction as to how close the camera is to the target, at
 least with respect to previous iterations, which is the primary objective. 
-The decrease in ratio closely correlates with the the decrease in distance which
+The decrease in ratio closely correlates with the decrease in distance which
 is apparent on inspection of \autoref{fig:train_scene}. For instance, the viewpoints
 3 and 4 are much closer together than e.g. 2 and 3, and the difference in ratios
 is much smaller between 3 and 4 as well. 
 
-The correlation is higher for KAZE
+The correlation is higher for AKAZE
 features than for SIFT ones, where a strong spike for image 1 can be observed.
 For SIFT, the decrease of ratio between images 2 and 3 is also hardly visible at
 $s=2$. The unusual spike for image 1 poses the problem that the visualisation
-would tell the user that they need to move disporoportionally far compared to
+would tell the user that they need to move disproportionally far compared to
 the other images. Since the error in this case is corrected for the next image,
 this may not be a big problem, but will affect user experience. For SIFT
 features, one can also observe that the scale of the images appears to be less
 relevant, possibly an indication for the better scale invariance of the
 descriptor.
 
-Generally, it can be concluded that on this data set, KAZE features are an
+Generally, it can be concluded that on this data set, AKAZE features are an
 appropriate means of estimating the scale of relative camera translation.
 
 \begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_dist_ratio_plot.tex}
-      \caption{KAZE features}
+      \caption{AKAZE features}
       \label{fig:train_KAZE_dist_ratio}
    \end{subfigure}
    \quad
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_SIFT_dist_ratio_plot.tex}
-      \caption{SIFT features}
+      \caption{SIFT features (logarithmic scale)}
       \label{fig:train_SIFT_dist_ratio}
    \end{subfigure}
-   \caption{Train Station data set: Evolution of the distance ratio between images}
+   \caption[Train data: Distance ratio]{Train Station data set: Evolution of the distance ratio between images}
    \label{fig:train_dist_ratio}
 \end{figure}
 
@@ -134,7 +133,7 @@ appropriate means of estimating the scale of relative camera translation.
 
 \autoref{fig:train_rotation_KAZE} and \autoref{fig:train_rotation_SIFT} illustrate the
 difference between the actually necessary camera rotation and the computed one
-for KAZE and SIFT features, respectively. Rotations about the optical an X axes
+for AKAZE and SIFT features, respectively. Rotations about the optical an X axes
 are small and thus not very interesting and the deviation is small. 
 
 Focusing on the Y-rotation, it is obvious is that the estimation
@@ -166,8 +165,8 @@ worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
       \caption{$s=4$}
       \label{fig:train_KAZE_rotation_4}
    \end{subfigure}
-   \caption{Train Station data set: Angles of rotation relative to reference with
-   KAZE features on full, quater and sixteenth resolution}
+   \caption[Train data: Rotation AKAZE]{Train Station data set: Angles of rotation relative to reference with
+   AKAZE features on full, quater and sixteenth resolution}
    \label{fig:train_rotation_KAZE}
 \end{figure}
 
@@ -191,7 +190,7 @@ worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
       \caption{$s=4$}
       \label{fig:train_SIFT_rotation_4}
    \end{subfigure}
-   \caption{Train Station data set: Angles of rotation relative to reference with SIFT features}
+   \caption[Train data: Rotation SIFT]{Train Station data set: Angles of rotation relative to reference with SIFT features}
    \label{fig:train_rotation_SIFT}
 \end{figure}
 
@@ -207,7 +206,7 @@ $(0,0,0)$.
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_direction.tex}
-      \caption{KAZE features}
+      \caption{AKAZE features}
       \label{fig:train_KAZE_direction}
    \end{subfigure}
    \begin{subfigure}{.5\linewidth}
@@ -216,7 +215,7 @@ $(0,0,0)$.
       \caption{SIFT features}
       \label{fig:train_SIFT_direction}
    \end{subfigure}
-   \caption{Train Station data set: Angular difference between actually necessary translation and algorithmic estimate}
+   \caption[Train data: Translation]{Train Station data set: Angular difference between actually necessary translation and algorithmic estimate}
    \label{fig:train_direction}
 \end{figure}
 
@@ -231,27 +230,24 @@ these estimates, the user will be sent into an entirely wrong direction.
 
 Seven images (including the reference photo) have been taken with movement to
 the right and backwards as well as forwards. The motif was always centred in the
-frame, thus there is prominent rotation around the Y-Axis. 
+frame, thus there is prominent rotation around the $y$-Axis. 
 The schematic positions for the seven manor captures (including reference
 photograph) are shown in \autoref{fig:manor_scene}. In contrast to the
 train station set, there is more significant movement along the optical axis.
 
 The ground truth data is summarised in \autoref{tab:manor_data}.
 
-% Since the distance to the reference increases with image index, the distance
-% ratio should also increase.
-
 \begin{figure}[h]
    {\centering      
       \input{gfx/manor_scene.tex}
-      \caption{Schematic representation of the Manor data set. Lengths and angles are not
+      \caption[Schematic of the manor data set]{Schematic representation of the Manor data set. Lengths and angles are not
       precise.}
    \label{fig:manor_scene}}
 \end{figure}
 
 
 \begin{table}[h]
-   \caption{Ground truth for the manor data. Image 0 is the reference frame,
+   \caption[Manor data ground truth]{Ground truth for the manor data. Image $0$ is the reference frame,
       translations and rotations are given as in \eqref{eq:camera_transform}
    relative to the reference frame.}
    \begin{tabular}{cmmm}
@@ -282,28 +278,50 @@ illustrate a problem with the scale estimation procedure itself. For it to work
 precisely, only movement along the line between first and reference frames is
 assumed, as a decreased distance to the first frame is interpreted as an
 increased distance to the reference frame, which is not necessarily the case as
-shown here.
+shown here. Even the ``ground truth'' computed from actual camera distances is thus
+of limited use.
+
+For the AKAZE descriptor, only the full resolution comes reasonably close in
+magnitude and somewhat in slope. Wit SIFT, the slope is more accurately
+reproduced with $s=2$, but strangely less accurately on full resolution (note
+the logarithmic scale). For the smallest scale, the estimate degenerates
+strongly.
 
 Generally is can be stated that the estimates are less close than those for the
 train data set, but also that large movement along the optical axis shows the
-limits of this simple approach at scale estimation.
+limits of this simple approach at scale estimation. Realistically, the user will
+not move as erratically so this kind of scenario is extreme.
 
 \begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_KAZE_dist_ratio_plot.tex}
-      \caption{KAZE features}
+      \caption{AKAZE features}
       \label{fig:manor_KAZE_dist_ratio}
    \end{subfigure}
    \quad\begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_SIFT_dist_ratio_plot.tex}
-      \caption{SIFT features (logarithmic $Y$-axis)}
+      \caption{SIFT features (logarithmic scale)}
       \label{fig:manor_SIFT_dist_ratio}
    \end{subfigure}
-   \caption{Manor data set: Evolution of the distance ratio between images}
+   \caption[Manor Data: distance ratio]{Manor data set: Evolution of the distance ratio between images}
    \label{fig:manor_dist_ratio}
 \end{figure}
+
+\subsection{Rotation Estimation}
+
+\autoref{fig:manor_KAZE_rotation} and \autoref{fig:manor_SIFT_rotation}
+illustrate how accurately the necessary rotation is computed. On this data, AKAZE
+outperforms SIFT with default parameters (see \autoref{sec:something}). On both full and
+half scale, there is negligible deviation from the truth, but on quarter scale,
+there are more than $5$ degrees of difference and a complete failure for frame
+$3$ (the direction is wrong, not only the magnitude).
+
+With default parameters, SIFT compares much worse, particularly on full
+resolution where it grossly overestimates the necessary rotation. The results
+are better on the scaled-down images, possibly because of the reduction of
+noise, but still only partly useful on the smallest resolution.
 
 \begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
@@ -325,8 +343,9 @@ limits of this simple approach at scale estimation.
       \label{fig:manor_KAZE_rotation_4}
       \caption{$s=4$}
    \end{subfigure}
-   \caption{Manor data set: Angles of rotation relative to reference with
-   KAZE features}
+   \caption[Manor data: Rotation AKAZE]{Manor data set: Angles of rotation relative to reference with
+   AKAZE features}
+   \label{fig:manor_KAZE_rotation}
 \end{figure}
 
 \begin{figure}[h]
@@ -349,15 +368,23 @@ limits of this simple approach at scale estimation.
       \label{fig:manor_SIFT_rotation_4}
       \caption{$s=4$}
    \end{subfigure}
-   \caption{Manor data set: Angles of rotation relative to reference with
+   \caption[Manor data: Rotation SIFT]{Manor data set: Angles of rotation relative to reference with
    SIFT features}
+   \label{fig:manor_SIFT_rotation}
 \end{figure}
+
+\subsection{Translation Estimation}
+
+Lastly, the direction of necessary translation is evaluated in
+\autoref{fig:manor_direction}. It is moot to discuss any improvement in
+comparison with the train data set, as the results are also completely false,
+SIFT displaying a larger variance than AKAZE, but neither are useful.
 
 \begin{figure}[h]
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_KAZE_direction.tex}
-      \caption{KAZE features}
+      \caption{AKAZE features}
       \label{fig:manor_KAZE_direction}
    \end{subfigure}
    \begin{subfigure}{.5\linewidth}
@@ -366,6 +393,38 @@ limits of this simple approach at scale estimation.
       \caption{SIFT features}
       \label{fig:manor_SIFT_direction}
    \end{subfigure}
-   \caption{Manor data set: Angular difference between actually necessary translation and estimate}
+   \caption[Manor data: Translation]{Manor data set: Angular difference between actually necessary translation and estimate}
    \label{fig:manor_direction}
 \end{figure}
+
+\section{Summary}
+
+\newcommand{\sub}[2]{#1_{\text{#2}}}
+
+Of the three pieces of information needed for user guidance, only the most
+important one---the direction of translation---cannot be recovered to any
+satisfying degree with this method. Both scale and necessary camera
+rotation estimation work, at least if the movement over iterations is mostly
+horizontal and not along the optical axis. A principal problem with the
+estimation of necessary translation could be observed. If the movement is mostly
+in one direction and the translation between reference and current frame is computed as
+\begin{equation*}
+   -\sub{R}{ref,first}\sub{R^T}{current,first}\sub{t}{current,first} + \sub{t}{ref,first}
+\end{equation*}
+then both summands will have mostly the same orientation which will consequently
+be zeroed out by the sign inversion of the first one. If the resulting vector is
+then normalised to unit length, the other two dimensions will have nonzero
+values determined by small differences in their orientation and thus by noise
+and point into a completely wrong direction. Applying scale factors before the
+addition did not improve the situation. It is evident that this solution cannot
+work for movement in only on principal direction.
+
+It could also be demonstrated that AKAZE features yield the more accurate
+results, except on the smallest scale, where SIFT compares somewhat favourably.
+The smallest scale however also leads to general deterioration in quality,
+suggesting that a scale between $2$ and $4$ may be required to combine accuracy
+with speed of processing.
+
+Improvements for all estimates could possibly be improved by fine-tuning the
+parameters of both descriptors to adapt them to scenes with buildings, which has
+not been tried here.

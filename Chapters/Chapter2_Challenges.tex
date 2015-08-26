@@ -1,15 +1,83 @@
-\chapter{Challenges In Relative Pose Estimation}
+chapter{Challenges In Relative Pose Estimation}
 
-This chapter will examine the preconditions and the feasability of pose recovery
+The success of recovery of relative pose mainly depends on two factors: The
+accuracy and correctness of image point correspondences and them not being in
+a degenerate configuration, so that they provide enough information about the
+scene.
+
+This chapter will examine the preconditions and the feasibility of pose recovery
 in realistic conditions. Several problematic cases will be identified and
 described. Furthermore, an assessment of different feature detection algorithms
 for the purpose of this work will be given.
 
 \section{Degenerate Configurations}
 
+Degenerate configurations are those in which the data on which the essential
+matrix is estimated allows for more than one mathematically valid solution. Two
+different cases can be observed.
 
+\subsection{Structure degeneracy}
+
+Structure degeneracy is a configuration of points in the observed scene which do
+not provide enough information to wholly determine an essential matrix. The
+projection matrix $P\in\mathbb{R}^{3\times3}$ with 
+\begin{equation*}
+   \mbf{x} = P\mbf{X}
+\end{equation*}
+has twelve elements but is a projective quantity, so all non-zero multiples of
+$P$ are equivalent, wherefore it has only eleven degrees of freedom.  A
+degenerate case is for instance when all points observed by the two cameras lie
+on the same plane (or worse, a subspace of even lower dimension). The images of
+a planar surface in two cameras as well as the planar surface itself and its
+image are related by a homography \citep[see][ch. 13]{h&z2004}, which is a
+mapping between planes and has eight degrees of freedom (being a $3\times3$
+matrix and a projective element), meaning that three degrees of freedom are
+undetermined \citep{torr1999}.  A set of coplanar points thus does not provide
+enough information to uniquely determine an epipolar geometry. 
+
+There are approaches to deal with this problem (e.g. an algorithm developed by
+\citet{chum2005} or \citet{decker2008}), but the standard approaches such as
+the five point solver with RANSAC implemented in OpenCV are susceptible to this
+situation.
+
+\subsection{Motion Degeneracy}
+
+A second type of degeneracy occurs when the camera motion between two images has
+fewer degrees of freedom than the model to be estimated---the essential matrix.
+If the camera only translates or only rotates between images, the motion has
+maximally three degrees of freedom. As \citet{decker2008} point out, an
+essential matrix estimated under such conditions could be consistent with all
+correct point matches, but also with some false ones due to the mismatch in
+degrees of freedom between data and model. In schemes like RANSAC, such an
+estimate will have a large consensus set---all inliers \emph{plus}
+outliers---and so may lead to the termination of the algorithm, despite being
+inaccurate.
+
+It is unlikely in rephotography that the observed scene will be completely
+planar, or that the user will move from the first frame in a motion which is
+pure rotation or translation, these degeneracies can be labelled edge cases and
+are not specifically handled in the application.
 
 \section{Finding Correspondences}
+
+There is a variety of automatic feature detection algorithms which differ in
+repeatability, robustness to noise, speed and invariance with respect to image
+characteristics such as scale, brightness, or rotation. 
+Generally, a feature detector identifies potentially salient points in an image
+and computes a descriptor for these points in a way that the same point under
+different conditions will yield an ideally identical descriptor. When points of
+interest---usually called \emph{keypoints}---are available in multiple images,
+their descriptors can be compared and the best match according to some metric
+can be selected for each keypoint. The matches found can then be used as
+corresponding points for relative pose estimation.
+
+Classical state-of-the-art detectors include e.g. SIFT \citep{lowe1999}, SURF
+\citep{bay2006} which both compute real-valued descriptors. A natural criterion
+for selecting the best matching keypoint for a given keypoint is the $L_2$-norm
+of the difference of their descriptors, which is a relatively expensive
+operation. While e.g. SURF improves performance over the computationally
+demanding SIFT detector, the speed of matching can still present a bottleneck in
+time-critical contexts.
 
 \subsection{SIFT}
 

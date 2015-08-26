@@ -1,7 +1,7 @@
 \begin{tikzpicture}
    \begin{axis}[
          xmin = -1,
-         xmax = 6,
+         xmax = 8,
          ymin = -1,
          ymax = 6,
          xlabel = $x$,
@@ -21,14 +21,15 @@
          (3.12,0.16)  [2]
          (0.83,0.03)  [3]
          (0.20,0.03)  [4]
+         (7.32,3.99)  [first frame]
          (2,5)        [station]
       };
 
       \coordinate (station) at (axis cs:2,5);
 
-      \foreach \x / \y in {0/0,5.65/2.65,3.12/0.16,0.83/0.03,0.20/0.03}
+      \foreach \x / \y in {0/0,5.65/2.65,3.12/0.16,0.83/0.03,0.20/0.03,7.32/3.99}
       {
-         \edef\temp{
+         \edef\temp{ % don't ask me why
             \noexpand\node[outer sep=0,inner sep=0] (foo) at (axis cs:\x,\y) {}; 
          \noexpand\draw[->] (foo) -- ($ (foo) !.5cm! (station) $);
       }
