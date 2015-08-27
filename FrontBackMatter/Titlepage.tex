@@ -1,49 +1,60 @@
+\documentclass[
+   pdftex,
+   fontsize=11pt,
+   a4paper
+]{scrbook}
+\input{../classicthesis-config}
+
+\usepackage[a4paper,includeall,bindingoffset=0cm,margin=2cm,
+marginparsep=0cm,marginparwidth=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\begin{document}
 \begin{titlepage}
-   \begin{addmargin}[-1cm]{-3cm} % requires KOMA class. Why do I need this fuckery?
+   \thispagestyle{empty}
+   \vspace*{2cm}
 
-      \vspace*{2cm}
+   \begin{center}
 
-      \begin{center}
+      \Large
 
-         \Large
+      \includegraphics[width=.5\textwidth]{../gfx/uni.pdf}
 
-         \includegraphics[width=.7\textwidth]{gfx/uni.pdf}
+      \vspace{2cm}
 
-         \vspace{2cm}
+      Department of Computer Science
 
-            Department of Computer Science
-               
-            Department of Cognitive Science
+      Department of Cognitive Science
 
-         \vspace{3cm}
+      \vspace{2cm}
 
-         {
-            \LARGE
-            Rasmus Diederichsen
-         }
+      {
+         \LARGE
+         Rasmus Diederichsen
+      }
 
-         \vspace{2cm}
+      \vspace{2cm}
 
-         {
-            \Huge \scshape
-            \myTitle
-         }
+      {
+         \Huge \scshape
+         Designing And Implementing A Rephotography Application For iOS
+      }
 
-         \vspace{2cm}
+      \vspace{2cm}
 
-         {
-            \LARGE \emph{Bachelor's Thesis}
-         }
+      {
+         \LARGE \emph{Bachelor's Thesis}
+      }
 
-         \vspace{3cm}
+      \vspace{3cm}
 
-         {
-            \begin{tabular}{>{\bfseries}ll}
-               First Supervisor: & \myFirstSupervisor \\
-               Second Supervisor: & \mySecondSupervisor
-            \end{tabular}
-         }
+      {
+         \begin{tabular}{>{\bfseries}ll}
+            First Supervisor: & Prof. Dr. Oliver Vornberger \\
+            Second Supervisor: & Dr. Thomas Wiemann
+         \end{tabular}
+      }
 
-      \end{center}
-   \end{addmargin}
+   \end{center}
 \end{titlepage}
+\end{document}

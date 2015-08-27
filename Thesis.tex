@@ -15,9 +15,9 @@
 \usepackage{subcaption}
 \usepackage[dvipsnames,table]{xcolor}
 \usepackage{multirow}
-\usepackage{marginnote}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{pdfpages}
 
 %% Pgfplots stuffs %%
 \usepackage{pgfplots}
@@ -81,10 +81,6 @@
 
 \newcommand{\mbf}[1]{\mathbf{#1}} % shortcut for vector notation
 
-\newcommand{\bflabel}{\aclabelfont} % without this, compile error
-
-\renewcommand{\marginfont}{\small}
-
 \input{classicthesis-config} % all custom classicthesis config stuff
 
 \usepackage{chngcntr} % defines \counterwithin
@@ -105,7 +101,7 @@
 % Frontmatter
 %*******************************************************
 \thispagestyle{empty}
-\include{FrontBackmatter/Titlepage}
+\includepdf{FrontBackmatter/Titlepage.pdf}
 % \cleardoublepage\include{FrontBackmatter/Abstract}
 % \cleardoublepage\include{FrontBackmatter/Acknowledgments}
 

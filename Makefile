@@ -11,6 +11,8 @@ once: $(TEX_SOURCES)
 	$(TEX_CMD) "Thesis.tex";
 	open -g -a Skim "Thesis.pdf"
 
+title: FrontBackMatter/Titlepage.tex
+	cd FrontBackMatter; $(TEX_CMD) Titlepage.tex; cd ..; open -g -a Skim FrontBackMatter/Titlepage.pdf
 clean:
 	$(RM) *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*aux gfx/*.log *.toc *.bbl *.blg *.out gfx/*figure*.pdf gfx/*.dpth gfx/*.md5
 
