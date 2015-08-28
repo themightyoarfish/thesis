@@ -64,7 +64,7 @@
 
 % compile plots to external file and then include -> faster compilation
 \usepgfplotslibrary{external} 
-\tikzexternalize[prefix=gfx/]
+\tikzexternalize[prefix=gfx/,optimize command away=\includepdf]
 %% End Pgfplots stuffs %%
 
 \usepackage{pgfplotstable}

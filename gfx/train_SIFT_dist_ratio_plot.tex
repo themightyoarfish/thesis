@@ -5,10 +5,10 @@
    \begin{axis}[
          xlabel=\vphantom{Image Number},
          % ylabel={Distance ratio},
-         % ymax=11, % changing this to 10 will fuck up the subfigure. dafug.
+         ymax=4.5,
          yticklabel pos=right,
          xtick=data,
-         ymode=log,
+         % ymode=log,
          % xticklabels from table={\datatable}{fname},
          legend pos=north east,
          scale=.6,
@@ -19,7 +19,7 @@
          x expr=\coordindex,
          y=realdist_ratio,
       ] {\datatablenoresize};
-      \addlegendentry{Ground truth}
+      \addlegendentry{Truth}
 
       \addplot+[dashed,mark=o] table[
          x expr=\coordindex,

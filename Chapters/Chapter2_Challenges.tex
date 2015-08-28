@@ -32,13 +32,16 @@ a planar surface in two cameras as well as the planar surface itself and its
 image are related by a homography \citep[see][ch. 13]{h&z2004}, which is a
 mapping between planes and has eight degrees of freedom (being a $3\times3$
 matrix and a projective element), meaning that three degrees of freedom are
-undetermined \citep{torr1999}.  A set of coplanar points thus does not provide
-enough information to uniquely determine an epipolar geometry. 
+undetermined \citep{torr1999}. A set of coplanar points thus does not provide
+enough information to uniquely determine an epipolar geometry without further
+information. 
 
-There are approaches to deal with this problem (e.g. an algorithm developed by
-\citet{chum2005} or \citet{decker2008}), but the standard approaches such as
-the five point solver with RANSAC implemented in OpenCV are susceptible to this
-situation.
+However, not all algorithms are susceptible to this problem. While the 8-point
+algorithm alone cannot deal with this case, the five-point algorithm can and is
+generally more robust \citep{li2006}. While there are other approaches to work
+around such issues (e.g. an algorithm developed by \citet{chum2005} or
+\citet{decker2008}), in practice, a five-point algorithm in a RANSAC scheme
+works well and needs fewer iterations than an 8-point approach \citep{li2006}.
 
 \subsection{Motion Degeneracy}
 

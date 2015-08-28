@@ -5,6 +5,7 @@
    \begin{axis}[
          xlabel={Image Number},
          ylabel={Distance ratio},
+         ymax=4.5,
          xtick=data,
          % xticklabels from table={\datatable}{fname}
          scale=.6, % dare you to change this to sth larger
@@ -16,7 +17,7 @@
          x expr=\coordindex,
          y=realdist_ratio,
       ] {\datatablenoresize};
-      \addlegendentry{Ground truth}
+      \addlegendentry{Truth}
 
       \addplot table[
          x expr=\coordindex,
