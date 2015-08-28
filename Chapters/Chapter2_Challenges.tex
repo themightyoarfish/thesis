@@ -32,9 +32,8 @@ a planar surface in two cameras as well as the planar surface itself and its
 image are related by a homography \citep[see][ch. 13]{h&z2004}, which is a
 mapping between planes and has eight degrees of freedom (being a $3\times3$
 matrix and a projective element), meaning that three degrees of freedom are
-undetermined \citep{torr1999}. A set of coplanar points thus does not provide
-enough information to uniquely determine an epipolar geometry without further
-information. 
+undetermined \citep{torr1999}. A set of coplanar points alone thus does not provide
+enough information to uniquely determine an epipolar geometry.
 
 However, not all algorithms are susceptible to this problem. While the 8-point
 algorithm alone cannot deal with this case, the five-point algorithm can and is
