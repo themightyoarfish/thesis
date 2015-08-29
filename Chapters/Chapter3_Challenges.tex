@@ -83,9 +83,9 @@ time-critical contexts. The proliferation of mobile devices with more economic
 hardware increased the demand for faster detection and matching of features and
 many solutions have been proposed. On the one hand, efforts have been made at
 faster feature detection algorithms in general (such as SURF or FAST
-\citep{rosten2005}), but most promising are those which computed binary instead
+\citep{rosten2005}), but most promising are those which compute binary instead
 of real-valued descriptors. The matching of features between images is an
-$\mathcal{O}(n)$ operation when done with brute force, thus often placing a
+$\mathcal{O}(n^2)$ operation when done with brute force, thus often placing a
 limit on the computational efficiency of the whole process. On real hardware,
 floating point operations are generally less efficient when compared to integer
 or binary arithmetic. While for real-valued descriptors $d_1,d_2$ with size $n$,
