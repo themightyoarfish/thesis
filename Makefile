@@ -5,6 +5,7 @@ all: $(TEX_SOURCES) compile_title
 	$(TEX_CMD) "Thesis.tex";
 	bibtex "Thesis";
 	$(TEX_CMD) "Thesis.tex";
+	$(TEX_CMD) "Thesis.tex";
 	open -g -a Skim "Thesis.pdf"
 
 once: $(TEX_SOURCES)

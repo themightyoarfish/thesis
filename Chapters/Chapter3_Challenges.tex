@@ -79,10 +79,31 @@ for selecting the best matching keypoint for a given keypoint is the $L_2$-norm
 of the difference of their descriptors, which is a relatively expensive
 operation. While e.g. SURF improves performance over the computationally
 demanding SIFT detector, the speed of matching can still present a bottleneck in
-time-critical contexts.
+time-critical contexts. The proliferation of mobile devices with more economic
+hardware increased the demand for faster detection and matching of features and
+many solutions have been proposed. On the one hand, efforts have been made at
+faster feature detection algorithms in general (such as SURF or FAST
+\citep{rosten2005}), but most promising are those which computed binary instead
+of real-valued descriptors. The matching of features between images is an
+$\mathcal{O}(n)$ operation when done with brute force, thus often placing a
+limit on the computational efficiency of the whole process. On real hardware,
+floating point operations are generally less efficient when compared to integer
+or binary arithmetic. While for real-valued descriptors $d_1,d_2$ with size $n$,
+an $L_2$-norm $\sqrt{\sum_{i=1}^n (d_1^i - d_2^i)^2}$ must be evaluated,
+binary strings can be compared with the Hamming distance $\sum_{i=1}^n d_1^i
+\otimes d_2^i$ which is much faster. These detectors include BRIEF
+\citep[Binary Robust Independent Elementary Features]{calonder2010}, ORB
+\citep[Oriented BRIEF]{rublee2011} and FREAK \citep[Fast Retina
+Keypoint]{ortiz2012}. While some invariances are sacrificed in favour of
+performance (such as rotation invariance of BRIEF, corrected by ORB), they are
+claim to match the repeatability of SIFT and others for many use cases while
+being much faster to compute and compare. Another recent development by
+\citet{alcantarilla2013} are AKAZE features, building on and accelerating the
+previously proposed KAZE detector \citep{alcantarilla2012}, also using binary
+strings to describe feature points. This detector has been chosen for this work
+as it offers significant speed improvements over SIFT or SURF while sacrificing
+no quality in the tested scenarios (see \autoref{ch:evaluation}).
 
-\subsection{SIFT}
-
-\subsection{AKAZE}
+\subsection{SIFT \& AKAZE}
 
 

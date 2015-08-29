@@ -305,7 +305,7 @@ by \citet{hartley1997}, and the 5-Point algorithm proposed by
 \citet{nister2004}. To illustrate the mathematical tractability of the problem,
 the former will be presented below.
 
-\subsection{The 8-Point Algorithm}
+\subsection{The 8-Point Algorithm}\label{sec:eight-point}
 
 The essential matrix has nine elements, but since all image coordinates are
 projective quantities, the set of all essential matrices differing by a constant
@@ -351,7 +351,8 @@ unique solution (up to scale) besides the trivial zero, but in practice, one
 uses more correspondences and the system is overdetermined, so a
 least-squares-solution minimising $\norm{ A\mbf{e} } = \sum_{ij}
 (A\mbf{e})_{ij}^2$ is sought.  The solution is unique up to scale, since all
-multiples of $\mbf{e}$ will satisfy \eqref{eq:stacked_essential}. One therefore
+multiples of $\mbf{e}$ will satisfy \eqref{eq:stacked_essential}---this is also
+the reason why the scale of the translation cannot be determined. One therefore
 introduces the constraint $\norm{ \mbf{e} } = 1$ which also excludes a trivial
 zero solution.
 
@@ -418,7 +419,7 @@ The simplified algorithm is shown in \autoref{alg:ransac}
 
 One step remains to recover the relative camera pose from corresponding points.
 As per the derivation in \autoref{sec:epipolar}, the rotation and translation
-between the two cameras is encoded in $E$. Given an essential Matrix,
+between the two cameras is encoded in $E$. Given an essential matrix,
 \citet[ch. 9.6]{h&z2004} show that there are four mathematically valid
 decompositions of $E$ into $R$ and $T$, corresponding to four distinct
 geometrical scenarios \citep[see][ch. 9.6]{h&z2004}. Only one of the
