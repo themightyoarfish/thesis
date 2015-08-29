@@ -6,10 +6,13 @@ sep=space]{data/gut_rosenkrantz_detector_SIFT_resize_4_ratio_0.800000.dat}\datat
    \begin{axis}[
          xlabel=\vphantom{Image Number},
          % ylabel={Angular difference},
+         yticklabels={},
          yticklabel pos=right,
          xtick=data,
          legend pos=north east,
          scale=.6,
+         ymin=0,
+         ymax=110,
       ]
       \pgfplotstablegetrowsof{\datatablenoresize}
       \pgfmathsetmacro\yfin{\pgfmathresult - 6}

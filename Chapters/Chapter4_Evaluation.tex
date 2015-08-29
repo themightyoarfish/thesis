@@ -204,13 +204,13 @@ reference frame $0$ is omitted since the translation vector to compare with is
 $(0,0,0)$.
 
 \begin{figure}[h]
-   \begin{subfigure}{.5\linewidth}
+   \begin{subfigure}[b]{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_direction.tex}
       \caption{AKAZE features}
       \label{fig:train_KAZE_direction}
    \end{subfigure}
-   \begin{subfigure}{.5\linewidth}
+   \begin{subfigure}[b]{.5\linewidth}
       \centering      
       \input{gfx/train_SIFT_direction.tex}
       \caption{SIFT features}
@@ -284,9 +284,10 @@ of limited use.
 
 For the AKAZE descriptor, only the full resolution comes reasonably close in
 magnitude and somewhat in slope. Wit SIFT, the slope is more accurately
-reproduced with $s=2$, but strangely less accurately on full resolution. For the
-smallest scale, the estimate degenerates
-strongly.
+reproduced with $s=2$, but strangely less accurately on full resolution. It is
+possibl that the reduction in noise brought about by downsampling can improve
+the estimate, but the other experiments do not show it. For the
+smallest scale, the estimate degenerates strongly.
 
 Generally is can be stated that the estimates are less close than those for the
 train data set, but also that large movement along the optical axis shows the
@@ -294,13 +295,13 @@ limits of this simple approach at scale estimation. Realistically, the user will
 not move as erratically so this kind of scenario is extreme.
 
 \begin{figure}[h]
-   \begin{subfigure}{.5\linewidth}
+   \begin{subfigure}[b]{.5\linewidth}
       \centering      
       \input{gfx/manor_KAZE_dist_ratio_plot.tex}
       \caption{AKAZE features}
       \label{fig:manor_KAZE_dist_ratio}
    \end{subfigure}
-   \quad\begin{subfigure}{.5\linewidth}
+   \quad\begin{subfigure}[b]{.5\linewidth}
       \centering      
       \input{gfx/manor_SIFT_dist_ratio_plot.tex}
       \caption{SIFT features}

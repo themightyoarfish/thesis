@@ -6,10 +6,12 @@ sep=space]{data/bahnhof_detector_SIFT_resize_4_ratio_0.800000.dat}\datatabledoub
    \begin{axis}[
          xlabel=\vphantom{Image Number},
          % ylabel={Angular difference},
-         yticklabel pos=right,
+         yticklabels={},
          xtick=data,
          legend pos=north east,
          scale=.6,
+         ymin=80,
+         ymax=120,
       ]
       \pgfplotstablegetrowsof{\datatablenoresize}
       \pgfmathsetmacro\yfin{\pgfmathresult - 4}
