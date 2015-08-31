@@ -11,85 +11,7 @@
    11pt,
 ]{scrreprt}
 
-\usepackage{placeins}
-\usepackage{subcaption}
-\usepackage[dvipsnames,table]{xcolor}
-\usepackage{multirow}
-\usepackage{graphicx}
-\usepackage{tikz}
-\usepackage{pdfpages}
-
-%% Pgfplots stuffs %%
-\usepackage{pgfplots}
-\pgfplotscreateplotcyclelist{color list}{%
-   mark=*,black          \\%
-   mark=*,RoyalBlue           \\%
-   mark=*,webgreen         \\%
-   mark=*,webbrown\\%
-   mark=*,orange         \\%
-   mark=*,blue           \\%
-   mark=*,brown          \\%
-   mark=*,cyan           \\%
-   mark=*,green!70!black \\%
-   mark=*,magenta        \\%
-   mark=*,gray           \\%
-}
-\pgfplotscreateplotcyclelist{mylist}{
-   mark=*,black        \\%
-   mark=*,RoyalBlue          \\%
-   mark=*,webgreen         \\%
-   mark options=solid,mark=o,black,densely dashed\\%
-   mark options=solid,mark=o,RoyalBlue,densely dashed\\%
-   mark options=solid,mark=o,webgreen,densely dashed\\%
-}
-\pgfplotsset{
-   grid style={dotted,gray},
-   every axis/.append style={grid=both},
-   every axis plot/.append style=
-   {
-      line width=1.2pt,
-      mark options=solid,
-   },
-   cycle list name=color list,
-   legend style={
-      legend pos=south west,
-      font=\tiny,
-      legend style={row sep=-4pt},
-      fill=white, 
-      fill opacity=0.6,
-      draw opacity=1,
-      text opacity=1,
-   }
-}
-
-% compile plots to external file and then include -> faster compilation
-\usepgfplotslibrary{external} 
-\tikzexternalize[prefix=gfx/autogen/,optimize command away=\includepdf]
-%% End Pgfplots stuffs %%
-
-\usepackage{pgfplotstable}
-\usepackage{mathtools}
-\usepackage{stackengine}\stackMath % to use \stackgap for \underbrace spacing
-\usetikzlibrary{arrows.meta, calc, intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
-\usepackage{IEEEtrantools}
-\usepackage[english]{babel}
-\usepackage{setspace} % for adjustment of line spacing
-\usepackage[lined,boxed,linesnumbered]{algorithm2e}
-
-% \expandafter\def\csname ver@subfig.sty\endcsname{}
-\bibliographystyle{apa}
-
-\newcommand{\mbf}[1]{\mathbf{#1}} % shortcut for vector notation
-
 \input{classicthesis-config} % all custom classicthesis config stuff
-
-\usepackage{chngcntr} % defines \counterwithin
-\counterwithin{figure}{chapter} % number figures as chaptno.figno
-\counterwithin{equation}{chapter} % number equations as chaptno.eqno 
-
-\SetAlCapSkip{1ex} % algorithm2e distance between caption an algorithm
-\let\originaleqref\eqref
-\renewcommand{\eqref}{equation~\originaleqref}
 
 \begin{document}
 
@@ -97,7 +19,7 @@
 \pagenumbering{roman}
 \pagestyle{plain}
 
-%********************************************************************
+%*******************************************************
 % Frontmatter
 %*******************************************************
 \thispagestyle{empty}
@@ -107,10 +29,10 @@
 
 \pagestyle{scrheadings}
 % \cleardoublepage\include{FrontBackmatter/Contents}
-%********************************************************************
+
+%*******************************************************
 % Mainmatter
 %*******************************************************
-%\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
 
@@ -143,5 +65,3 @@
 \include{Chapters/ChapterEND_references}
 
 \end{document}
-% ********************************************************************
-
