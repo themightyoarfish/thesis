@@ -61,7 +61,7 @@
 %% Other stuffs
 \usepackage{mathtools}
 \usepackage{stackengine}\stackMath % to use \stackgap for \underbrace spacing
-\usetikzlibrary{arrows.meta, calc, intersections} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
+\usetikzlibrary{arrows.meta,calc,intersections,positioning} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
 \usepackage[english]{babel}
 \usepackage{setspace} % for adjustment of line spacing
 \usepackage[lined,boxed,linesnumbered]{algorithm2e}
@@ -165,7 +165,7 @@ iOS\xspace}
 % ******************************************************************** 
 % Packages with options that might require adjustments
 % ******************************************************************** 
-\PassOptionsToPackage{latin9}{inputenc}	% latin9 (ISO-8859-9) = latin1+"Euro sign"
+\PassOptionsToPackage{utf8}{inputenc}	% latin9 (ISO-8859-9) = latin1+"Euro sign"
 \usepackage{inputenc}				
 
 %\PassOptionsToPackage{ngerman,american}{babel}   % change this to your language(s)

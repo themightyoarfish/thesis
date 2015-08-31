@@ -102,13 +102,13 @@ giving the camera's rotation relative to the world frame and $t \in
 Then the projection of a point $\mbf{X}$
 in world coordinates onto the image plane becomes
 
-\begin{IEEEeqnarray}{rCl}
+\begin{IEEEeqnarray}{rCl}\label{eq:projection_rt}
    \mbf{x} & = & P \mbf{X}\\
    \mbf{x} & = & \left(\begin{array}{ccc}
    f & 0 & 0 \\
    0 & f & 0 \\
    0 & 0 & 1
-   \end{array}\right) \left[R \mid t\right] \mbf{X} \label{eq:projection_rt}
+   \end{array}\right) \left[R \mid t\right] \mbf{X}
 \end{IEEEeqnarray}
 
 \subsection{Camera Intrinsics}

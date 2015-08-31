@@ -5,10 +5,10 @@ SPEED_FLAGS=-draftmode --interaction=batchmode
 all: Thesis.pdf
 
 Thesis.pdf: $(TEX_SOURCES) FrontBackMatter/Titlepage.pdf
-	$(TEX_CMD) $(SPEED_FLAGS)"Thesis.tex";
+	$(TEX_CMD) -draftmode "Thesis.tex";
 	bibtex "Thesis";
 	$(TEX_CMD) $(SPEED_FLAGS) "Thesis.tex" > /dev/null 2>&1;
-	$(TEX_CMD) "Thesis.tex" > /dev/null 2>&1;
+	$(TEX_CMD) --interaction=batchmode "Thesis.tex" > /dev/null 2>&1;
 	open -g -a Skim "Thesis.pdf"
 
 once: $(TEX_SOURCES) FrontBackMatter/Titlepage.pdf
