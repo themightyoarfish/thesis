@@ -73,7 +73,8 @@ their descriptors can be compared and the best match according to some metric
 can be selected for each keypoint. The matches found can then be used as
 corresponding points for relative pose estimation.
 
-Classical state-of-the-art detectors include e.g. SIFT \citep{lowe1999}, SURF
+Classical state-of-the-art detectors include e.g. \emph{Scale-invariant feature
+transform} \citep{lowe1999}, \emph{Speeded-up robust features}
 \citep{bay2006} which both compute real-valued descriptors. A natural criterion
 for selecting the best matching keypoint for a given keypoint is the $L_2$-norm
 of the difference of their descriptors, which is a relatively expensive
@@ -84,19 +85,26 @@ hardware increased the demand for faster detection and matching of features and
 many solutions have been proposed. On the one hand, efforts have been made at
 faster feature detection algorithms in general (such as SURF or FAST
 \citep{rosten2005}), but most promising are those which compute binary instead
-of real-valued descriptors. The matching of features between images is an
+of real-valued descriptors. The matching of $n$ features between images is an
 $\mathcal{O}(n^2)$ operation when done with brute force, thus often placing a
 limit on the computational efficiency of the whole process. On real hardware,
 floating point operations are generally less efficient when compared to integer
-or binary arithmetic. While for real-valued descriptors $d_1,d_2$ with size $n$,
-an $L_2$-norm $\sqrt{\sum_{i=1}^n (d_1^i - d_2^i)^2}$ must be evaluated,
-binary strings can be compared with the Hamming distance $\sum_{i=1}^n d_1^i
-\otimes d_2^i$ which is much faster. These detectors include BRIEF
+or binary arithmetic. While for real-valued descriptors $d_1,~d_2$ with size $n$,
+an $L_2$-norm 
+\begin{equation*}
+   \sqrt{\sum_{i=1}^n (d_1^i - d_2^i)^2}
+\end{equation*}
+must be evaluated,
+binary strings can be compared with the Hamming distance 
+\begin{equation*}
+   \sum_{i=1}^n d_1^i \otimes d_2^i   
+\end{equation*}
+which is much faster. These descriptors include but are not limited to BRIEF
 \citep[Binary Robust Independent Elementary Features]{calonder2010}, ORB
 \citep[Oriented BRIEF]{rublee2011} and FREAK \citep[Fast Retina
 Keypoint]{ortiz2012}. While some invariances are sacrificed in favour of
 performance (such as rotation invariance of BRIEF, corrected by ORB), they are
-claim to match the repeatability of SIFT and others for many use cases while
+claimed to match the repeatability of SIFT and others for many use cases while
 being much faster to compute and compare. Another recent development by
 \citet{alcantarilla2013} are AKAZE features, building on and accelerating the
 previously proposed KAZE detector \citep{alcantarilla2012}, also using binary
@@ -105,5 +113,70 @@ as it offers significant speed improvements over SIFT or SURF while sacrificing
 no quality in the tested scenarios (see \autoref{ch:evaluation}).
 
 \subsection{SIFT \& AKAZE}
+
+The SIFT detector attempts to find keypoints by convolving an input image with
+gaussian kernels of successively larger variance, thus building a stack of image
+\emph{scales}. This process is repeated for several \emph{octaves}, each starting
+from a downsampled version of one of the blurred images from the previous scale
+octave. The resulting pyramid is termed \emph{scale space}.  From these gaussian
+images, difference-of-gaussians are computed by subtracting neighbours in scale
+space. These difference images approximate an application of the Laplacian of
+Gaussian (a Laplacian filter with prior smoothing to remove noise) which computes
+the second spatial derivatives of the image and whose extremes are locations of
+rapid intensity change like edges or corners. Within this scale space, extrema
+are found which are such pixels in the DOG images whose absolute values are
+maximal or minimal in comparison with their twenty-six neighbours in scale
+space. This search is conducted in all DOG images for all octaves which
+contributes to the scale invariance. After locating the keypoint with subpixel
+accuracy in the image, keypoints are discarded if their absolute DOG value is
+below some threshold as those are unstable and unlikely to be found under
+differenc conditions. Furthermore, the Hessian of the
+image (the matrix of second-order partial derivatives of the image intensity
+function) is computed to filter out keypoints on edges as they are not accurately
+localised and thus likewise unstable. Descriptors are computed by assigning a
+primary orientation after analysing the intensity gradients in the region around the
+keypoint and binning them into histograms. A keypoint's coordinate system is
+rotated according to this primary orientation, thus achieving rotation
+invariance. The resulting descriptor has 128 elements which will occupy at least
+as many bytes.
+
+In contrast to SIFT, where the scale space construction is linear since
+convolution is linear, the scale space in AKAZE is nonlinear. Gaussian blurring
+(a form of isotropic diffusion) at successively higher scale smooths not only
+noise, but also true object boundaries which decreases the accuracy of
+localising keypoints. A nonlinear scale space blurs the image in a way that
+respects the local image structure and thus preserves object boundaries while
+smoothing out noise. A visualisation of the difference is shown in
+\autoref{fig:lin_vs_nonlin_diffusion}. The diffusion is large in homogeneous
+areas and small in areas of significant intensity change.  A nonlinear scale
+space is built for AKAZE by means of fast explicit diffusion
+\citep{grewenig2010} and the diffusivity is adapted by considering the magnitude
+of the image gradient at a given point---meaning that it will be smaller for
+areas of strong change and larger for others. As in SIFT, the scale space
+consists of several octaves, each downsampled by two with respect to the
+previous octave. The Hessian matrix determinant is used to identify possible
+keypoints (in SIFT, this is used to filter out bad candidates),  but the
+candidate must be extremal compared to other keypoint candidates in its
+neighbourhood instead of neighbouring pixels. The window searched depends on the
+scale at which the keypoint is located (the window is larger at higher scales
+with more blur).
+
+\begin{figure}[h]
+   {\centering      
+      \includegraphics[width=.5\textwidth]{gfx/lin_vs_nonlin_diffusion2.png}
+      \caption[Linear vs. nonlinear diffusion]{Image from \citep[p.120,121]{weickert1998}. Linear diffusion on the left,
+   anisotropic nonlinear diffusion on the right.}
+   \label{fig:lin_vs_nonlin_diffusion}}
+\end{figure}
+
+The AKAZE descriptor is obtained from dividing the image region around a
+keypoint into a grid and then performing binary tests between all such grid
+cells $i,~j$ which test whether $f(i) > f(j)$ for some function $f$ which
+encapsulates some information of the cell \citep{yang2012}. To achieve rotation
+invariance, this grid is rotated according to the dominant orientation computed
+by considering the image derivatives---already computed for the detection---in
+the neighbourhood \citep{alcantarilla2012}. The results of these binary test are
+assembled into a binary vector. Its size can be adjusted by making the grid
+coarser or finer.
 
 

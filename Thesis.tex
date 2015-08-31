@@ -64,7 +64,7 @@
 
 % compile plots to external file and then include -> faster compilation
 \usepgfplotslibrary{external} 
-\tikzexternalize[prefix=gfx/,optimize command away=\includepdf]
+\tikzexternalize[prefix=gfx/autogen/,optimize command away=\includepdf]
 %% End Pgfplots stuffs %%
 
 \usepackage{pgfplotstable}
@@ -126,6 +126,8 @@
 
 \listoffigures
 
+\newpage % #wtflatex Funnily, if I leave this out, the below statement applies to the page this list ist typeset on. This is ridiculous, how am I the first one to see this?
+
 \pagenumbering{arabic}
 
 \include{Chapters/Chapter1_Introduction}
@@ -134,7 +136,9 @@
 
 \include{Chapters/Chapter3_Challenges}
 
-\include{Chapters/Chapter4_Evaluation}
+\include{Chapters/Chapter4_Application}
+
+\include{Chapters/Chapter5_Evaluation}
 
 \include{Chapters/ChapterEND_references}
 

@@ -9,6 +9,7 @@
 *.dpth
 *.md5
 gfx/*.pdf
+gfx/autogen/
 *.auxlock
 *.lof
 *.lot
