@@ -19,7 +19,7 @@ FrontBackMatter/Titlepage.pdf: FrontBackMatter/Titlepage.tex
 	cd FrontBackMatter; $(TEX_CMD) Titlepage.tex; cd ..; 
 
 clean:
-	$(RM) *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*.aux gfx/*.log *.toc *.bbl *.blg *.out gfx/autogen/*figure*.pdf gfx/autogen/*.dpth gfx/autogen/*.md5 gfx/autogen/*.log
+	$(RM) Thesis.pdf *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*.aux gfx/*.log *.toc *.bbl *.blg *.out gfx/autogen/*
 
 %.pdf: gfx/%.tex
 	$(TEX_CMD) -jobname $(basename $@) -output-directory gfx '\documentclass{standalone} \usepackage[dvipsnames]{xcolor} \usepackage{tikz,pgfplots} \begin{document} \input{' $< '} \end{document}';
