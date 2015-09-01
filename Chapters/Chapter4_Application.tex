@@ -22,7 +22,7 @@ The software development kit for the platform employs Objective-C for most
 high-level APIs and C for more low-level functionality. In regards to
 application design, the Model-View-Controller (see \autoref{fig:mvc}) pattern is
 used throughout the Cocoa library which incorporates the standard
-(\code{Foundation} classes), graphical user interface (\code{AppKit} on OSX,
+(\code{Foundation} classes) and graphical user interface (\code{AppKit} on OSX,
 \code{UIKit} on iOS) libraries as well as \code{Core Data} for persistence. For
 applications with little or no need for data manipulation, the controller
 objects can also fill the role of the model.  For every view hierarchy, a view
@@ -205,6 +205,29 @@ struct CVMatWrapperImpl
 \end{lstlisting}
 
 \subsection{View Controllers}
+
+\subsection*{\code{MainViewController}}
+
+When the app starts up, the user is shown a \code{MainViewController} which
+offers a choice whether to make a new rephotograph or view existing ones. 
+
+\subsection*{\code{SettingsViewController}}
+
+The \code{SettingsViewController} possesses three panels which allow to
+modify the color of the edge overlay and insert authentication data for
+future use with an online platform the third panel is unused in the current
+version.
+
+\subsection*{\code{PhotoChooserController}}
+\subsection*{\code{ResultViewController}}
+\subsection*{\code{ELCImagePickerController}}
+
+For the task of reviewing rephotographs, the \code{ELCImagePickerController} is
+used. Contrarily to the built-in \code{UIImagePickerController}, this
+reimplementation by \citet{nutting2013} allows to display a specific asset, like
+a photo album instead of all assets there are. In the album display, the user is
+shown the new photographs of each rephoto and upon selection is presented a
+\code{ResultViewController}
 
 \subsection{Categories}
 
