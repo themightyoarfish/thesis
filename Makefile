@@ -1,4 +1,4 @@
-TEX_SOURCES=Thesis.tex Chapters/*.tex classicthesis-config.tex FrontBackMatter/*.tex
+TEX_SOURCES=Thesis.tex Chapters/*.tex classicthesis-config.tex gfx/*.tex
 TEX_CMD=pdflatex -shell-escape
 SPEED_FLAGS=-draftmode --interaction=batchmode 
 
