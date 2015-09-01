@@ -1,0 +1,53 @@
+\newlength{\nodedist}
+\setlength{\nodedist}{5cm}
+\newlength{\defaultpgflinewidth}
+\setlength{\defaultpgflinewidth}{\pgflinewidth}
+\begin{tikzpicture}[
+      mynode/.style={
+         text width=4cm,
+         draw,
+         rounded corners=5pt,
+         shape=rectangle,
+         minimum width=1cm,
+         text depth=2cm,
+         inner sep=5pt,
+         outer sep=3,
+      },
+      node distance=\nodedist,
+      arrow label/.style={
+         midway,
+         fill=white,
+         draw,
+         shape=rectangle,
+         rounded corners=3pt,
+         line width=\defaultpgflinewidth,
+         draw=black,
+         text=black,
+      },
+      arrow/.style={
+         line width=1.7pt,
+         ->,
+         RoyalBlue
+      },
+   ]
+   \draw (0,0) node[mynode] (model) {
+      \makebox[4cm]{Model}\\
+      \hrulefill \\
+   };
+   \node[mynode,right=of model] (view) {
+      \makebox[4cm]{View}\\
+      \hrulefill \\
+   };
+
+   \node[mynode] (controller) at ($(model) !0.5! (view) + (0,-\nodedist)$) {
+      \makebox[4cm]{Controller}\\
+      \hrulefill \\
+   };
+   \draw[arrow] (controller.west) to[bend left]  node[arrow label] {Change state} (model.south);
+   \draw[arrow] (controller.east) to[bend right]  node[arrow label] {Update display} (view.south);
+   \draw[arrow]  (view.west) to[bend right]  node[arrow label] {Send user input} (controller.north);
+   \draw[arrow]  (view.north) to[bend right]  node[arrow label] {Request state} (model.north);
+   \draw[arrow]  (model.east) to[bend left] node[arrow label] {Notify of change} (view.north west);
+
+\end{tikzpicture}
+

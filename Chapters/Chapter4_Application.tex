@@ -28,19 +28,12 @@ little or no need for data manipulation, the controller objects can also fill
 the role of the model.  For every view hierarchy, a view controller must exist
 to present it to the user and mediate interaction with them.
 
-% \begin{tikzpicture}[
-%       every node/.style={text width=4cm,draw,rounded
-%       corners=5pt,shape=rectangle,minimum width=1cm,text depth=2cm,inner sep=5pt},
-%    ]
-%    \draw (0,0) node (model) {
-%          \makebox[4cm]{Model}\\
-%          \hrulefill \\
-% };
-%    \node[text width=4cm,right=3cm of model] (view) {
-%          \makebox[4cm]{View}\\
-%          \hrulefill \\
-%    };
-% \end{tikzpicture}
+\begin{figure}[h]
+   {\centering      
+      \input{gfx/mvc.tex}
+   \caption{Model-View-Controller pattern}
+   \label{fig:mvc}}
+\end{figure}
 
 Generally, an iOS application is a sequence of view controllers presented to the
 user in various ways---some may be full-fledged screens, while others are only
