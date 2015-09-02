@@ -50,7 +50,8 @@ the application developed in this work is shown in \autoref{fig:storyboard}.
 
 \begin{figure}[h]
    {\centering      
-      \includegraphics[width=\textwidth]{gfx/storyboard.png}
+      \input{gfx/storyboard.tex}
+      % \includegraphics[width=\textwidth]{gfx/storyboard.png}
       \caption[Storyboard example]{The Storyboard of this application. There is
          always a root view controller on whose stack new controllers are pushed or
       popped from.}
@@ -211,14 +212,22 @@ struct CVMatWrapperImpl
 When the app starts up, the user is shown a \code{MainViewController} which
 offers a choice whether to make a new rephotograph or view existing ones. 
 
+\subsection*{\code{PhotoChooserController}}
+
+This view controller displays a scrollable and pannable view and a button to
+load a photograph into it. The photo is picked from the user's photo album.
+Furthermore, the navigation bar contains a button to access the settings
+(\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, see below) as well as a
+button to start the rephotograph
+(\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}).
+
 \subsection*{\code{SettingsViewController}}
 
 The \code{SettingsViewController} possesses three panels which allow to
 modify the color of the edge overlay and insert authentication data for
-future use with an online platform the third panel is unused in the current
-version.
+future use with an envisioned online platform. The third panel is unused in the current
+version and can be used for other kinds of preferences.
 
-\subsection*{\code{PhotoChooserController}}
 \subsection*{\code{ResultViewController}}
 \subsection*{\code{ELCImagePickerController}}
 

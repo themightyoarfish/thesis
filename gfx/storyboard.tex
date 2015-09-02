@@ -1,0 +1,16 @@
+\begin{tikzpicture}[
+      spy using outlines={circle,
+         RoyalBlue,
+         magnification=2,
+         size=8cm,
+      }
+   ]
+   \node[anchor=north west,inner sep=0] at (0,0) {\includegraphics[width=\textwidth]{gfx/storyboard.png}};
+   \spy[
+      every spy on node/.append style={ultra thick},
+      spy connection path={
+         \draw[ultra thick] (tikzspyonnode) -- (tikzspyinnode);
+      }
+   ] on (6.5,-3) in
+   node[fill=white,ultra thick] at (6,-10);
+\end{tikzpicture}
