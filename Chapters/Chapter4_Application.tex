@@ -275,11 +275,52 @@ shown the new photographs of each rephoto and upon selection is presented a
 
 Code reuse in Objective-C can be accomplished by inheritance as in other
 object-oriented languages, but often, when only one piece of behaviour is to be
-added, the lightweight Category concept is employed. A Category on a class adds
-methods or properties to that class and can also override functionality. The
-header file declaring the category can be included by all clients that wish to
-make use of the modified or added behaviour, and left out by all others. This
-way, no unnecessarily large class hierarchy is created.
+added, not overridden\footnote{The behaviour is undefined when a Category method
+has the same signature as one of the class \citep{customizing}}, the
+lightweight Category concept is employed. A Category on a class adds methods
+or properties to that class The header file declaring the category can be
+included by all clients that wish to make use of the modified or added
+behaviour, and left out by all others. This way, no unnecessarily large class
+hierarchy is created.
+
+In this application, categories are used for different purposes. They are
+summarised in \autoref{tab:categories}.
+
+      \rowcolors{2}{gray!5}{white} % alternating colours
+\begin{table}
+   \begin{tabularx}{\linewidth}{>{\ttfamily}p{4cm}X}
+      \toprule
+      \rowcolor{white}
+      {\rmfamily Category Name}           & Function \\
+      \midrule
+      NSMutableURLRequest (RephotoUpload) & Adds method to post an rephoto to an
+      experimental server via HTTP \\
+      ALAssetsLibrary (CustomPhotoAlbum)  & Adds method to add an image to a
+      specific album, not possible per default. Used to save rephotos to the
+      \code{Rephotos} album \\
+      NSUserDefaults (UIColor)            & By default, only some types can be
+      persistently saved in the user defaults. Adds method to save colours. \\
+      CALayer (UIColor)                   & Properties for view objects can be
+      set in Interface Builder, but only if they are of object type. To set a
+      view's backing layer's border colour outside of the code, a colour
+      property of object type is defined, mapped to the C type \code{CGColor}
+      used by \code{CALayer}. \\
+      UIBezierPath (Arrow)                & Adds a method to generate an arrow
+      shape with a bézier curve. \\
+      UIImage (Zoom)                      & Adds a method to crop an image to a
+      rectangle centered on the image center, effectively zooming in. \\
+      UIScrollView (Center)               & Adds methods to center the content
+      and zoom to a particular size \\
+      UIColor (CustomColors)              & Contrary to Android, iOS possesses
+      no Resources framework, so this Category declares some commonly used
+      colours for the user interface \\
+      UIView (Effects)                    & Adds some animation methods to all
+      views to avoid repeating boilerplate code \\
+      \bottomrule
+   \end{tabularx}
+   \caption{Summary of categories}
+   \label{tab:categories}
+\end{table}
 
 \subsection{Other Classes}
 
