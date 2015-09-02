@@ -12,7 +12,7 @@ iOS is the operating system running on all of Apple's mobile devices. It is
 currently\footnote{\today\ \citep{ios8}} at version 8.4.1 with its successor iOS
 9 in beta stadium. Code is compiled by the clang compiler families and thus all
 languages supported by this compiler can be used. The primary development
-language is Objective-C, a strict superset of the C language\footnote{There is
+language is Objective-C, a strict, object-oriented superset of the C language\footnote{There is
    no precise definition which C version it is a superset of, except that it is
    ANSI standardised; For each C version supported by the compiler, Objective-C
 will be compatible with it.}. Code of these languages can be freely mixed. An
@@ -51,10 +51,8 @@ the application developed in this work is shown in \autoref{fig:storyboard}.
 \begin{figure}[h]
    {\centering      
       \input{gfx/storyboard.tex}
-      % \includegraphics[width=\textwidth]{gfx/storyboard.png}
       \caption[Storyboard example]{The Storyboard of this application. There is
-         always a root view controller on whose stack new controllers are pushed or
-      popped from.}
+      always a root view controller on whose stack new controllers are pushed or popped from.}
    \label{fig:storyboard}}
 \end{figure}
 
@@ -205,30 +203,65 @@ struct CVMatWrapperImpl
 @end
 \end{lstlisting}
 
+The bulk of the work is done inside the utility class' \code{ImageUtils} static
+methods. To compute the pose difference between two frames, clients can call the
+public method
+\code{+[computePoseDifferenceBetweenCamera:
+secondCamera:calibrationFile:scale:]}. The two images must be passed, as well as
+the path to a calibration file in OpenCV's \code{FileStorage} format. A scale
+parameter can be used to speed up the computation by downsampling the images.
+Internally, the method converts the images, uses OpenCV image processing
+functions to compute the pose difference and the average distance of the matched
+features to the first camera. The client is returned an \code{NSDictionary}
+containing the rotation, translation, average point distance, and---should the
+computation fail---an error code in which case all other values are invalid.
+
 \subsection{View Controllers}
 
 \subsection*{\code{MainViewController}}
 
+\newcommand*{\button}[1]{
+   \tikzexternaldisable
+   \tikz[baseline=-.5ex]{\node[inner sep=1pt,outer sep=0,draw,rounded corners=2pt]{\small\texttt{#1}};}
+   \tikzexternalenable
+}
+
 When the app starts up, the user is shown a \code{MainViewController} which
-offers a choice whether to make a new rephotograph or view existing ones. 
+offers a choice whether to make a new rephotograph or view existing ones.
+Clicking the \button{Take Rephoto} button will trigger a segue to a
+\code{PhotoChooserController}, while tapping \button{View Rephotos} will modally
+present an \code{ELCImagePickerController}.
 
 \subsection*{\code{PhotoChooserController}}
 
-This view controller displays a scrollable and pannable view and a button to
-load a photograph into it. The photo is picked from the user's photo album.
+This view controller displays a scrollable and pannable view and a
+button \button{Choose Photo from Library} to
+load a reference photograph into it. The photo is picked from the user's photo album.
+Tapping 
 Furthermore, the navigation bar contains a button to access the settings
 (\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, see below) as well as a
 button to start the rephotograph
 (\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}).
+
+When an image is picked, the controller uses the Canny edge detection algorithm
+\citep{canny1986} to generate an overlay which will then help the user in
+finding the perfect aligment.
 
 \subsection*{\code{SettingsViewController}}
 
 The \code{SettingsViewController} possesses three panels which allow to
 modify the color of the edge overlay and insert authentication data for
 future use with an envisioned online platform. The third panel is unused in the current
-version and can be used for other kinds of preferences.
+version and can be used for other kinds of preferences such as the default type
+of visualisation for the necessary camera motion.
 
 \subsection*{\code{ResultViewController}}
+
+This controller must be passed a completed rephotograph in an \code{ImageData}
+object and displays the new image over the orginal. With a slider, the new image
+is horizontally clipped to some percentage of it width and can thus be
+dynamically unrolled over the original.
+
 \subsection*{\code{ELCImagePickerController}}
 
 For the task of reviewing rephotographs, the \code{ELCImagePickerController} is
@@ -239,6 +272,14 @@ shown the new photographs of each rephoto and upon selection is presented a
 \code{ResultViewController}
 
 \subsection{Categories}
+
+Code reuse in Objective-C can be accomplished by inheritance as in other
+object-oriented languages, but often, when only one piece of behaviour is to be
+added, the lightweight Category concept is employed. A Category on a class adds
+methods or properties to that class and can also override functionality. The
+header file declaring the category can be included by all clients that wish to
+make use of the modified or added behaviour, and left out by all others. This
+way, no unnecessarily large class hierarchy is created.
 
 \subsection{Other Classes}
 
