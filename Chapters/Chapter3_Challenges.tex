@@ -175,8 +175,34 @@ cells $i,~j$ which test whether $f(i) > f(j)$ for some function $f$ which
 encapsulates some information of the cell \citep{yang2012}. To achieve rotation
 invariance, this grid is rotated according to the dominant orientation computed
 by considering the image derivatives---already computed for the detection---in
-the neighbourhood \citep{alcantarilla2012}. The results of these binary test are
+the neighbourhood \citep{alcantarilla2012}. The results of these binary tests are
 assembled into a binary vector. Its size can be adjusted by making the grid
 coarser or finer.
 
+\section{Sorry, no title available}
+
+\tikzexternaldisable
+\begin{tikzpicture}[
+      every node/.append style={font=\small,text width=1.5cm,text centered},
+   boxnode/.style={outer sep=0,inner
+sep=4pt,fill=RoyalBlue,text=white,draw=gray,shape=rectangle,rounded
+corners=5pt,minimum height=1.3cm}]
+\tikzset{>=latex}
+\node[boxnode] (ref) {Reference photo};
+\node[boxnode,right=of ref] (first frame) {First frame};
+\node[boxnode,right=of first frame] (second frame) {Second frame};
+\node[draw] (t first ref) at ($(ref) !.5! (first frame) + (0,-3cm)$) {$T_{first,ref}$};
+
+\node[inner sep=0,shape=circle,draw] (triangulation) at ($(first frame) !.5! (second frame) +
+(0,-3cm)$) {Triangu-lation};
+
+\coordinate (c) at ($(t first ref.north) + (0,1em)$);
+\draw[->] (ref.south) |- (c) -- (t first ref);
+\draw[->] (first frame.south) |- (c) -- (t first ref);
+\draw (first frame) -- coordinate[midway] (c) (second frame);
+\draw[->] (c) -- (triangulation);
+\draw[->] (triangulation) -- (t first ref);
+
+\end{tikzpicture}
+\tikzexternalenable
 
