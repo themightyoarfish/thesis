@@ -43,6 +43,7 @@ around such issues (e.g. an algorithm developed by \citet{chum2005} or
 works well and needs fewer iterations than an 8-point approach \citep{li2006}.
 
 \subsection{Motion Degeneracy}
+\label{subsec:motion_degen}
 
 A second type of degeneracy occurs when the camera motion between two images has
 fewer degrees of freedom than the model to be estimated---the essential matrix.
@@ -179,30 +180,108 @@ the neighbourhood \citep{alcantarilla2012}. The results of these binary tests ar
 assembled into a binary vector. Its size can be adjusted by making the grid
 coarser or finer.
 
-\section{Sorry, no title available}
+\section{Challenges For The Application}
+\label{sec:app_challenges}
 
-\tikzexternaldisable
-\begin{tikzpicture}[
-      every node/.append style={font=\small,text width=1.5cm,text centered},
-   boxnode/.style={outer sep=0,inner
-sep=4pt,fill=RoyalBlue,text=white,draw=gray,shape=rectangle,rounded
-corners=5pt,minimum height=1.3cm}]
-\tikzset{>=latex}
-\node[boxnode] (ref) {Reference photo};
-\node[boxnode,right=of ref] (first frame) {First frame};
-\node[boxnode,right=of first frame] (second frame) {Second frame};
-\node[draw] (t first ref) at ($(ref) !.5! (first frame) + (0,-3cm)$) {$T_{first,ref}$};
+In the context of a rephotography application as in \citep{bae2010}, five
+primary obstacles in viewpoint reconstruction of a historic photograph can be
+identified.
+\begin{enumerate}
+   \item The necessary camera motion has six degrees of freedom---three for
+      translation and three for rotation---which are challenging for the user
+      to adjust simultaneously, as changing one parameter will often necessitate
+      adjustments for the others to improve the registration. Furthermore, the
+      number of degrees of freedom makes it difficult to communicate to the
+      user how they must move the camera.
+   \item Computing relative translation between two cameras from corresponding
+      image points is possible only up to an unknown scale (see
+      \autoref{sec:eight-point}), meaning it is impossible to
+      determine e.g. if an object viewed by the camera is small and close or
+      large and further away. This poses the problem of how to determine if the
+      user is close to the desired viewpoint and whether or not they have come
+      closer or moved further away over iterations. 
+   \item Relative pose estimation from corresponding points fails when the
+      motion between the two cameras approaches zero as this is a degenerate
+      configuration (see \autoref{subsec:motion_degen}), which is the ultimate goal
+      one wishes to achieve. When na\"ivley comparing the current camera image
+      to the reference photograph, the estimate for relative rotation and
+      translation would become increasingly unreliable as the camera approaches the
+      original viewpoint.
+   \item Automated computation of relative camera pose will rely on feature
+      detection to find correspondences. However, historical images will often
+      be vastly different from the current scene. Not only may the scene itself
+      have changed considerably, but also the historical image---having been
+      taken by a historical camera---may differ in contrast, sharpness and
+      colours. Feature detectors may not be able to reliably find
+      correspondences when comparing an old with a new photograph. Neither SIFT
+      nor AKAZE will reliably find correspondences with a current photo.
+   \item The calibration data---most importantly, focal length and principal
+      point---of the historical camera are often unknown. The calibration data
+      is needed for relative pose computation (see \autoref{sec:epipolar}).
+\end{enumerate}
 
-\node[inner sep=0,shape=circle,draw] (triangulation) at ($(first frame) !.5! (second frame) +
-(0,-3cm)$) {Triangu-lation};
+\citet{bae2010} address these issues in the following way.
+Initially, after loading a historical image, the user is instructed to
+take two photographs of the scene with a reasonably wide baseline (about
+20\textdegree). One of them, termed \emph{first frame} is supposed to be
+taken from some distance from the original viewpoint, the \emph{second
+frame} should be the user's best eyeballed approximation of it. The wide
+baseline allows for a more reliable 3D-reconstrution of the scene used to
+tackle problems 2. and 3. 
 
-\coordinate (c) at ($(t first ref.north) + (0,1em)$);
-\draw[->] (ref.south) |- (c) -- (t first ref);
-\draw[->] (first frame.south) |- (c) -- (t first ref);
-\draw (first frame) -- coordinate[midway] (c) (second frame);
-\draw[->] (c) -- (triangulation);
-\draw[->] (triangulation) -- (t first ref);
+SIFT features are computed and matched between the two images.
+Given these correspondences, 3D coordinates of the points can be computed. A
+selection of these is reprojected into the second frame after which the user
+identifies six or more points in the historical photograph corresponding to
+these points in the second frame. This allows estimating extrinsic and
+intrinsic camera parameters of the historical camera by running an optimisation
+algorithm on an initial estimate for relative rotation and translation between
+first frame and reference image as well as sensor skew, focal length and
+principal point of the historical camera (problem 5.).  The principal point's initial guess
+is found again with help of the user who identifies three sets of parallel lines
+in the historical image \citep[see][chapter 8.8]{h&z2004}.
 
-\end{tikzpicture}
-\tikzexternalenable
+The result is that the location of the reference camera relative to the first
+camera is known. During the homing process, the current camera frame is compared
+to the first frame (not the reference frame, avoiding problem 3.), which avoids
+degeneracy due to the wide baseline. Given the locations of the reference camera
+and the current frame's camera, each relative to the first frame, one can
+compute the location of the reference relative to the current frame and thus
+guide the user in the right direction. Hence, the reference photograph is not
+needed anymore after this initial step, circumventing problem 4.
 
+During homing, the current camera frame is warped according to the necessary
+rotation before being shown to the user, allowing them to focus only on the
+translation (problem 1.). This is possible since for rephotography
+dealing with structures usually at some distance, the rotation will be small,
+otherwise the warped image would be unusable.
+
+A remaining problem (2.) is that the scale of the necessary translation is unknown,
+so that only the direction is known. This poses the question of how to determine
+whether the user has come closer to the goal or not. It may be feasible to find
+the original viewpoint nonetheless, if it was possible to determine at least
+when the user reaches it, but this is impossible without further information. On
+top of that, it would make for a better user experience if also the distance to
+the goal could be communicated.
+
+A key observation in this regard is that the actual scale of the translation is
+irrelevant, it is sufficient that there be a way to make the scale consistent
+accross iterations. That is, it is unnecessary to know whether the goal is a
+specific distance aways, if one can ensure that the translations computed one
+after the other can be somehow meaningfully compared. For this, \citet{bae2010}
+observe that when triangulating 3D coordinates from corresponding points, their
+computed distance from the camera (the first frame) is inversely proportional
+to the distance between the cameras. Therefore, in each iteration, the scale of
+the world is computed by triangulating correspondences between the first and
+current frames. The scale is compared to the scale computed in the initial step
+for the first and second frames. Scaling the current translation vector by the
+ratio of the two scales makes the length consistent across iterations and
+decreasing with the distance to the goal.
+
+\autoref{fig:procedure} shows how the procedure works.
+\begin{figure}[h]
+   {\centering      
+      \input{gfx/ablauf.tex}
+   \caption{Rephotography procedure}
+   \label{fig:procedure}}
+\end{figure}
