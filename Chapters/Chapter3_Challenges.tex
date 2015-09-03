@@ -1,14 +1,12 @@
 \chapter{Challenges In Relative Pose Estimation}
 
 The success of recovery of relative pose mainly depends on two factors: The
-accuracy and correctness of image point correspondences and them not being in
-a degenerate configuration, so that they provide enough information about the
-scene.
-
-This chapter will examine the preconditions and the feasibility of pose recovery
-in realistic conditions. Several problematic cases will be identified and
-described. Furthermore, an assessment of different feature detection algorithms
-for the purpose of this work will be given.
+accuracy and correctness of image point correspondences and them not being in a
+degenerate configuration, so that an epipolar geometry can be estimated from
+them.  This chapter will examine the preconditions and the feasibility of pose
+recovery in realistic conditions. Several problematic cases will be identified
+and described. Furthermore, an assessment of different feature detection
+algorithms for the purpose of this work will be given.
 
 \section{Degenerate Configurations}
 
@@ -229,26 +227,53 @@ frame} should be the user's best eyeballed approximation of it. The wide
 baseline allows for a more reliable 3D-reconstrution of the scene used to
 tackle problems 2. and 3. 
 
-SIFT features are computed and matched between the two images.
-Given these correspondences, 3D coordinates of the points can be computed. A
-selection of these is reprojected into the second frame after which the user
-identifies six or more points in the historical photograph corresponding to
-these points in the second frame. This allows estimating extrinsic and
-intrinsic camera parameters of the historical camera by running an optimisation
-algorithm on an initial estimate for relative rotation and translation between
-first frame and reference image as well as sensor skew, focal length and
-principal point of the historical camera (problem 5.).  The principal point's initial guess
-is found again with help of the user who identifies three sets of parallel lines
-in the historical image \citep[see][chapter 8.8]{h&z2004}.
+SIFT features are computed and matched between the two images.  Given these
+correspondences, 3D coordinates of the points can be computed. A selection of
+these is reprojected into the second frame after which the user identifies six
+or more points in the historical photograph corresponding to these points in the
+second frame. This allows estimating extrinsic and intrinsic camera parameters
+of the historical camera by running an optimisation algorithm on an initial
+estimate for relative rotation and translation between first frame and reference
+image as well as sensor skew, focal length and principal point of the historical
+camera (problem 5.).  The principal point's initial guess is found again with
+help of the user who identifies three sets of parallel lines in the historical
+image \citep[see][chapter 8.8]{h&z2004}.
 
-The result is that the location of the reference camera relative to the first
-camera is known. During the homing process, the current camera frame is compared
-to the first frame (not the reference frame, avoiding problem 3.), which avoids
-degeneracy due to the wide baseline. Given the locations of the reference camera
-and the current frame's camera, each relative to the first frame, one can
-compute the location of the reference relative to the current frame and thus
-guide the user in the right direction. Hence, the reference photograph is not
-needed anymore after this initial step, circumventing problem 4.
+In this work, this problem is neglected and it is assumed that the original
+image can be matched with current photographs. This restriction is envisioned to
+be removed in the future.
+
+The result is that the pose of the reference camera relative to the first
+camera $T_{\text ref,first},~R_{\text ref,first}$ is known. During the homing
+process, the current camera frame is compared to the first frame (not the
+reference frame, avoiding problem 3.), which avoids degeneracy due to the wide
+baseline. Thus one obtains $T_{\text current,first},~R_{\text current,first}$.
+Given the locations of the reference camera and the current frame's camera, each
+relative to the first frame, one can compute the location of the reference
+relative to the current frame and thus guide the user in the right direction.
+
+\begin{IEEEeqnarray}{rCllt}
+   \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{X}{first} + \sub{T}{ref,first} & \hspace{1em}\\
+   \sub{X}{current}  & =  & \sub{R}{current,first}\sub{X}{first} + \sub{T}{current,first}\\[\baselineskip]
+   \sub{X}{first}    & =  & \sub{R^T}{current,first}\left(\sub{X}{current} -
+\sub{T}{current,first}\right) && (1, $R$ orthogonal)\IEEEnonumber\\
+   \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) \\
+                     &    & + \sub{T}{ref,first} & & (2, substitute 1)\IEEEnonumber\\
+   \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\sub{X}{current} \\
+                     &    & -
+   \sub{R}{ref,first}\sub{R^T}{current,first}\sub{T}{current,first} + \sub{T}{ref,first}
+\end{IEEEeqnarray}
+and thus
+\begin{equation}
+   \sub{T}{ref,current} = - \sub{R}{ref,first}\sub{R^T}{current,first}\sub{T}{current,first} + \sub{T}{ref,first}
+\end{equation}
+and
+\begin{equation}
+   \sub{R}{ref,current} = \sub{R}{ref,first}\sub{R^T}{current,first}
+\end{equation}
+
+Hence, the reference photograph is not needed anymore after this initial step,
+circumventing problem 4.
 
 During homing, the current camera frame is warped according to the necessary
 rotation before being shown to the user, allowing them to focus only on the
@@ -282,6 +307,6 @@ decreasing with the distance to the goal.
 \begin{figure}[h]
    {\centering      
       \input{gfx/ablauf.tex}
-   \caption{Rephotography procedure}
+      \caption{Rephotography procedure}
    \label{fig:procedure}}
 \end{figure}
