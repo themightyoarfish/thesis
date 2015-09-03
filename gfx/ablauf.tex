@@ -1,0 +1,64 @@
+\begin{tikzpicture}[
+      very thick,
+      node distance=1.5cm,
+      every node/.append style={font=\small,text width=1.5cm,text centered},
+      circle node/.style={inner sep=0,shape=circle,draw},
+      boxnode/.style={outer sep=0,inner
+         sep=4pt,fill=RoyalBlue,text=white,draw=gray,shape=rectangle,rounded
+      corners=5pt,minimum height=1.3cm},
+      descision node/.style={diamond,aspect=3,inner sep=5pt,draw,text centered},
+   ]
+   \tikzset{>=latex}
+   \node[boxnode] (ref) {Reference photo};
+   \node[boxnode,right=of ref] (first frame) {First frame};
+   \node[boxnode,right=of first frame] (second frame) {Second frame};
+   \node[draw] (t first ref) at ($(ref) !.5! (first frame) + (0,-3cm)$) {$T_{\text first,ref}$};
+
+   \node[circle node] (triangulation) at ($(first frame) !.5! (second frame) +
+   (0,-3cm)$) {Triangu-lation};
+
+   \coordinate (c) at ($(t first ref.north) + (0,1em)$);
+
+   \node[above] at (c) {\texttt{AKAZE}};
+   \draw[->] (ref.south) |- (c) -- (t first ref);
+   \draw[->] (first frame.south) |- (c) -- (t first ref);
+   \draw (first frame) -- coordinate[midway] (c) (second frame);
+   \draw[->] (c) -- (triangulation);
+   \draw[->] (triangulation) -- (t first ref);
+   \node[above] at (c) {\texttt{AKAZE}};
+
+   \begin{scope}[shift={(0cm,-5cm)}]
+      \node[opacity=.5,anchor=north west,inner sep=0] at (0,0) {\includegraphics[width=3cm]{gfx/pic.jpg}};
+      \draw (0,0) rectangle (3,-2);
+      \node (current frame) at (1.5,-0.5) {Current frame};
+      \draw[ultra thick,xshift=-1em,->] (1.5,-1.5) -- ++(100:1em);
+      \draw[ultra thick,xshift=+1em,->] (1.5,-1.5) -- ++(30:1em);
+
+      \node[circle node,right=of current frame] (triangulation2)
+      {Triangu-lation};
+      \node[draw,text width={}] (t first current) at ($(current frame) !.5! (triangulation2) +
+      (0,-3cm)$) {$T_{\text first,current}$};
+
+      \node[descision node,below=1cm of t first current] (ifequal) {$T_{\text first,current} =
+      T_{\text first,ref}$?};
+      \node[boxnode,right=of t first current] (final frame) {Final image};
+
+      \draw[->] (ifequal.west) -- ++(-2cm,0) |- (0,-1) node[midway,left=1em,rotate=90] {No};
+      \draw[->] (ifequal.east) -| (final frame.south) node[midway,right] {Yes};
+
+      \coordinate (c) at ($(t first current.north) + (0,1em)$);
+      \draw[->] (c) -- (t first current);
+      \draw (triangulation2) |- (c);
+
+      \draw[->] (first frame.north) -- ++(0,1em) -- ++(-5cm,0) -- ++(0,-4cm)
+      node[rotate=90,left=1em,midway]
+      {\texttt{AKAZE}} |-
+      (1.5,1) -| (triangulation2.north);
+      \draw[->] (1.5,0) -- ++(0,1);
+      \draw (3.5,1) |- (c);
+      \draw[->] (t first current) -- (ifequal);
+
+      \draw[|-|] (8.5cm,0) -- ++(0,-6cm) node[right=1em,midway,rotate=90,anchor=center] {Iterate};
+   \end{scope}
+   \draw[|-|] (8.5cm,1cm) -- ++(0,-4cm) node[right=1em,midway,rotate=90,anchor=center] {Preprocessing};
+\end{tikzpicture}
