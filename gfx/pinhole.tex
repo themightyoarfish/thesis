@@ -1,5 +1,10 @@
-\begin{tikzpicture}[every node/.style={outer sep=0,inner sep=0},
-   label distance=5pt]
+\begin{tikzpicture}[
+      every node/.style={
+         outer sep=0,
+         inner sep=0
+      },
+      label distance=5pt
+   ]
    \usetikzlibrary{calc}
    \fill (0,0) circle (2pt) node[label=below:{$C$}] (C) {};
    \draw[->,name path=y-axis] (C) -- ++(0,4cm);
@@ -12,8 +17,7 @@
    \draw[|-|] (0,-2cm) -- (3cm,-2cm) node[midway,below=1em] (f) {$f$};
 
    \draw[name path=ray] (C) -- (X);
-   \fill[name intersections={of=ray and image plane}]
-   (intersection-1) circle (2pt) coordinate (c);
+   \fill[name intersections={of=ray and image plane}] (intersection-1) circle (2pt) coordinate (c);
    \node[label=above left:{$x$}] (x) at (c) {};
 
    \draw[dashed] (0,3cm) node[left=1em] {$Y$} -- (X) -- (7cm,0)

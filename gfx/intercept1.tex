@@ -1,0 +1,38 @@
+\begin{tikzpicture}[very thick,node distance=2em]
+   \tikzset{>=Latex}
+   \def\camAngle{60}
+   \def\arrowLength{3em}
+   \node[label={180:{$c_1$}}] (c1) at (0,0) {};
+   \fill (c1) circle (3pt);
+   \node[below left=of c1] {first frame};
+   \draw[->] (c1) -- (\camAngle:\arrowLength);
+   \node[minimum size=1em,draw,label={90:Object}] (object) at (\camAngle:3cm) {};
+   \draw[dashed,name path=line1] (c1) -- (object) node[label={180:{$s$}}] {};
+   \node[right=3cm of c1,label={0:{$c_2$}}] (c2) {};
+   \fill (c2) circle (3pt);
+   \draw[->] (c2) -- ($(c2) !3em! (object)$) coordinate (tmp);
+   \draw[dashed,name path=line2] (c2) -- (object);
+   \node[below right=of c2] {current frame};
+   \draw[thin,|-|] ($(c1) + (0,-1em)$) -- ($(c2) + (0,-1em)$) node[below,midway] {$b=1$};
+
+   \draw[thin] (c1) ++(\camAngle:\arrowLength) arc (\camAngle:0:\arrowLength) -- (c1);
+   \node at (\camAngle/2:2em) {$\alpha$};
+
+   \pgfmathanglebetweenpoints{\pgfpointanchor{c2}{center}}{\pgfpointanchor{object}{center}}
+   \let\reverseAngle\pgfmathresult
+   \draw[thin] (tmp) arc (\reverseAngle:180:\arrowLength) -- (c2);
+   \pgfmathparse{\reverseAngle+(180-\reverseAngle)/2}
+   \node at ($(c2) + (\pgfmathresult:2em)$) {$\beta$};
+
+   \coordinate (tmp1) at ($(c1) + (0,1.5cm)$);
+   \coordinate (tmp2) at ($(c2) + (0,1.5cm)$);
+   \path[name path=second baseline] (tmp1) -- (tmp2);
+   \path[name intersections={of=second baseline and line1}] (intersection-1) coordinate (second c1);
+   \path[name intersections={of=second baseline and line2}] (intersection-1) coordinate (second c2);
+   \fill (second c1) circle (3pt) node[label={180:{$c_1^\prime$}}] {};
+   \fill (second c2) circle (3pt) node[label={0:{$c_2^\prime$}}] {};
+   \draw[|-|,thin,transform canvas={yshift=-1em}] (second c1) -- (second c2) node[below,midway] {$b^\prime$};
+
+   % \draw[thin,|-|,transform canvas={shift=(90+\camAngle:1em)}] (second c1) -- (object);
+\end{tikzpicture}
+

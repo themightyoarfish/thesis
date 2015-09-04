@@ -1,0 +1,27 @@
+\begin{tikzpicture}[very thick,node distance=2em]
+   \tikzset{>=Latex}
+   \def\camAngle{60}
+   \def\arrowLength{3em}
+   \node[label={180:{$c_1$}}] (c1) at (0,0) {};
+   \fill (c1) circle (3pt);
+   \node[below left=of c1] {first frame};
+   \draw[->] (c1) -- (\camAngle:\arrowLength);
+   \node[minimum size=1em,draw] (object) at (\camAngle:3cm) {};
+   \draw[dashed,name path=line1] (c1) -- (object) node[label={180:{$s_2$}}] {};
+   \node[label={0:{$c_3$}},right=5cm of c1] (c3) {};
+   \fill (c3) circle (3pt);
+   \draw[->] (c3) -- ($(c3) !3em! (object)$) coordinate (tmp);
+   \draw[dashed,name path=line2] (c3) -- (object);
+   \node[below right=of c3] {current frame};
+
+   \pgfmathanglebetweenpoints{\pgfpointanchor{c3}{center}}{\pgfpointanchor{object}{center}}
+   \let\reverseAngle\pgfmathresult
+   \draw[thin] (tmp) arc (\reverseAngle:180:\arrowLength) -- (c3);
+   \pgfmathparse{\reverseAngle+(180-\reverseAngle)/2}
+   \node at ($(c3) + (\pgfmathresult:2em)$) {$\beta^\prime$};
+
+   \draw[thin,|-|] ($(c1) + (0,-1em)$) -- ($(c3) + (0,-1em)$) node[below,midway] {$b=1$};
+
+   % \draw[thin,|-|,transform canvas={shift=(90+\camAngle:1em)}] (second c1) -- (object);
+\end{tikzpicture}
+

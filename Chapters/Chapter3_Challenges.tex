@@ -198,13 +198,13 @@ identified.
       large and further away. This poses the problem of how to determine if the
       user is close to the desired viewpoint and whether or not they have come
       closer or moved further away over iterations. 
-   \item Relative pose estimation from corresponding points fails when the
-      motion between the two cameras approaches zero as this is a degenerate
-      configuration (see \autoref{subsec:motion_degen}), which is the ultimate goal
-      one wishes to achieve. When na\"ivley comparing the current camera image
-      to the reference photograph, the estimate for relative rotation and
-      translation would become increasingly unreliable as the camera approaches the
-      original viewpoint.
+   \item Relative pose estimation from corresponding points becomes unstable
+      when the motion between the two cameras approaches zero, which is the
+      ultimate goal one wishes to achieve, as this is a degenerate configuration
+      (see \autoref{subsec:motion_degen}). When na\"ivley comparing the current
+      camera image to the reference photograph, the estimate for relative
+      rotation and translation would become increasingly unreliable as the
+      camera approaches the original viewpoint.
    \item Automated computation of relative camera pose will rely on feature
       detection to find correspondences. However, historical images will often
       be vastly different from the current scene. Not only may the scene itself
@@ -218,7 +218,7 @@ identified.
       is needed for relative pose computation (see \autoref{sec:epipolar}).
 \end{enumerate}
 
-\citet{bae2010} address these issues in the following way.
+\citet{bae2010} address all these issues in the following way.
 Initially, after loading a historical image, the user is instructed to
 take two photographs of the scene with a reasonably wide baseline (about
 20\textdegree). One of them, termed \emph{first frame} is supposed to be
@@ -235,13 +235,14 @@ second frame. This allows estimating extrinsic and intrinsic camera parameters
 of the historical camera by running an optimisation algorithm on an initial
 estimate for relative rotation and translation between first frame and reference
 image as well as sensor skew, focal length and principal point of the historical
-camera (problem 5.).  The principal point's initial guess is found again with
-help of the user who identifies three sets of parallel lines in the historical
-image \citep[see][chapter 8.8]{h&z2004}.
+camera (problem 5.).  Hence, the reference photograph is not needed anymore
+after this initial step, circumventing problem 4.  The principal point's initial
+guess is found again with help of the user who identifies three sets of parallel
+lines in the historical image \citep[see][chapter 8.8]{h&z2004}.
 
 In this work, this problem is neglected and it is assumed that the original
-image can be matched with current photographs. This restriction is envisioned to
-be removed in the future.
+image can be matched with current photographs, so it should not actually be
+historic. This restriction is envisioned to be removed in the future.
 
 The result is that the pose of the reference camera relative to the first
 camera $T_{\text ref,first},~R_{\text ref,first}$ is known. During the homing
@@ -255,8 +256,7 @@ relative to the current frame and thus guide the user in the right direction.
 \begin{IEEEeqnarray}{rCllt}
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{X}{first} + \sub{T}{ref,first} & \hspace{1em}\\
    \sub{X}{current}  & =  & \sub{R}{current,first}\sub{X}{first} + \sub{T}{current,first}\\[\baselineskip]
-   \sub{X}{first}    & =  & \sub{R^T}{current,first}\left(\sub{X}{current} -
-\sub{T}{current,first}\right) && (1, $R$ orthogonal)\IEEEnonumber\\
+   \sub{X}{first}    & =  & \sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) && (1, $R$ orthogonal)\IEEEnonumber\\
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) \\
                      &    & + \sub{T}{ref,first} & & (2, substitute 1)\IEEEnonumber\\
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\sub{X}{current} \\
@@ -272,38 +272,70 @@ and
    \sub{R}{ref,current} = \sub{R}{ref,first}\sub{R^T}{current,first}
 \end{equation}
 
-Hence, the reference photograph is not needed anymore after this initial step,
-circumventing problem 4.
-
-During homing, the current camera frame is warped according to the necessary
-rotation before being shown to the user, allowing them to focus only on the
-translation (problem 1.). This is possible since for rephotography
+During homing, Bae et. al warp the current camera frame according to the
+necessary rotation before being shown to the user, allowing them to focus only
+on the translation (problem 1.). This is possible since for rephotography
 dealing with structures usually at some distance, the rotation will be small,
-otherwise the warped image would be unusable.
+otherwise the warped image would be unusable. This simplification is also
+disregarded in this work, as achieving the correct rotation with the help of an
+overlayed edge image is easy enough, as long as one is directed to the correct
+spot.
 
-A remaining problem (2.) is that the scale of the necessary translation is unknown,
-so that only the direction is known. This poses the question of how to determine
-whether the user has come closer to the goal or not. It may be feasible to find
-the original viewpoint nonetheless, if it was possible to determine at least
-when the user reaches it, but this is impossible without further information. On
-top of that, it would make for a better user experience if also the distance to
-the goal could be communicated.
+A remaining problem (2.) is that the scale of the necessary translation is
+unknown, so that only the direction can be determined. This poses the question
+of how to find out whether the user has come closer to the goal or not. It may
+be feasible to find the original viewpoint nonetheless, if it could be
+determined at least when the user reaches it, but this is not the case without
+further information. On top of that, it would make for a better user experience
+if also the distance to the goal could be communicated.
 
 A key observation in this regard is that the actual scale of the translation is
 irrelevant, it is sufficient that there be a way to make the scale consistent
 accross iterations. That is, it is unnecessary to know whether the goal is a
-specific distance aways, if one can ensure that the translations computed one
+specific distance away, if one can ensure that the translations computed one
 after the other can be somehow meaningfully compared. For this, \citet{bae2010}
 observe that when triangulating 3D coordinates from corresponding points, their
 computed distance from the camera (the first frame) is inversely proportional
-to the distance between the cameras. Therefore, in each iteration, the scale of
-the world is computed by triangulating correspondences between the first and
-current frames. The scale is compared to the scale computed in the initial step
-for the first and second frames. Scaling the current translation vector by the
-ratio of the two scales makes the length consistent across iterations and
-decreasing with the distance to the goal.
+to the distance between the cameras. An intuition can be obtained from
+\autoref{fig:scale}.
 
-\autoref{fig:procedure} shows how the procedure works.
+\begin{figure}
+   {\centering      
+      \begin{subfigure}{\linewidth}
+      \input{gfx/intercept1.tex}
+      \caption{Per the intercept theorem $\frac{|s c_1^\prime|}{|s c_1|} = \frac{b^\prime}{b}$.  
+      With increasing baseline, $|s c_1|$ also increases to fulfil the equation.}
+      \end{subfigure}
+
+      \begin{subfigure}{\linewidth}
+      \input{gfx/intercept2.tex}
+      \caption{For another baseline, the estimate will still yield a translation
+      with unit length.}
+      \end{subfigure}
+
+      \begin{subfigure}{\linewidth}
+      \input{gfx/intercept3.tex}
+      \caption{Equalising the scales in both estimates shows that the distance
+      of the object to $c_1$ is smaller if $c_3$ was further away than $c_2$}
+      \end{subfigure}
+
+      \caption[Relation between object distance and camera baseline]{The camera
+         baseline length is inversely proportional to the distance of the viewed
+      object to one of the cameras. Evaluating the distance of viewed objects to
+   the firs frame's camera yields a measure for how far the two cameras are
+apart.}
+   \label{fig:scale}}
+\end{figure}
+
+Therefore, in each iteration, the scale of the world is computed by
+triangulating correspondences between the first and current frames and computing
+the average distance to the first frame's camera. The scale is
+compared to the scale computed in the initial step for the first and second
+frames. Scaling the current translation vector by the ratio of the
+two scales makes the length consistent across iterations and decreasing with the
+distance to the goal.
+
+For a summary, \autoref{fig:procedure} shows how the whole pipeline works.
 \begin{figure}[h]
    {\centering      
       \input{gfx/ablauf.tex}

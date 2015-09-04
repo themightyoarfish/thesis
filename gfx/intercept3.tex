@@ -1,0 +1,35 @@
+\begin{tikzpicture}[very thick,node distance=2em]
+   \tikzset{>=Latex}
+   \def\camAngle{60}
+   \def\arrowLength{3em}
+   \node[label={180:{$c_1$}}] (c1) at (0,0) {};
+   \fill (c1) circle (3pt);
+   \node[below left=of c1] {first frame};
+   \draw[->] (c1) -- (\camAngle:\arrowLength);
+   \node[minimum size=1em,draw] (object) at (\camAngle:3cm) {};
+   \draw[dashed,name path=line1] (c1) -- (object) node[label={180:{$s$}}] {};
+   \node[label={0:{$c_2$}},right=3cm of c1] (c2) {};
+   \fill (c2) circle (3pt);
+   \draw[dashed,name path=line2] (c2) -- (object);
+   \node[below right=of c2] {current frame};
+
+   \draw[->] (c2) -- ($(c2) !3em! (object)$) coordinate (tmp);
+
+
+   \draw[thin,|-|] ($(c1) + (0,-1em)$) -- ($(c2) + (0,-1em)$) node[below,midway] {$b=1$};
+
+   % \draw[thin,|-|,transform canvas={shift=(90+\camAngle:1em)}] (second c1) -- (object);
+
+   \begin{scope}[transform canvas={xshift=-2cm}]
+      \node[label={180:{$c_3$}},right=5cm of c1] (c3) {};
+      \fill (c3) circle (3pt);
+      \draw[->] (c3) -- ($(c3) !3em! (object)$) coordinate (tmp);
+   \end{scope}
+   \coordinate (tmp1) at ($(c3) + (-2cm,0)$);
+   \coordinate (tmp2) at ($(tmp) + (-2cm,0)$);
+   \path[name path=line3] (tmp1) -- ($(tmp1) !5cm! (tmp2)$);
+   \draw[name intersections={of=line1 and line3}]
+   node[label={180:{$s_2$}},minimum size=1em,draw,fill=white] (object2) at (intersection-1) {};
+   \draw[dashed] (tmp1) -- (object2);
+\end{tikzpicture}
+
