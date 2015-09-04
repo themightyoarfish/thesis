@@ -114,16 +114,18 @@ One solution is a variant of the \emph{Pointer-to-Implementation} pattern
 interface (\autoref{lst:pimpl}) is specified in pure Objective-C and contains a
 opaque pointer to a C \code{struct} representing the wrapped data as a C type
 which therefore does not lead to compatibility issues as all C code is valid
-Objective-C. The definition of this pointer-to-implementation type is placed in
-a second header file (\autoref{lst:pimpl2}) and is imported only by those
-clients which actually need to access the data, not only pass it on. This
-permits to compile only those source files as Objective-C++ which must deal with
-the actual OpenCV \code{Mat}. In principle, it would be possible to create
-methods in the wrapper class for all uses of the C++ type throughout the
-program. However, this would waste the benefits which e.g. C++ operator
-overloading yields for readability. Since all image processing is done in C++
-anyway, it is more economic to simply provide access to the wrapped data to
-those classes that need it.
+Objective-C. For the original pattern, this allows modifying the wrapper
+hierarchy independently of the implementation hierarchy (e.g. different
+implementations could be behind the pointers, for different platforms). The
+definition of this pointer-to-implementation type is placed in a second header
+file (\autoref{lst:pimpl2}) and is imported only by those clients which actually
+need to access the data, not only pass it on. This permits to compile only those
+source files as Objective-C++ which must deal with the actual OpenCV \code{Mat}.
+In principle, it would be possible to create methods in the wrapper class for
+all uses of the C++ type throughout the program. However, this would waste the
+benefits which e.g. C++ operator overloading yields for readability. Since all
+image processing is done in C++ anyway, it is more economic to simply provide
+access to the wrapped data to those classes that need it.
 
 \lstset{
    language=[Objective]C,
@@ -234,14 +236,15 @@ present an \code{ELCImagePickerController}.
 
 \subsection*{\code{PhotoChooserController}}
 
-This view controller displays a scrollable and pannable view and a
-button \button{Choose Photo from Library} to
-load a reference photograph into it. The photo is picked from the user's photo album.
-Tapping 
-Furthermore, the navigation bar contains a button to access the settings
-(\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, see below) as well as a
-button to start the rephotograph
-(\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}).
+This view controller displays a scrollable and pannable view and a button
+\button{Choose Photo from Library} to load a reference photograph into it. The
+photo is picked from the user's photo album.  Furthermore, the navigation bar
+contains a button to access the settings
+(\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, presents a
+\code{SettingsViewController}) as well as a button to start the rephotograph
+(\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}). The latter
+will modally present a \code{UIImagePicker- Controller} and attach to it a
+\code{RephotoMangager} that controls the rephotography.
 
 When an image is picked, the controller uses the Canny edge detection algorithm
 \citep{canny1986} to generate an overlay which will then help the user in
@@ -257,10 +260,14 @@ of visualisation for the necessary camera motion.
 
 \subsection*{\code{ResultViewController}}
 
-This controller must be passed a completed rephotograph in an \code{ImageData}
+This controller must be passed a completed rephotograph in an \code{Image- Data}
 object and displays the new image over the orginal. With a slider, the new image
 is horizontally clipped to some percentage of it width and can thus be
 dynamically unrolled over the original.
+
+On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
+allows to upload a rephoto to an experimental test server for display, but the
+functionality is only rudimentary.
 
 \subsection*{\code{ELCImagePickerController}}
 
@@ -269,7 +276,7 @@ used. Contrarily to the built-in \code{UIImagePickerController}, this
 reimplementation by \citet{nutting2013} allows to display a specific asset, like
 a photo album instead of all assets there are. In the album display, the user is
 shown the new photographs of each rephoto and upon selection is presented a
-\code{ResultViewController}
+\code{ResultViewController} with the rephotograph.
 
 \subsection{Categories}
 
@@ -323,5 +330,13 @@ summarised in \autoref{tab:categories}.
 \end{table}
 
 \subsection{Other Classes}
+
+The two most important classes are the \code{RephotoManager} and the
+\code{Pose- DifferenceEstimationOperation}. A \code{RephotoManager} is attached to
+a \code{UIImagePickerController} in camera mode and controls the execution of
+the rephotograph. The camera overlay contains a shutter button and information
+labels telling the user what to do next. Tapping the info button
+(\raisebox{-2pt}{\includegraphics[width=1em]{gfx/info.png}}) expands the label
+to reveal more information. The manager is realised as a state machine.
 
 

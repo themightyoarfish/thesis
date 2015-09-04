@@ -322,7 +322,7 @@ to the distance between the cameras. An intuition can be obtained from
       \caption[Relation between object distance and camera baseline]{The camera
          baseline length is inversely proportional to the distance of the viewed
       object to one of the cameras. Evaluating the distance of viewed objects to
-   the firs frame's camera yields a measure for how far the two cameras are
+   the first frame's camera yields a measure for how far the two cameras are
 apart.}
    \label{fig:scale}}
 \end{figure}
@@ -333,7 +333,14 @@ the average distance to the first frame's camera. The scale is
 compared to the scale computed in the initial step for the first and second
 frames. Scaling the current translation vector by the ratio of the
 two scales makes the length consistent across iterations and decreasing with the
-distance to the goal.
+distance to the goal. However, as this estimate relies on the intercept theorem,
+it is only valid as long as the user moves on a straight line between the
+initial estimate (position of the second frame) and the goal. Empirical
+analysis (see evaluation in \autoref{ch:evaluation}) demonstrates that strong
+movement along the optical axis will make decrease the usefulness of the scale
+estimation. However, in reality this should be a minor problem, as the movement
+around a scene will be stronger than towards or away from it when
+rephotographing.
 
 For a summary, \autoref{fig:procedure} shows how the whole pipeline works.
 \begin{figure}[h]
