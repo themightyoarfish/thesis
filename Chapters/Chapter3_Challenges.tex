@@ -260,15 +260,14 @@ relative to the current frame and thus guide the user in the right direction.
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) \\
                      &    & + \sub{T}{ref,first} & & (2, substitute 1)\IEEEnonumber\\
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\sub{X}{current} \\
-                     &    & -
-   \sub{R}{ref,first}\sub{R^T}{current,first}\sub{T}{current,first} + \sub{T}{ref,first}
+                     &    & - \sub{R}{ref,first}\sub{R^T}{current,first}\sub{T}{current,first} + \sub{T}{ref,first}
 \end{IEEEeqnarray}
 and thus
-\begin{equation}
+\begin{equation}\label{eq:necessary_trans}
    \sub{T}{ref,current} = - \sub{R}{ref,first}\sub{R^T}{current,first}\sub{T}{current,first} + \sub{T}{ref,first}
 \end{equation}
 and
-\begin{equation}
+\begin{equation}\label{eq:necessary_rot}
    \sub{R}{ref,current} = \sub{R}{ref,first}\sub{R^T}{current,first}
 \end{equation}
 
@@ -337,7 +336,7 @@ distance to the goal. However, as this estimate relies on the intercept theorem,
 it is only valid as long as the user moves on a straight line between the
 initial estimate (position of the second frame) and the goal. Empirical
 analysis (see evaluation in \autoref{ch:evaluation}) demonstrates that strong
-movement along the optical axis will make decrease the usefulness of the scale
+movement along the optical axis will decrease the usefulness of the scale
 estimation. However, in reality this should be a minor problem, as the movement
 around a scene will be stronger than towards or away from it when
 rephotographing.

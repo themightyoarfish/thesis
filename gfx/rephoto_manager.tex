@@ -1,0 +1,18 @@
+\begin{tikzpicture}[very thick,every node/.append style={text
+   centered,font=\small\ttfamily,outer sep=0}]
+   \tikzset{>=Latex}
+   \node[block] (start) {START};
+   \node[block,below=of start] (first frame) {HAS\_FIRST \_FRAME};
+   \node[decision,below=of first frame] (can match?) {First and second can be matched?};
+   \node[block,below=of can match?] (second frame) {HAS\_SECOND \_FRAME};
+   \node[block,below=of second frame] (done) {DONE};
+
+   \path[->] 
+   (start) edge node[right=1cm,align=left] {Shutter tapped: \\ First image captured} (first frame) 
+   (first frame) edge node[right=1cm,align=left] {Shutter tapped: \\ Second image captured} (can match?)
+   (can match?.west) edge[bend left=50] node[left] {No} (start.west)
+   (can match?) edge node[left] {Yes} (second frame)
+   (second frame) edge[loop left] node[above=2em] {Automatic capture} ()
+   (second frame) edge node[right=1cm,align=left] {Shutter tapped: \\ Final image captured} (done)
+   ;
+\end{tikzpicture}

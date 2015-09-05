@@ -60,13 +60,24 @@
 %% End Pgfplots stuffs %%
 
 %% Other stuffs
+\usepackage{graphicx} 
+\usepackage{IEEEtrantools}
 \usepackage{tabularx}
 \usepackage{mathtools}
 \usepackage{stackengine}\stackMath % to use \stackgap for \underbrace spacing
-\usetikzlibrary{shapes,backgrounds,arrows.meta,calc,intersections,positioning,spy} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
+\usetikzlibrary{automata,shapes,backgrounds,arrows.meta,calc,intersections,positioning,spy} % funnily, putting this into the tex file for pinhole.tex has no effect. wtf
 \usepackage[english]{babel}
 \usepackage{setspace} % for adjustment of line spacing
 \usepackage[lined,boxed,linesnumbered]{algorithm2e}
+% for programmablaufplans
+\tikzstyle{typewriter} = [font=\small\ttfamily]
+\tikzstyle{decision} = [diamond, draw, text=white, fill=RoyalBlue, typewriter,
+                        text width=4.5em, text badly centered, inner sep=0pt]
+\tikzstyle{block}    = [rectangle, rounded corners=5pt, draw, typewriter,
+                        text width=7em, text centered, minimum height=2em]
+\tikzstyle{line}     = [draw, -latex', typewriter]
+\tikzstyle{cloud}    = [draw, ellipse,fill=red!20, node distance=3cm,
+                        minimum height=1em, typewriter]
 
 % \expandafter\def\csname ver@subfig.sty\endcsname{} % for subcaption or
 % something
@@ -84,6 +95,19 @@
 
 \SetAlCapSkip{1ex} % algorithm2e distance between caption an algorithm
 \newcommand{\sub}[2]{#1_{\text{#2}}}
+\let\originaleqref\ref
+\makeatletter
+\renewcommand{\eqref}[1]{%
+  \begingroup%
+  \let\ref\@refstar%
+  \hyperref[#1]{%
+    equation%
+    ~\originaleqref{#1}%
+  }%
+  \endgroup
+}
+\makeatother
+\DeclareMathOperator{\atan2}{atan2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% End Custom adjustments %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -247,20 +271,6 @@ iOS\xspace}
 \pdfcompresslevel=9
 \pdfadjustspacing=1 
 \PassOptionsToPackage{pdftex}{graphicx}
-\usepackage{graphicx} 
-\usepackage{IEEEtrantools}
-\let\originaleqref\ref
-\makeatletter
-\renewcommand{\eqref}[1]{%
-  \begingroup%
-  \let\ref\@refstar%
-  \hyperref[#1]{%
-    equation%
-    ~\originaleqref{#1}%
-  }%
-  \endgroup
-}
-\makeatother
 
 
 % ********************************************************************
