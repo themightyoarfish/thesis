@@ -153,12 +153,12 @@ space is built for AKAZE by means of fast explicit diffusion
 of the image gradient at a given point---meaning that it will be smaller for
 areas of strong change and larger for others. As in SIFT, the scale space
 consists of several octaves, each downsampled by two with respect to the
-previous octave. The Hessian matrix determinant is used to identify possible
-keypoints (in SIFT, this is used to filter out bad candidates),  but the
-candidate must be extremal compared to other keypoint candidates in its
-neighbourhood instead of neighbouring pixels. The window searched depends on the
-scale at which the keypoint is located (the window is larger at higher scales
-with more blur).
+previous octave. Within the ocataves, the images are called \emph{sublevels}.
+The Hessian matrix determinant is used to identify possible keypoints (in SIFT,
+this is used to filter out bad candidates),  but the candidate must be extremal
+compared to other keypoint candidates in its neighbourhood instead of
+neighbouring pixels. The window searched depends on the scale at which the
+keypoint is located (the window is larger at higher scales with more blur).
 
 \begin{figure}[h]
    {\centering      
@@ -176,7 +176,10 @@ invariance, this grid is rotated according to the dominant orientation computed
 by considering the image derivatives---already computed for the detection---in
 the neighbourhood \citep{alcantarilla2012}. The results of these binary tests are
 assembled into a binary vector. Its size can be adjusted by making the grid
-coarser or finer.
+coarser or finer. For $f$, \citet{alcantarilla2012} consider both intensity
+differences and two image derivatives. three properties are referred to as
+\emph{channels} and the descriptor may include one, two or all three of them,
+with three yielding best performance.
 
 \section{Challenges For The Application}
 \label{sec:app_challenges}

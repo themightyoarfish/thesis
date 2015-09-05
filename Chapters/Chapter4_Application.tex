@@ -6,7 +6,10 @@ introduced before the user interface, features and implementation of the app
 will be described.
 
 \section{iOS Overview}
-\newcommand*{\code}[1]{\texttt{#1}}
+% I took this from http://tex.stackexchange.com/a/45302/31250
+% Strangely, applying http://tex.stackexchange.com/a/44362/31250 in the preamble
+% did not work
+\newcommand*{\code}[1]{\begingroup\ttfamily\hyphenchar\font=23{#1}\endgroup}
 
 iOS is the operating system running on all of Apple's mobile devices. It is
 currently\footnote{\today\ \citep{ios8}} at version 8.4.1 with its successor iOS
@@ -208,20 +211,42 @@ struct CVMatWrapperImpl
 The bulk of the work is done inside the utility class' \code{ImageUtils} static
 methods. To compute the pose difference between two frames, clients can call the
 public method
-\code{+[computePoseDifferenceBetweenCamera:
-secondCamera:calibrationFile:scale:]}. The two images must be passed, as well as
-the path to a calibration file in OpenCV's \code{FileStorage} format. A scale
-parameter can be used to speed up the computation by downsampling the images.
-The scale is set to $0.33$ compromise between speed and matching robustness,
-taking into account that compared to the computations performed on a computer
-(see \autoref{ch:evaluation}) some detail is lost due to conversion between
-iOS's \code{UIImage} format and OpenCV's \code{Mat} type.
+\code{+[computePoseDifferenceBetweenCamera:secondCamera:calibrationFile:scale:]}.
+The two images must be passed, as well as the path to a calibration file in
+OpenCV's \code{FileStorage} format. A scale parameter can be used to speed up
+the computation by downsampling the images.  The scale is set to $0.33$
+compromise between speed and matching robustness, taking into account that
+compared to the computations performed on a computer (see
+\autoref{ch:evaluation}) some detail is lost due to conversion between iOS's
+\code{UIImage} format and OpenCV's \code{Mat} type.
 
 Internally, the method converts the images, uses OpenCV image processing
 functions to compute the pose difference and the average distance of the matched
 features to the first camera. The client is returned an \code{NSDictionary}
 containing the rotation, translation, average point distance, and---should the
 computation fail---an error code in which case all other values are invalid.
+
+The method first runs \texttt{AKAZE} on both image, the parameters used are
+shown in \autoref{tab:akaze_params}.
+
+\rowcolors{2}{gray!5}{white} % alternating colours
+\begin{table}
+   \begin{center}
+      \begin{tabular}{>{\ttfamily}ll}
+         \rowcolor{white}
+         \toprule
+         \rmfamily Parameter     & Value \\
+         \midrule
+         nOctaves                & $4$ \\
+         threshold               & 0.001 \\
+         nOctaveLayers/sublevels & $4$ \\
+         descriptor\_size        & $486$\tablefootnote{\texttt{AKAZEFeatures.cpp line $720$}} bits \\
+         descriptor\_channels    & $3$ \\
+      \end{tabular}
+      \caption{Parameters used for \texttt{AKAZE}}
+      \label{tab:akaze_params}
+   \end{center}
+\end{table}
 
 \subsection{View Controllers}
 
@@ -298,7 +323,6 @@ hierarchy is created.
 In this application, categories are used for different purposes. They are
 summarised in \autoref{tab:categories}.
 
-      \rowcolors{2}{gray!5}{white} % alternating colours
 \begin{table}
    \begin{tabularx}{\linewidth}{>{\ttfamily}p{4cm}X}
       \toprule
@@ -390,8 +414,7 @@ Meanwhile, a panel at the bottom centre is revealed which visualises the
 necessary motion of the camera. For this, several ideas are possible.
 \citet{bae2010} found that an arrow visualisation for the translation in the
 XY-plane and Z-direction is most effective so this approach has been chosen
-here. The block passed to the operation uses its three arguments to update the
-arrow visualisation once the computation has finished.
+here. 
 
 \subsubsection*{\code{DONE}}
 
@@ -427,7 +450,7 @@ computed values for the relative pose between first and reference frames and the
 goal scale. Furthermore, a block is passed which can accept three float
 parameters---one for an angle around the optical axis, one around the vertical
 axis, and one for the scale of the necessary translation. The intended purpose
-of this block is to drive some kind of visualisation. It then computes the
+of this block is to drive some kind of visualisation. The operation then computes the
 relative pose and the necessary translation as in \eqref{eq:necessary_trans}. 
 
 If $\sub{T}{current,ref} = (x,y,z)$\footnote{One should note that this
