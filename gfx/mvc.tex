@@ -4,7 +4,8 @@
 \setlength{\defaultpgflinewidth}{\pgflinewidth}
 \begin{tikzpicture}[
       mynode/.style={
-         text width=4cm,
+         text width=3cm,
+         text centered,
          draw,
          rounded corners=5pt,
          shape=rectangle,
@@ -31,16 +32,16 @@
       },
    ]
    \draw (0,0) node[mynode] (model) {
-      \makebox[4cm]{Model}\\
+      \makebox[3cm]{Model}\\
       \hrulefill \\
    };
    \node[mynode,right=of model] (view) {
-      \makebox[4cm]{View}\\
+      \makebox[3cm]{View}\\
       \hrulefill \\
    };
 
    \node[mynode] (controller) at ($(model) !0.5! (view) + (0,-\nodedist)$) {
-      \makebox[4cm]{Controller}\\
+      \makebox[3cm]{Controller}\\
       \hrulefill \\
    };
    \draw[arrow] (controller.west) to[bend left]  node[arrow label] {Change state} (model.south);
