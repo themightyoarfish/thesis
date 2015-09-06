@@ -30,7 +30,28 @@ used throughout the Cocoa library which incorporates the standard
 applications with little or no need for data manipulation, the controller
 objects can also fill the role of the model.  For every view hierarchy, a view
 controller must exist to present it to the user and mediate interaction with
-them.
+them. View controllers by virtue of being derived from \code{UIViewController}
+have many methods which are automatically called by the runtime for certain
+events in the app's life cycle. For example
+\begin{itemize}
+   \item \code{viewDidLoad} Invoked after the controller's view hierarchy was
+      loaded/inflated from an archive, but before it appears.
+   \item \code{viewDidAppear} Invoked right after the view has appeared on
+      screen.
+   \item \code{prepareForSegue} Invoked before transitioning to another view
+      controller.
+\end{itemize}
+
+In order to respond to user input, the delegate pattern \citep[see]{gamma1995}
+is used. Views delegate the responsibility of deciding what whould happen on
+user input to a delegate object. For example, a view controller might conform to
+the \code{UIScrollViewDelegate} protocol (an equivalent of interfaces in other
+languages) and is then required to implement callbacks such as
+\begin{itemize}
+   \item \code{scrollViewDidScroll}
+   \item \code{scrollViewDidZoom}
+\end{itemize}
+and more. The pattern is used for all complex views.
 
 \begin{figure}[h]
    {\centering      
@@ -59,57 +80,21 @@ the application developed in this work is shown in \autoref{fig:storyboard}.
    \label{fig:storyboard}}
 \end{figure}
 
-\section{Software Modules}
-
-Although Objective-C does not support modularisation by packages, namespace or
-similar, the software can be divided into five parts.
-
-\subsection{User Interface}
-
-For the user interface, several custom views classes are implemented.
-\begin{enumerate}
-   \item \code{ArrowView} A view which is backed by an \code{ArrowLayer} and
-      allows to display it as \code{CALayer}s cannot be shown without a
-      wrapping \code{UIView}.
-   \item \code{ArrowLayer} A \code{CALayer} subclass which can display a
-      parametrisable arrow shape whose parameters can be seamlessly animated.
-      \code{CALayers} are the backbone of all \code{UIView} objects.
-   \item \code{ImageScrollView} A \code{ScrollView} subclass which allows to
-      display a zoomable and pannable image while also preserving the visible
-      portion when the user interface orientation changes.
-   \item \code{CircleView} A simple view purely for drawing a circle parametrised
-      with colour and line width.
-   \item \code{MaskableUIImageView} An \code{UIImageView} which allows the
-      image to be clipped to some percentage of its width. This is used to
-      display a before-after comparison of the original and repeat photographs.
-\end{enumerate}
-
-Furthermore, two view hierarchies and the Storyboard belong to this module.  If
-a custom view must exhibit some particular behviour which necessitates custom
-methods, creating classes is appropriate. For interface elements which contain a
-larger hierarchy of nested views without exposing any particular behaviour,
-specifying them in a visual fashion is less involved. Such view hierarchies can
-be built visually as \code{XIB} files in an XML format. The
-\code{CameraOverlay} overlayed on the current camera picture is created like
-this, as well as the launch screen shown when starting the app.
-
-\subsection{Image Processing}
+\section{Objecttive-C \& C++ --- The PIMPL pattern}
 
 For all image processing, the OpenCV library used in version 3.0. The library
 can be natively used from C++, but Python and Java bindings as well as a
 deprecated C API exist. OpenCV encodes images in its \code{Mat} type which is
-the only type perforating other parts of the application. 
-While it is possible to mix Objective-C and C++ code,
-using C++ types in header files forces every client including them to also be
-compiled as Objective-C++ which may be unwanted. For instance, XCode's
-refactoring tools cannot be used on these sources. It is thus reasonable to create
-wrapper classes for all C++ types encapsulating the access to the data so that
-the interface is pure Objective-C. Only the implementation of the wrapper class
-would need to be compiled as C++, no client would be affected. Ideally, all
-access to C++ types could be mediated this way, but often this would necessitate 
-a large amount of boilerplate code to translate Objective-C messages in C++
-calls to the wrapped object.
-It is therefore convenient to encapsulate a C++ type but make it still accessible to
+the only type perforating other parts of the application.  While it is possible
+to mix Objective-C and C++ code, using C++ types in header files forces every
+client including them to also be compiled as Objective-C++ which may be
+unwanted. For instance, XCode's refactoring tools cannot be used on these
+sources. It is thus reasonable to create wrapper classes for all C++ types
+encapsulating the access to the data so that the interface is pure Objective-C.
+Only the implementation of the wrapper class would need to be compiled as C++,
+no client would be affected. Ideally, all a large amount of boilerplate code to
+translate Objective-C messages in C++ calls to the wrapped object.  It is
+therefore convenient to encapsulate a C++ type but make it still accessible to
 client classes if needed. 
 
 One solution is a variant of the \emph{Pointer-to-Implementation} pattern
@@ -208,6 +193,43 @@ struct CVMatWrapperImpl
 @end
 \end{lstlisting}
 
+\section{Software Modules}
+
+Although Objective-C does not support modularisation by packages, namespace or
+similar, the software can be divided into five parts.
+
+\subsection{User Interface}
+
+For the user interface, several custom views classes are implemented.
+\begin{enumerate}
+   \item \code{ArrowView} A view which is backed by an \code{ArrowLayer} and
+      allows to display it as \code{CALayer}s cannot be shown without a
+      wrapping \code{UIView}.
+   \item \code{ArrowLayer} A \code{CALayer} subclass which can display a
+      parametrisable arrow shape whose parameters can be seamlessly animated.
+      \code{CALayers} are the backbone of all \code{UIView} objects.
+   \item \code{ImageScrollView} A \code{ScrollView} subclass which allows to
+      display a zoomable and pannable image while also preserving the visible
+      portion when the user interface orientation changes.
+   \item \code{CircleView} A simple view purely for drawing a circle parametrised
+      with colour and line width.
+   \item \code{MaskableUIImageView} An \code{UIImageView} which allows the
+      image to be clipped to some percentage of its width. This is used to
+      display a before-after comparison of the original and repeat photographs.
+\end{enumerate}
+
+Furthermore, two view hierarchies and the Storyboard belong to this module.  If
+a custom view must exhibit some particular behviour which necessitates custom
+methods, creating classes is appropriate. For interface elements which contain a
+larger hierarchy of nested views without exposing any particular behaviour,
+specifying them in a visual fashion is less involved. Such view hierarchies can
+be built visually as \code{XIB} files in an XML format. The
+\code{CameraOverlay} overlayed on the current camera picture is created like
+this, as well as the launch screen shown when starting the app.
+
+
+\subsection{Image Processing}
+
 The bulk of the work is done inside the utility class' \code{ImageUtils} static
 methods. To compute the pose difference between two frames, clients can call the
 public method
@@ -273,6 +295,7 @@ matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
          nOctaveLayers/sublevels & $4$ \\
          descriptor\_size        & $486$\tablefootnote{\texttt{AKAZEFeatures.cpp line $720$}} bits \\
          descriptor\_channels    & $3$ \\
+         \bottomrule
       \end{tabular}
       \caption{Parameters used for \texttt{AKAZE}}
       \label{tab:akaze_params}
@@ -324,7 +347,11 @@ of visualisation for the necessary camera motion.
 \subsection*{\code{ResultViewController}}
 
 This controller must be passed a completed rephotograph in an \code{ImageData}
-object and displays the new image over the orginal. With a slider, the new image
+object and displays the new image over the orginal. 
+\begin{wrapfigure}{r}{.35\textwidth}
+   \includegraphics[width=.3\textwidth]{gfx/image_data.pdf}
+\end{wrapfigure}
+With a slider, the new image
 is horizontally clipped to some percentage of it width and can thus be
 dynamically unrolled over the original. Depending on a flag in the
 \code{ImageData} object, the rephoto passed to the controller will be saved. For
@@ -467,6 +494,9 @@ the final capture.
 
 \subsection{Other Classes -- \code{PoseDifferenceEstimationOperation}}
 
+\begin{wrapfigure}{l}{.35\textwidth}
+   \includegraphics[width=.35\textwidth]{gfx/posediffop.pdf}
+\end{wrapfigure}
 iOS supports different APIs for parallelisation. Besides manual thread creation,
 Grand Central Dispatch allows to easily dispatch blocks (function objects) to
 different kinds of queues. The runtime automatically removes blocks from the
@@ -478,15 +508,16 @@ cancel tasks after submission. Since the application should make optimal use of
 the hardware due to high computational demand while not queueing up many tasks,
 or tasks which are obsolete, such functionality is desirable.
 
-Operation queues sacrifice some efficiency, but expose a more high-level
-object-oriented interface in which \code{NSOperation} objects are submitted to
-\code{NSOperationQueue}s and their \code{maxConcurrentOperationCount} property
-allows to set a maximum number of concurrent operations. The application sets
-this limit to $3$ for an iPad (assuming $3$ cores like an iPad Air 2) and $2$
-for iPhones, as the current devices possess two cores. Since there is no
-concurrent modification of data and tasks are started in slow intervals,
-explicit sychronisation is not needed.
-
+Operation queues---internally implemented with
+GCD\footnote{\citep{nsopgcd}}---sacrifice some efficiency, but expose a more
+high-level object-oriented interface in which \code{NSOperation} objects are
+submitted to \code{NSOperationQueue}s and their
+\code{maxConcurrentOperationCount} property allows to set a maximum number of
+concurrent operations. The application sets this limit to $3$ for an iPad
+(assuming $3$ cores like an iPad Air 2) and $2$ for iPhones, as the current
+devices possess two cores. Since there is no concurrent modification of data and
+tasks are started in slow intervals, explicit sychronisation is not needed.
+ 
 A \code{PoseDifferenceEstimationOperation} is created with two images (one of
 which will always be the first frame), a scale parameter for downsampling and
 computed values for the relative pose between first and reference frames and the

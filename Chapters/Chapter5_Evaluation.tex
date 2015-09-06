@@ -1,14 +1,15 @@
 \chapter{Evaluation}
 \label{ch:evaluation}
 
-The approach has been evaluated on two realistic datasets. The most important
-questions are whether the direction of the necessary translation is correctly
-identified and its scale decreasing with distance to the target.
-For both sets of images, the ground-truth translation between each image and the
-first frame has been measured with centimetre accuracy, while the ground-truth
-rotation has been estimated from manually labelled correspondence as it is
-difficult to measure without the proper instruments. Since for the case of
-noise-free correspondences in a non-degenerate configuration, relative pose
+The approach has been evaluated on two realistic datasets. Computation was
+performed off-line on a computer with the same C++ code running on the device.
+The most important questions are whether the direction of the necessary
+translation is correctly identified and its scale decreasing with distance to
+the target.  For both sets of images, the ground-truth translation between each
+image and the first frame has been measured with centimetre accuracy, while the
+ground-truth rotation has been estimated from manually labelled correspondence
+as it is difficult to measure without the proper instruments. Since for the case
+of noise-free correspondences in a non-degenerate configuration, relative pose
 estimation algorithms are mathematically correct, this has been deemed
 sufficiently accurate to evaluate the procedure. For each image pair, 19--27
 correspondences have been labelled, of which the majority is used for pose
@@ -25,7 +26,7 @@ rotation was applied mainly around the vertical axis.
 In order to idealise the condition, the reference photograph has been used to
 fill the role of the second frame for world scale computation. In reality, since
 the reference location is unknown, the reference world scale is obtained from a
-position somewhat off.
+position somewhat off, thereby decreasing the accuracy of scale estimation.
 
 In all plots $s$ refers to the scale at which the relative pose is computed.
 Besides the full resolution, the images are scaled down by factor of $2$ (both
@@ -422,7 +423,7 @@ work for movement in only on principal direction.
 It could also be demonstrated that AKAZE features yield the more accurate
 results, except on the smallest scale, where SIFT compares somewhat favourably.
 The smallest scale however also leads to general deterioration in quality,
-suggesting that a scale between $2$ and $4$ may be required to combine accuracy
+suggesting that a scale factor between $2$ and $4$ may be required to combine accuracy
 with speed of processing.
 
 Improvements for all estimates could possibly be improved by fine-tuning the
