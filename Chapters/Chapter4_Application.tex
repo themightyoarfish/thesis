@@ -13,7 +13,7 @@ will be described.
 
 iOS is the operating system running on all of Apple's mobile devices. It is
 currently\footnote{\today\ \citep{ios8}} at version 8.4.1 with its successor iOS
-9 in beta stadium. Code is compiled by the clang compiler families and thus all
+9 in beta stadium. Code is compiled by the clang compiler and thus all
 languages supported by this compiler can be used. The primary development
 language is Objective-C, a strict, object-oriented superset of the C language\footnote{There is
    no precise definition which C version it is a superset of, except that it is
@@ -226,8 +226,39 @@ features to the first camera. The client is returned an \code{NSDictionary}
 containing the rotation, translation, average point distance, and---should the
 computation fail---an error code in which case all other values are invalid.
 
-The method first runs \texttt{AKAZE} on both image, the parameters used are
-shown in \autoref{tab:akaze_params}.
+The method first runs \texttt{AKAZE} on both images, the parameters used are
+shown in \autoref{tab:akaze_params}.  Computation is aborted if one of the
+images yields fewer than $100$ keypoints.  Matches are found by brute force with
+a ratio test as suggested by \citet{lowe2004}. Let $d(x,y)$ denote the distance
+(here the $L_2$-norm) of descriptors $x$ and $y$. For all descriptors $x$ in the
+first image, the two best matching descriptors $y_1$ and $y_2$ in the other
+image are found. If
+\begin{equation*}
+   \frac{d(x,y_1)}{d(x,y_2)} < \rho
+\end{equation*}
+then the pair $(x,y_1)$ is chosen as a match. Lowe suggests $\rho=0.8$, the app
+uses a stricter ratio of $\rho=0.7$. This test will filter unstable matches
+between e.g. repeating patterns in an image (windows, wall structure etc.) as
+for such a point the corresponding point is very ambiguous and its best matches
+will be similar in distance.
+
+The function then removes the image distortion on the
+sparse set of keypoints instead of the whole image for efficiency\footnote{Since
+   undistortion requires resampling of the image, it is better to find features
+beforehand as some information may be lost by interpolation.}. On the
+correspondences, RANSAC is used to find the best-fitting essential matrix. 
+
+Once $E$ is fixed, the optimal triangulation method (see \citep[ch.  12.5.2]{h&z2004})
+is used to correct the corresponding points. Since one assumes
+the computed essential matrix is correct, the information can be used to
+refine the position of corresponding points. This should make pose recovery
+with $E$ and the points for accurate.
+
+The essential matrix is then decomposed into $R$ and $T$. The confidence
+threshold is set to $0.999$, a point is considered an outlier if its distance
+to its epipolar line exceeds $3$ pixels. A sanity check for a valid rotation
+matrix is performed by checking that $|\det R|\approx 1$\footnote{A rotation
+matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
 
 \rowcolors{2}{gray!5}{white} % alternating colours
 \begin{table}
@@ -247,6 +278,8 @@ shown in \autoref{tab:akaze_params}.
       \label{tab:akaze_params}
    \end{center}
 \end{table}
+
+
 
 \subsection{View Controllers}
 
@@ -290,10 +323,18 @@ of visualisation for the necessary camera motion.
 
 \subsection*{\code{ResultViewController}}
 
-This controller must be passed a completed rephotograph in an \code{Image- Data}
+This controller must be passed a completed rephotograph in an \code{ImageData}
 object and displays the new image over the orginal. With a slider, the new image
 is horizontally clipped to some percentage of it width and can thus be
-dynamically unrolled over the original.
+dynamically unrolled over the original. Depending on a flag in the
+\code{ImageData} object, the rephoto passed to the controller will be saved. For
+this, the app makes use of the \code{sqlite} library. The \code{DBManager} class
+manages communication with a lightweight SQL database. Since all photos are
+part of the user's photo library---there is no way to save assets locally for an
+application---they are saved as a tuple of two \code{NSURL}s. Both the built-in
+\code{UIImagePickerController} and the \code{ELCImagePickerController} return
+the URL of a selected image, so it can be used to map a rephoto on its original
+or vice versa when it should be displayed.
 
 On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
 allows to upload a rephoto to an experimental test server for display, but the
@@ -376,7 +417,7 @@ as a flow chart in \autoref{fig:rephoto_manager}.
 \begin{figure}[h]
    {\centering      
       \input{gfx/rephoto_manager.tex}
-   \caption{States of the rephoto manager object}
+      \caption{States of the rephoto manager object}
    \label{fig:rephoto_manager}}
 \end{figure}
 
@@ -414,7 +455,9 @@ Meanwhile, a panel at the bottom centre is revealed which visualises the
 necessary motion of the camera. For this, several ideas are possible.
 \citet{bae2010} found that an arrow visualisation for the translation in the
 XY-plane and Z-direction is most effective so this approach has been chosen
-here. 
+here. Two camera pictograms are shown, one back view and one top view. There is
+one arrow positioned on each so that the transaltion in the XY-plane and
+Z-direction are independently visualised.
 
 \subsubsection*{\code{DONE}}
 
@@ -448,17 +491,35 @@ A \code{PoseDifferenceEstimationOperation} is created with two images (one of
 which will always be the first frame), a scale parameter for downsampling and
 computed values for the relative pose between first and reference frames and the
 goal scale. Furthermore, a block is passed which can accept three float
-parameters---one for an angle around the optical axis, one around the vertical
-axis, and one for the scale of the necessary translation. The intended purpose
-of this block is to drive some kind of visualisation. The operation then computes the
-relative pose and the necessary translation as in \eqref{eq:necessary_trans}. 
+parameters---one for the direction in the XY-plane, one for the ratio between
+reference and current world scale, and one for the magnitude of translation along
+the optical axis. The intended purpose of this block is to drive some kind of
+visualisation. The operation then computes the relative pose and the necessary
+translation as in \eqref{eq:necessary_trans}. 
 
 If $\sub{T}{current,ref} = (x,y,z)$\footnote{One should note that this
    calculation depends on the coordinate system. In OpenCV, the origin is at the
    top left corner of an image, the positive $x$-axis is the image width, the
    positive $y$-axis the image height and points downward. In a more canonical
-   representation, the $y$-value thus may be flipped}, then the vector direction
+representation, the $y$-value thus may be flipped}, then the vector direction
 in th XY-plane is given by 
 \begin{equation*}
-   \alpha = \atan2{(y,x)}
+   \alpha = \atan2{(y,x)}.
 \end{equation*}
+Let $d_0$ be the average distance of points to the first frame's camera,
+computed with the second frame, and $d_i$ the same with the current frame. The
+ratio of scales $r=\frac{d_i}{d_0}$ is used to scale the translation vector. $d_i$
+increases with decreasing distance to the first frame (see \autoref{fig:scale}),
+which in turn (usually) means it should decrease when approaching the target,
+since when done right, motion away from the first frame is motion towards the
+original viewpoint.
+
+The completion block is called with $z$, $\alpha$ and $r$.
+
+\subsection*{Hardware}
+
+The applicication has been developed on an iPad Air 2. The device features an
+A8X processor with thre cores and $1.5$GHz per core\footnote{The number is not
+official and based on empirical tests \citep{a8x}}.
+
+

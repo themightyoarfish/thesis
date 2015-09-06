@@ -1,0 +1,56 @@
+\chapter{Outlook}
+\section{Bugs}
+\section{Future Extensions \& Improvements}
+
+The focus of this work was the theoretical exploration and evaluation of Bae et.
+al's ansatz to computational rephotography, not on the design of release-ready
+application. As such, some functionality is missing and the app is not
+extensively tested. Notable shortcomings are
+\begin{enumerate}
+   \item In the gallery inside the app, the final captures of each rephoto are
+      shown as thumbnails. Should multiple rephotos be based on the same
+      original, they will be indistinguishable. The thumbnails should be made
+      more meaningful.
+
+   \item Deletion of rephotos works via the user's gallery, where the rephoto
+      album created by the app is visible. Deletion will leave invalid entries
+      in the database which should be cleaned up by the app. More reasonably
+      perhaps, deletion should be offered inside the app.
+
+   % \item Since rephotos are saved as tuples of URLs it may happen that the user
+   %    takes multiple rephotos with the same original. Currently, both will be
+   %    displayed in the gallery inside the app, but the \code{MainViewController}
+   %    picks the first record for which the URL of the selected image matches so
+   %    that only the first rephoto can be reviewed. Additional logic would
+
+   \item The upload of rephotos is experimentally hardcoded to work with a test
+      server and is a blocking request.
+
+   \item To enhance user experience, a choice between different overlays should
+      be offered, where at this time only an edge overlay is implemented.
+
+   \item All frames are matched with the first frame so it would suffice to
+      compute the keypoints once for it and reuse them. Currently, the keypoints
+      are recomputed for every \code{PoseDifferenceEstimationOperation}.
+
+   \item The application requires iOS 8, but actually has few dependencies on
+      it. The user interface employs \code{UIVisualEfffectView}s which were
+      previously unavailable. It should be fairly straighforward to create
+      versions of the UI without these elements.
+
+   \item The rephotography makes use of the simple
+      \code{UIImagePickerController} which is presented modally. This makes the
+      flow of the app less seamless. For instance, when the
+      \code{PhotoChooserController} is presented, and the user loads an image,
+      the image picker will pop up, but upon selection, one is not immediately
+      shown the camera, but is briefly shown the photo chooser again before the
+      rephoto starts. Furthermore, there is no possibility to modify the camera
+      stream which would be necessary to implement the image warping used by
+      \citet{bae2010}. Also, images are captured by a timer, it would be more
+      intuitive to attempt to process frames as they come and simply drop them
+      if no CPU time is available. Both could be accomplished by rebasing the
+      app on the much more customisable \code{AVFoundation} framework which
+      gives direct access to the device's camera. For this, OpenCV wrappers
+      exist already which would simplify processing the frames.
+\end{enumerate}
+
