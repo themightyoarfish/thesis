@@ -114,15 +114,14 @@ in world coordinates onto the image plane becomes
 \subsection{Camera Intrinsics}
 \label{subsec:intrinsics}
 
-Above, the resulting image points $\mbf{x}$ were in \emph{normalised} image
-coordinates. In particular, the
-principal point---the
-intersection of the image plane with the optical axis---was assumed to be
-$(0,0)$. But generally, image coordinates are expressed in pixels relative to
-the upper left corner of the sensor. To convert between normalised and pixel
-coordinates, 
-the camera's five intrinsic parameters and can be written in matrix form and
-premultiplied in \eqref{eq:projection_rt} as
+Most cameras are not pinhole cameras. To make them conform to the model, the
+camera intrinsics need to be known.  Above, the resulting image points $\mbf{x}$
+were in \emph{normalised} image coordinates. In particular, the principal
+point---the intersection of the image plane with the optical axis---was assumed
+to be $(0,0)$. But generally, image coordinates are expressed in pixels relative
+to the upper left corner of the sensor. To convert between normalised and pixel
+coordinates, the camera's five intrinsic parameters and can be written in matrix
+form and premultiplied in \eqref{eq:projection_rt} as
 \begin{IEEEeqnarray}{rCl}
    \mbf{x} & = & \left(
    \begin{array}{ccc}
@@ -171,8 +170,18 @@ the lens such that the principal point is no longer at the centre.
 
 A further compilcation is introduced by the camera lens which will often have a
 non-negligible distortion, most prominently radial distorion as depicted in
-\autoref{distortion}. It can be modeled by the application of a 
-distortion factor to the ideal undistorted image coordinates $(\tilde{x}, \tilde{y})$.
+\autoref{distortion}, but the thin lens assumption precludes distorted images.  It
+can be modeled by the application of a distortion factor to the ideal
+undistorted image coordinates $(\tilde{x}, \tilde{y})$
+and thus removed to satisfy the thin lens assumption. Distorted an ideal image
+coordinates are related as
+\begin{equation}
+   \begin{pmatrix}
+      x_d \\ y_d
+   \end{pmatrix} = L(r)\begin{pmatrix}
+      \tilde{x} \\ \tilde{y}
+   \end{pmatrix}
+\end{equation}
 
 \begin{figure}
    {\centering      
@@ -181,15 +190,6 @@ distortion factor to the ideal undistorted image coordinates $(\tilde{x}, \tilde
    right.}
    \label{distortion}}
 \end{figure}
-
-
-\begin{equation}
-   \begin{pmatrix}
-      x_d \\ y_d
-   \end{pmatrix} = L(r)\begin{pmatrix}
-      \tilde{x} \\ \tilde{y}
-   \end{pmatrix}
-\end{equation}
 
 where $L$ is a nonlinear function of the distance $r$ from the distortion
 center---usually coincident with the principal point. The function can be

@@ -1,5 +1,33 @@
 \chapter{Outlook}
+
 \section{Bugs}
+
+Some bugs in the SDK have been discovered in the making of the software.
+\begin{enumerate}
+
+   \item When using \code{UIImagePickerController} in camera mode with disabled
+      camera controls---necessary to provide custom controls---zooming and then
+      rotating the device will create a black bar at one side of the image.
+      Rotating back will remove it but hide the otherwise visible zoom level
+      indicator. It is necessary to implement a manual zooming and apply an
+      appropriate transform to the camera stream.
+
+   \item When all images from the app-created rephoto album are deleted, the
+      album will not be shown in the gallery anymore, but \code{ALAssetsLibrary}
+      does not allow to add images to it or recreate an album of the same name.
+      Since developers are encouraged to move to the more recent Photos
+      framework, this problem is not likely to get fixed. The bug ID is
+      20992021 (unacknowledged by Apple).
+
+   \item It is not feasible to support background and foreground transitions
+      while using a timed capture on \code{UIImagePickerController} as has been
+      done here. If the app becomes inactive while an image is being captured,
+      it appears as the data is released and therefore unavailable when
+      transitioning back to the foreground. This results in an exception being
+      thrown, which the developer can do nothing about, except avoid
+      \code{UIImagePickerController} for timed capture. The bug ID is 19953748
+      (unacknowledged by Apple).
+\end{enumerate}
 \section{Future Extensions \& Improvements}
 
 The focus of this work was the theoretical exploration and evaluation of Bae et.
@@ -17,11 +45,11 @@ extensively tested. Notable shortcomings are
       in the database which should be cleaned up by the app. More reasonably
       perhaps, deletion should be offered inside the app.
 
-   % \item Since rephotos are saved as tuples of URLs it may happen that the user
-   %    takes multiple rephotos with the same original. Currently, both will be
-   %    displayed in the gallery inside the app, but the \code{MainViewController}
-   %    picks the first record for which the URL of the selected image matches so
-   %    that only the first rephoto can be reviewed. Additional logic would
+      % \item Since rephotos are saved as tuples of URLs it may happen that the user
+      %    takes multiple rephotos with the same original. Currently, both will be
+      %    displayed in the gallery inside the app, but the \code{MainViewController}
+      %    picks the first record for which the URL of the selected image matches so
+      %    that only the first rephoto can be reviewed. Additional logic would
 
    \item The upload of rephotos is experimentally hardcoded to work with a test
       server and is a blocking request.
@@ -41,24 +69,52 @@ extensively tested. Notable shortcomings are
    \item The rephotography makes use of the simple
       \code{UIImagePickerController} which is presented modally. This makes the
       flow of the app less seamless. For instance, when the
-      \code{PhotoChooserController} is presented, and the user loads an image,
-      the image picker will pop up, but upon selection, one is not immediately
-      shown the camera, but is briefly shown the photo chooser again before the
-      rephoto starts. Furthermore, there is no possibility to modify the camera
-      stream which would be necessary to implement the image warping used by
-      \citet{bae2010}. Also, images are captured by a timer, it would be more
-      intuitive to attempt to process frames as they come and simply drop them
-      if no CPU time is available. Both could be accomplished by rebasing the
-      app on the much more customisable \code{AVFoundation} framework which
-      gives direct access to the device's camera. For this, OpenCV wrappers
-      exist already which would simplify processing the frames.
+      \code{PhotoChooserController} is presented and the user loads an image,
+      the image picker will pop up, but upon image selection, one is not
+      immediately shown the camera, but is briefly shown the photo chooser again
+      before the rephoto starts with yet another \code{UIImagePickerController}.
+      Furthermore, the possibility to modify the camera stream is limited to
+      affine transformations, which precludes projective transformation. This
+      would be necessary to implement the image warping used by \citet{bae2010}.
+      Also, images are captured by a timer, it would be more intuitive to
+      attempt to process frames as they come and simply drop them if no CPU time
+      is available which would also scale more easily to other devices. Both
+      could be accomplished by rebasing the app on the much more customisable
+      \code{AVFoundation} framework which gives direct access to the device's
+      camera. For this, OpenCV wrappers exist already which would simplify
+      processing the frames.  
+
+   \item The application has only been tested on a single device. While it
+      should work on iPhones as well, this could not be tested and some tuning
+      may be necessary.
+
+   \item The application creates a photo album for the rephotos with the name
+      \emph{Rephotos}, without checking if it already exists.
+
 \end{enumerate}
 
 Some features from Bae et. al's work have been simplified away, so that
 currently, no really historic photograph can be used. The app should therefore
 be extended with another view controller presented after first and second frames
-have been taken, in order for the user to label correspondences. Furthermore,
-a higher rate of processing could be achieved to also use fast feature tracking
+have been taken, in order for the user to label correspondences. Furthermore, a
+higher rate of processing could be achieved to also use fast feature tracking
 between robust pose estimations where the AKAZE detector is run. Bae et al. use
-Lucas-Kanade-Tomasi tracking for this \citep{lucas1981,tomasi1991}, an
-OpenCV implementation is already available. 
+Lucas-Kanade-Tomasi tracking for this \citep{lucas1981,tomasi1991}, an OpenCV
+implementation is already available. During automatic capture, it can be
+observed that the found features often change abruptly between successive
+frames. This and the fact that the number of found features changes strongly
+results in the scale estimation jumping rapidly. A feature tracking may increase
+the stability as the already-found points are found again, instead of radically
+different ones.
+
+It is probable that despite all assistance, the user will not manage to
+perfectly recreate the original photgraph.  In order to better register the
+original and final images, the latter can be warped according to the last pose
+difference estimate. Bae et. al use an infinite homography. The infinite
+homography is the one between two views induced by the plane at infinity, i.e.
+the set of all projective points $(x,y,z,0)$ and maps vanishing points in one
+view onto vanishing points in the other. Details can be found in \citep[ch.
+13.4]{h&z2004}. Given the calibration matrices of both views and their relative
+   rotation, the homography can be computed and one image can be warped with it
+   by remapping the pixels.
+

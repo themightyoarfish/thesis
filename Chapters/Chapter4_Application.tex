@@ -80,7 +80,7 @@ the application developed in this work is shown in \autoref{fig:storyboard}.
    \label{fig:storyboard}}
 \end{figure}
 
-\section{Objecttive-C \& C++ --- The PIMPL pattern}
+\section{Objective-C \& C++ --- The PIMPL pattern}
 
 For all image processing, the OpenCV library used in version 3.0. The library
 can be natively used from C++, but Python and Java bindings as well as a
@@ -264,11 +264,11 @@ between e.g. repeating patterns in an image (windows, wall structure etc.) as
 for such a point the corresponding point is very ambiguous and its best matches
 will be similar in distance.
 
-The function then removes the image distortion on the
-sparse set of keypoints instead of the whole image for efficiency\footnote{Since
-   undistortion requires resampling of the image, it is better to find features
-beforehand as some information may be lost by interpolation.}. On the
-correspondences, RANSAC is used to find the best-fitting essential matrix. 
+The function then removes the image distortion on the sparse set of keypoints
+instead of the whole image for efficiency\footnote{Since undistortion requires
+resampling of the image, it is better to find features beforehand as some
+information may be lost by interpolation.}. On the correspondences, RANSAC and
+the five-point algorithm are used to find the best-fitting essential matrix. 
 
 Once $E$ is fixed, the optimal triangulation method (see \citep[ch.  12.5.2]{h&z2004})
 is used to correct the corresponding points. Since one assumes
