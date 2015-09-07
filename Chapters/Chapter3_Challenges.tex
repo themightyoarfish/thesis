@@ -177,7 +177,7 @@ by considering the image derivatives---already computed for the detection---in
 the neighbourhood \citep{alcantarilla2012}. The results of these binary tests are
 assembled into a binary vector. Its size can be adjusted by making the grid
 coarser or finer. For $f$, \citet{alcantarilla2012} consider both intensity
-differences and two image derivatives. three properties are referred to as
+differences and two image derivatives. The three properties are referred to as
 \emph{channels} and the descriptor may include one, two or all three of them,
 with three yielding best performance.
 
@@ -299,7 +299,10 @@ after the other can be somehow meaningfully compared. For this, \citet{bae2010}
 observe that when triangulating 3D coordinates from corresponding points, their
 computed distance from the camera (the first frame) is inversely proportional
 to the distance between the cameras. An intuition can be obtained from
-\autoref{fig:scale}.
+\autoref{fig:scale}. To measure the scale of the world, the application uses the
+matches between two images and computes 3D coordinates by triangulation. The
+average distance of those points to the first frame's camera centre is computed
+and compared across iterations to make the scale consistent.
 
 \begin{figure}
    {\centering      

@@ -99,7 +99,7 @@ client classes if needed.
 
 One solution is a variant of the \emph{Pointer-to-Implementation} pattern
 (PIMPL, also known as \emph{Bridge} in \citep{gamma1995}). The wrapper class'
-interface (\autoref{lst:pimpl}) is specified in pure Objective-C and contains a
+interface (\autoref{lst:pimpl}) is specified in pure Objective-C and contains an
 opaque pointer to a C \code{struct} representing the wrapped data as a C type
 which therefore does not lead to compatibility issues as all C code is valid
 Objective-C. For the original pattern, this allows modifying the wrapper
@@ -107,7 +107,7 @@ hierarchy independently of the implementation hierarchy (e.g. different
 implementations could be behind the pointers, for different platforms). The
 definition of this pointer-to-implementation type is placed in a second header
 file (\autoref{lst:pimpl2}) and is imported only by those clients which actually
-need to access the data, not only pass it on. This permits to compile only those
+need to access the data, not only pass it on. This permits compiling only those
 source files as Objective-C++ which must deal with the actual OpenCV \code{Mat}.
 In principle, it would be possible to create methods in the wrapper class for
 all uses of the C++ type throughout the program. However, this would waste the
@@ -203,13 +203,13 @@ similar, the software can be divided into five parts.
 For the user interface, several custom views classes are implemented.
 \begin{enumerate}
    \item \code{ArrowView} A view which is backed by an \code{ArrowLayer} and
-      allows to display it as \code{CALayer}s cannot be shown without a
+      allows displaying it as \code{CALayer}s cannot be shown without a
       wrapping \code{UIView}.
    \item \code{ArrowLayer} A \code{CALayer} subclass which can display a
       parametrisable arrow shape whose parameters can be seamlessly animated.
       \code{CALayers} are the backbone of all \code{UIView} objects.
-   \item \code{ImageScrollView} A \code{ScrollView} subclass which allows to
-      display a zoomable and pannable image while also preserving the visible
+   \item \code{ImageScrollView} A \code{ScrollView} subclass which allows
+      displaying a zoomable and pannable image while also preserving the visible
       portion when the user interface orientation changes.
    \item \code{CircleView} A simple view purely for drawing a circle parametrised
       with colour and line width.
@@ -222,7 +222,7 @@ Furthermore, two view hierarchies and the Storyboard belong to this module.  If
 a custom view must exhibit some particular behviour which necessitates custom
 methods, creating classes is appropriate. For interface elements which contain a
 larger hierarchy of nested views without exposing any particular behaviour,
-specifying them in a visual fashion is less involved. Such view hierarchies can
+specifying them in a visual manner is less involved. Such view hierarchies can
 be built visually as \code{XIB} files in an XML format. The
 \code{CameraOverlay} overlayed on the current camera picture is created like
 this, as well as the launch screen shown when starting the app.
@@ -297,7 +297,7 @@ matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
          descriptor\_channels    & $3$ \\
          \bottomrule
       \end{tabular}
-      \caption{Parameters used for \texttt{AKAZE}}
+      \caption{Parameters used for AKAZE}
       \label{tab:akaze_params}
    \end{center}
 \end{table}
@@ -329,7 +329,7 @@ contains a button to access the settings
 (\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, presents a
 \code{SettingsViewController}) as well as a button to start the rephotograph
 (\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}). The latter
-will modally present a \code{UIImagePicker- Controller} and attach to it a
+will modally present a \code{UIImagePickerController} and attach to it a
 \code{RephotoMangager} that controls the rephotography.
 
 When an image is picked, the controller uses the Canny edge detection algorithm
@@ -338,8 +338,8 @@ finding the perfect aligment.
 
 \subsection*{\code{SettingsViewController}}
 
-The \code{SettingsViewController} possesses three panels which allow to
-modify the color of the edge overlay and insert authentication data for
+The \code{SettingsViewController} possesses three panels which allow for
+modification of the color of the edge overlay and insert authentication data for
 future use with an envisioned online platform. The third panel is unused in the current
 version and can be used for other kinds of preferences such as the default type
 of visualisation for the necessary camera motion.
@@ -364,14 +364,15 @@ the URL of a selected image, so it can be used to map a rephoto on its original
 or vice versa when it should be displayed.
 
 On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
-allows to upload a rephoto to an experimental test server for display, but the
-functionality is only rudimentary.
+lets the user upload a rephoto to an experimental test server for display, but the
+functionality is only rudimentary and requires the server to be running in the
+same local network with a known IP address.
 
 \subsection*{\code{ELCImagePickerController}}
 
 For the task of reviewing rephotographs, the \code{ELCImagePickerController} is
 used. Contrarily to the built-in \code{UIImagePickerController}, this
-reimplementation by \citet{nutting2013} allows to display a specific asset, like
+reimplementation by \citet{nutting2013} allows to inspect a specific asset, like
 a photo album instead of all assets there are. In the album display, the user is
 shown the new photographs of each rephoto and upon selection is presented a
 \code{ResultViewController} with the rephotograph.
@@ -433,7 +434,7 @@ summarised in \autoref{tab:categories}.
 \subsection{Other Classes -- \code{RephotoManager}}
 
 The two most important classes are the \code{RephotoManager} and the
-\code{Pose- DifferenceEstimationOperation}. A \code{RephotoManager} is attached to
+\code{PoseDifferenceEstimationOperation}. A \code{RephotoManager} is attached to
 a \code{UIImagePickerController} in camera mode and controls the execution of
 the rephotograph. The camera overlay contains a shutter button and information
 labels telling the user what to do next. Tapping the info button
@@ -512,7 +513,7 @@ Operation queues---internally implemented with
 GCD\footnote{\citep{nsopgcd}}---sacrifice some efficiency, but expose a more
 high-level object-oriented interface in which \code{NSOperation} objects are
 submitted to \code{NSOperationQueue}s and their
-\code{maxConcurrentOperationCount} property allows to set a maximum number of
+\code{maxConcurrentOperationCount} property limits the maximum number of
 concurrent operations. The application sets this limit to $3$ for an iPad
 (assuming $3$ cores like an iPad Air 2) and $2$ for iPhones, as the current
 devices possess two cores. Since there is no concurrent modification of data and
@@ -521,7 +522,7 @@ tasks are started in slow intervals, explicit sychronisation is not needed.
 A \code{PoseDifferenceEstimationOperation} is created with two images (one of
 which will always be the first frame), a scale parameter for downsampling and
 computed values for the relative pose between first and reference frames and the
-goal scale. Furthermore, a block is passed which can accept three float
+goal scale. Furthermore, a block is passed which can accept three \texttt{float}
 parameters---one for the direction in the XY-plane, one for the ratio between
 reference and current world scale, and one for the magnitude of translation along
 the optical axis. The intended purpose of this block is to drive some kind of
@@ -547,10 +548,16 @@ original viewpoint.
 
 The completion block is called with $z$, $\alpha$ and $r$.
 
-\subsection*{Hardware}
+\section{Hardware}
 
-The applicication has been developed on an iPad Air 2. The device features an
-A8X processor with thre cores and $1.5$GHz per core\footnote{The number is not
-official and based on empirical tests \citep{a8x}}.
+The applicication has been developed on an iPad Air 2. This model features an
+A8X processor with three cores and $1.5$GHz per core\footnote{The number is not
+official and based on empirical tests \citep{a8x}}. The number of concurrently
+running \code{PoseDifferenceEstimationOperation}s is thus set to three which
+enables frequent updates of the visualisation. Images with $1077\times 807$
+(full resolution with a $0.33$ scale factor) take roughly $0.7$ seconds to
+process, so that updates can be delivered more than once per second. The
+concurrent operation count is set to two for iPhones owing to their smaller
+processing power and number of CPU cores.
 
 

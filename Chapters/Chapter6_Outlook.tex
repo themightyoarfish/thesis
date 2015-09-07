@@ -14,7 +14,7 @@ Some bugs in the SDK have been discovered in the making of the software.
 
    \item When all images from the app-created rephoto album are deleted, the
       album will not be shown in the gallery anymore, but \code{ALAssetsLibrary}
-      does not allow to add images to it or recreate an album of the same name.
+      does not permit adding images to it or recreate an album of the same name.
       Since developers are encouraged to move to the more recent Photos
       framework, this problem is not likely to get fixed. The bug ID is
       20992021 (unacknowledged by Apple).
@@ -113,8 +113,15 @@ original and final images, the latter can be warped according to the last pose
 difference estimate. Bae et. al use an infinite homography. The infinite
 homography is the one between two views induced by the plane at infinity, i.e.
 the set of all projective points $(x,y,z,0)$ and maps vanishing points in one
-view onto vanishing points in the other. Details can be found in \citep[ch.
-13.4]{h&z2004}. Given the calibration matrices of both views and their relative
-   rotation, the homography can be computed and one image can be warped with it
-   by remapping the pixels.
+view onto vanishing points in the other. Details can be found in \citep[ch. 13.4]{h&z2004}.
+Given the calibration matrices of both views and their relative
+rotation, the homography can be computed and one image can be warped with it
+by remapping the pixels.
 
+\citet{bae2010} explored different ways of visualising the necessary motion.
+A side-by-side view or a linear blend were less helpful than the arrow
+visualisation, but one could image to offer evaluate different kinds, such as
+a three-dimensional arrow which shows both parts of the necessary translation
+or. A more sophisticated idea is to project an approximation of the correct
+location into the camera picture, but this would require a more detailed
+reconstruction of the scene.
