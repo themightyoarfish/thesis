@@ -177,7 +177,7 @@ by considering the image derivatives---already computed for the detection---in
 the neighbourhood \citep{alcantarilla2012}. The results of these binary tests are
 assembled into a binary vector. Its size can be adjusted by making the grid
 coarser or finer. For $f$, \citet{alcantarilla2012} consider both intensity
-differences and two image derivatives. The three properties are referred to as
+differences and the two image derivatives. The three properties are referred to as
 \emph{channels} and the descriptor may include one, two or all three of them,
 with three yielding best performance.
 
@@ -213,9 +213,8 @@ identified.
       be vastly different from the current scene. Not only may the scene itself
       have changed considerably, but also the historical image---having been
       taken by a historical camera---may differ in contrast, sharpness and
-      colours. Feature detectors may not be able to reliably find
-      correspondences when comparing an old with a new photograph. Neither SIFT
-      nor AKAZE will reliably find correspondences with a current photo.
+      colours. Neither SIFT nor AKAZE will reliably find correspondences between
+      such an image and a current photo.
    \item The calibration data---most importantly, focal length and principal
       point---of the historical camera are often unknown. The calibration data
       is needed for relative pose computation (see \autoref{sec:epipolar}).
@@ -228,7 +227,7 @@ take two photographs of the scene with a reasonably wide baseline (about
 taken from some distance from the original viewpoint, the \emph{second
 frame} should be the user's best eyeballed approximation of it. The wide
 baseline allows for a more reliable 3D-reconstrution of the scene used to
-tackle problems 2. and 3. 
+tackle problems 2 and 3. 
 
 SIFT features are computed and matched between the two images.  Given these
 correspondences, 3D coordinates of the points can be computed. A selection of
@@ -237,24 +236,28 @@ or more points in the historical photograph corresponding to these points in the
 second frame. This allows estimating extrinsic and intrinsic camera parameters
 of the historical camera by running an optimisation algorithm on an initial
 estimate for relative rotation and translation between first frame and reference
-image as well as sensor skew, focal length and principal point of the historical
-camera (problem 5.).  Hence, the reference photograph is not needed anymore
-after this initial step, circumventing problem 4.  The principal point's initial
-guess is found again with help of the user who identifies three sets of parallel
-lines in the historical image \citep[see][chapter 8.8]{h&z2004}.
+image. Also sensor skew, focal length and principal point of the historical
+camera can be inferred this way (problem 5.).  The reference photograph
+is not needed anymore after this initial step, circumventing problem 4.  The
+principal point's initial guess is found again with help of the user who
+identifies three sets of parallel lines in the historical image
+\citep[see][chapter 8.8]{h&z2004}.
 
 In this work, this problem is neglected and it is assumed that the original
 image can be matched with current photographs, so it should not actually be
 historic. This restriction is envisioned to be removed in the future.
 
-The result is that the pose of the reference camera relative to the first
+A this point the pose of the reference camera relative to the first
 camera $T_{\text ref,first},~R_{\text ref,first}$ is known. During the homing
 process, the current camera frame is compared to the first frame (not the
 reference frame, avoiding problem 3.), which avoids degeneracy due to the wide
 baseline. Thus one obtains $T_{\text current,first},~R_{\text current,first}$.
 Given the locations of the reference camera and the current frame's camera, each
 relative to the first frame, one can compute the location of the reference
-relative to the current frame and thus guide the user in the right direction.
+relative to the current frame and thus guide the user in the right
+direction\footnote{Depending on the coordinate system used and whether $R$ and
+$T$ are given such that they transform points from frame $1$ to frame $2$ or vice
+versa, the equations will look different, as they do in \citep{bae2010}}.
 
 \begin{IEEEeqnarray}{rCllt}
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{X}{first} + \sub{T}{ref,first} & \hspace{1em}\\
@@ -278,7 +281,7 @@ During homing, Bae et. al warp the current camera frame according to the
 necessary rotation before being shown to the user, allowing them to focus only
 on the translation (problem 1.). This is possible since for rephotography
 dealing with structures usually at some distance, the rotation will be small,
-otherwise the warped image would be unusable. This simplification is also
+otherwise the warped image would be unusable. This kind of support is also
 disregarded in this work, as achieving the correct rotation with the help of an
 overlayed edge image is easy enough, as long as one is directed to the correct
 spot. Therefore, only the translation is communicated.
@@ -347,10 +350,10 @@ estimation. However, in reality this should be a minor problem, as the movement
 around a scene will be stronger than towards or away from it when
 rephotographing.
 
-For a summary, \autoref{fig:procedure} shows how the whole pipeline works.
+For a summary, \autoref{fig:procedure} shows the complete pipeline.
 \begin{figure}[h]
    {\centering      
       \input{gfx/ablauf.tex}
-      \caption{Rephotography procedure}
+      \caption{Computational rephotography procedure}
    \label{fig:procedure}}
 \end{figure}
