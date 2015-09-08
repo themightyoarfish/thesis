@@ -10,6 +10,7 @@ will be described.
 % Strangely, applying http://tex.stackexchange.com/a/44362/31250 in the preamble
 % did not work
 \newcommand*{\code}[1]{\begingroup\ttfamily\hyphenchar\font=23{#1}\endgroup}
+\lccode`\:`\:
 
 iOS is the operating system running on all of Apple's mobile devices. It is
 currently\footnote{\today\ \citep{ios8}} at version 8.4.1 with its successor iOS
@@ -79,6 +80,408 @@ the application developed in this work is shown in \autoref{fig:storyboard}.
       always a root view controller on whose stack new controllers are pushed or popped from.}
    \label{fig:storyboard}}
 \end{figure}
+
+\section{Application Layout}
+
+This section will walk through the different screens presented to the user and
+elaborate on the functions of the associated view controllers.
+
+\newcommand*{\button}[1]{
+   \tikzexternaldisable
+   \tikz[baseline=-.5ex]{\node[inner sep=1pt,outer sep=0,draw,rounded corners=2pt]{\small\texttt{#1}};}
+   \tikzexternalenable
+}
+
+\newcommand*{\nofloat}[2]{
+   \begin{center}
+      \fbox{
+         \includegraphics[width=\textwidth]{#1}
+      }
+      \captionof{figure}{#2}
+   \end{center}
+}
+
+\subsection{\code{MainViewController}}
+
+
+When the app starts up, the user is shown a \code{MainViewController} which
+offers a choice whether to make a new rephotograph or view existing ones.
+Clicking the \button{Take Rephoto} button will trigger a segue to a
+\code{PhotoChooserController}, while tapping \button{View Rephotos} will modally
+present an \code{ELCImagePickerController}.
+
+\nofloat{gfx/mainviewcontroller.PNG}{\code{MainViewController} view layout}
+
+\subsection{\code{PhotoChooserController}}
+
+This view controller displays a scrollable and pannable view and a button
+\button{Choose Photo from Library} to load a reference photograph into it. The
+photo is picked from the user's photo album.  Furthermore, the navigation bar
+contains a button to access the settings
+(\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, presents a
+\code{SettingsViewController}) as well as a button to start the rephotograph
+(\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}). The latter
+will modally present a \code{UIImagePickerController} and attach to it a
+\code{RephotoManager} that controls the rephotography.
+
+\nofloat{gfx/photochoosercontroller.PNG}{\code{PhotoChooserController} view
+layout}
+
+When an image is picked, the controller uses the Canny edge detection algorithm
+\citep{canny1986} to generate an overlay which will then help the user in
+finding the perfect aligment.
+
+\nofloat{gfx/photochoosercontroller_photo.PNG}{\code{PhotoChooserController}
+with loaded image}
+
+\subsection{\code{SettingsViewController}}
+
+The \code{SettingsViewController} possesses three panels which allow for
+modification of the color of the edge overlay and insert authentication data for
+future use with an envisioned online platform. The third panel is unused in the current
+version and can be used for other kinds of preferences such as the default type
+of visualisation for the necessary camera motion.
+
+\nofloat{gfx/settingsviewcontroller.PNG}{\code{SettingsViewController} view
+layout}
+
+\subsection{\code{RephotoManager}}
+
+\hyphenation{Pose-Diff-er-ence-Es-ti-ma-tion-Op-er-at-ion}
+The two most important classes are the \code{RephotoManager} and the
+\code{PoseDifferenceEstimationOperation}. A \code{RephotoManager} is attached to
+a \code{UIImagePickerController} in camera mode and controls the execution of
+the rephotograph. The camera overlay contains a shutter button and information
+labels telling the user what to do next. Tapping the info button
+(\raisebox{-2pt}{\includegraphics[width=1em]{gfx/info.png}}) expands the label
+to reveal more information. The manager is realised as a state machine, depicted
+as a flow chart in \autoref{fig:rephoto_manager}.
+
+\begin{figure}[h]
+   {\centering      
+      \input{gfx/rephoto_manager.tex}
+      \caption{States of the rephoto manager object}
+   \label{fig:rephoto_manager}}
+\end{figure}
+
+\subsubsection*{\code{START}}
+
+Initially, the user interface presents shutter and cancel buttons in a toolbar
+at the bottom and an info indictator on the top left, telling the user the take
+the first frame. When the user taps the shutter button, the first frame is
+captured and saved.
+
+\subsubsection*{\code{HAS\_FIRST\_FRAME}}
+
+When transitioning to this state, the manager changes the info label accordingly
+and displays a check mark for the first frame in the centre of the toolbar.
+Furthermore, at this point the precomputed edge overlay is presented so that
+taking the second frame which shoul be reasonably close to the original
+viewpoint is possible.
+
+\subsubsection*{\code{HAS\_SECOND\_FRAME}}
+
+Once the second frame is captured, the second checkmark is shown, the info
+label changes again and the preprocessing step is attempted. A
+\code{PoseDifferenceEstimationOperation} is started with the first and reference
+frames and another for the reference scale computation by use of first and
+second frames. Relative translation, rotation and goal scale are saved.
+
+Should one of the computations fail, the UI resets to the initial state execpt
+for an error label at the bottom centre informing the user that the matching
+failed. Otherwise a timer is initiated that will take pictures at a certain
+interval which should accord with the hardwary running the program. For the
+tested device, it is set to $1$ second, although somewhat higher frame rates are
+possible.
+
+Meanwhile, a panel at the bottom centre is revealed which visualises the
+necessary motion of the camera. For this, several ideas are possible.
+\citet{bae2010} found that an arrow visualisation for the translation in the
+XY-plane and Z-direction is most effective so this approach has been chosen
+here. Two camera pictograms are shown, one back view and one top view. There is
+one arrow positioned on each so that the transaltion in the XY-plane and
+Z-direction are independently visualised.
+
+\nofloat{gfx/rephoto_manager.PNG}{\code{RephotoManager} in
+\code{HAS\_SECOND\_FRAME} state}
+
+\subsubsection*{\code{DONE}}
+
+After the final image is captured, the manager informs its delegate (in this
+case the \code{PhotoChooserController}) that its task is finished and hands over
+the final capture.
+
+
+\subsection{\code{ResultViewController}}
+
+\newenvironment{mywrapfigure}[2]{
+   \setlength\intextsep{0pt} % wrapfigure 'isn't a real environment' apparently; http://tex.stackexchange.com/a/266431/31250
+   \wrapfigure#1#2
+}
+{
+   \endwrapfigure
+}
+
+\setlength\intextsep{0pt}
+\begin{wrapfigure}{r}{.3\textwidth}
+   \includegraphics[width=.25\textwidth]{gfx/image_data.pdf}
+\end{wrapfigure}
+
+This controller must be passed a completed rephotograph in an \code{ImageData}
+object and displays the new image over the orginal. 
+With a slider, the new image
+is horizontally clipped to some percentage of it width and can thus be
+dynamically unrolled over the original. Depending on a flag in the
+\code{ImageData} object, the rephoto passed to the controller will be saved. For
+this, the app makes use of the \code{sqlite} library. The \code{DBManager} class
+manages communication with a lightweight SQL database. Since all photos are
+part of the user's photo library---there is no way to save assets locally for an
+application---they are saved as a tuple of two \code{NSURL}s. Both the built-in
+\code{UIImagePickerController} and the \code{ELCImagePickerController} return
+the URL of a selected image, so it can be used to map a rephoto on its original
+or vice versa when it should be displayed.
+
+\nofloat{gfx/resultviewcontroller.PNG}{\code{ResultViewController} view layout}
+
+On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
+lets the user upload a rephoto to an experimental test server for display, but the
+functionality is only rudimentary and requires the server to be running in the
+same local network with a known IP address.
+
+\subsection{\code{ELCImagePickerController}}
+
+For the task of reviewing rephotographs, the \code{ELCImagePickerController} is
+used. Contrarily to the built-in \code{UIImagePickerController}, this
+reimplementation by \citet{nutting2013} allows to inspect a specific asset, like
+a photo album instead of all assets there are. In the album display, the user is
+shown the new photographs of each rephoto and upon selection is presented a
+\code{ResultViewController} with the rephotograph.
+
+
+\section{Software Modules}
+
+Although Objective-C does not support modularisation by packages, namespace or
+similar, the software can be divided into five parts.
+
+\subsection{User Interface}
+
+For the user interface, several custom views classes are implemented.
+\begin{enumerate}
+   \item \code{ArrowView} A view which is backed by an \code{ArrowLayer} and
+      allows displaying it as \code{CALayer}s cannot be shown without a
+      wrapping \code{UIView}.
+   \item \code{ArrowLayer} A \code{CALayer} subclass which can display a
+      parametrisable arrow shape whose parameters can be seamlessly animated.
+      \code{CALayers} are the backbone of all \code{UIView} objects.
+   \item \code{ImageScrollView} A \code{ScrollView} subclass which allows
+      displaying a zoomable and pannable image while also preserving the visible
+      portion when the user interface orientation changes.
+   \item \code{CircleView} A simple view purely for drawing a circle parametrised
+      with colour and line width.
+   \item \code{MaskableUIImageView} An \code{UIImageView} which allows the
+      image to be clipped to some percentage of its width. This is used to
+      display a before-after comparison of the original and repeat photographs.
+\end{enumerate}
+
+Furthermore, two view hierarchies and the Storyboard belong to this module.  If
+a custom view must exhibit some particular behviour which necessitates custom
+methods, creating classes is appropriate. For interface elements which contain a
+larger hierarchy of nested views without exposing any particular behaviour,
+specifying them in a visual manner is less involved. Such view hierarchies can
+be built visually as \code{XIB} files in an XML format. The
+\code{CameraOverlay} overlayed on the current camera picture is created like
+this, as well as the launch screen shown when starting the app.
+
+
+\subsection{Image Processing}
+
+\hyphenation{computePoseDifferenceBetweenCamera:-secondCamera:calibrationFile:scale:}
+% dirty hack
+
+The bulk of the work is done inside the utility class' \code{ImageUtils} static
+methods. To compute the pose difference between two frames, clients can call the
+public method \code{+[computePoseDifferenceBetweenCamera:secondCamera:calibrationFile:scale:]}.
+The two images must be passed, as well as the path to a calibration file in
+OpenCV's \code{FileStorage} format. A scale parameter can be used to speed up
+the computation by downsampling the images.  The scale is set to $0.33$
+compromise between speed and matching robustness, taking into account that
+compared to the computations performed on a computer (see
+\autoref{ch:evaluation}) some detail is lost due to conversion between iOS's
+\code{UIImage} format and OpenCV's \code{Mat} type.
+
+Internally, the method converts the images, uses OpenCV image processing
+functions to compute the pose difference and the average distance of the matched
+features to the first camera. The client is returned an \code{NSDictionary}
+containing the rotation, translation, average point distance, and---should the
+computation fail---an error code in which case all other values are invalid.
+
+The method first runs \texttt{AKAZE} on both images, the parameters used are
+shown in \autoref{tab:akaze_params}.  Computation is aborted if one of the
+images yields fewer than $100$ keypoints.  Matches are found by brute force with
+a ratio test as suggested by \citet{lowe2004}. Let $d(x,y)$ denote the distance
+(here the $L_2$-norm) of descriptors $x$ and $y$. For all descriptors $x$ in the
+first image, the two best matching descriptors $y_1$ and $y_2$ in the other
+image are found. If
+\begin{equation*}
+   \frac{d(x,y_1)}{d(x,y_2)} < \rho
+\end{equation*}
+then the pair $(x,y_1)$ is chosen as a match. Lowe suggests $\rho=0.8$, the app
+uses a stricter ratio of $\rho=0.7$. This test will filter unstable matches
+between e.g. repeating patterns in an image (windows, wall structure etc.) as
+for such a point the corresponding point is very ambiguous and its best matches
+will be similar in distance.
+
+The function then removes the image distortion on the sparse set of keypoints
+instead of the whole image for efficiency\footnote{Since undistortion requires
+   resampling of the image, it is better to find features beforehand as some
+information may be lost by interpolation.}. On the correspondences, RANSAC and
+the five-point algorithm are used to find the best-fitting essential matrix. 
+
+Once $E$ is fixed, the optimal triangulation method (see \citep[ch.  12.5.2]{h&z2004})
+is used to correct the corresponding points. Since one assumes
+the computed essential matrix is correct, the information can be used to
+refine the position of corresponding points. This should make pose recovery
+with $E$ and the points for accurate.
+
+The essential matrix is then decomposed into $R$ and $T$. The confidence
+threshold is set to $0.999$, a point is considered an outlier if its distance
+to its epipolar line exceeds $3$ pixels. A sanity check for a valid rotation
+matrix is performed by checking that $|\det R|\approx 1$\footnote{A rotation
+matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
+
+\rowcolors{2}{gray!5}{white} % alternating colours
+\begin{table}
+   \begin{center}
+      \begin{tabular}{>{\ttfamily}ll}
+         \rowcolor{white}
+         \toprule
+         \rmfamily Parameter     & Value \\
+         \midrule
+         nOctaves                & $4$ \\
+         threshold               & 0.001 \\
+         nOctaveLayers/sublevels & $4$ \\
+         descriptor\_size        & $486$\tablefootnote{\texttt{AKAZEFeatures.cpp line $720$}} bits \\
+         descriptor\_channels    & $3$ \\
+         \bottomrule
+      \end{tabular}
+      \caption{Parameters used for AKAZE}
+      \label{tab:akaze_params}
+   \end{center}
+\end{table}
+
+
+
+% \subsection{View Controllers}
+
+
+\subsection{Categories}
+
+Code reuse in Objective-C can be accomplished by inheritance as in other
+object-oriented languages, but often, when only one piece of behaviour is to be
+added, not overridden\footnote{The behaviour is undefined when a Category method
+has the same signature as one of the class \citep{customizing}}, the
+lightweight Category concept is employed. A Category on a class adds methods
+or properties to that class The header file declaring the category can be
+included by all clients that wish to make use of the modified or added
+behaviour, and left out by all others. This way, no unnecessarily large class
+hierarchy is created.
+
+In this application, categories are used for different purposes. They are
+summarised in \autoref{tab:categories}.
+
+\begin{table}
+   \begin{tabularx}{\linewidth}{>{\ttfamily}p{4cm}X}
+      \toprule
+      \rowcolor{white}
+      {\rmfamily Category Name}           & Function \\
+      \midrule
+      NSMutableURLRequest (RephotoUpload) & Adds method to post a rephoto to an
+      experimental server via HTTP \\
+      ALAssetsLibrary (CustomPhotoAlbum)  & Adds method to add an image to a
+      specific album, not possible per default. Used to save rephotos to the
+      \code{Rephotos} album \\
+      NSUserDefaults (UIColor)            & By default, only some types can be
+      persistently saved in the user defaults. Adds method to save colours. Used
+      to remember the user's edge colour.\\
+      CALayer (UIColor)                   & Properties for view objects can be
+      set in Interface Builder, but only if they are of object type. To set a
+      view's backing layer's border colour outside of the code, a colour
+      property of object type is defined, mapped to the C type \code{CGColor}
+      used by \code{CALayer}. \\
+      UIBezierPath (Arrow)                & Adds a method to generate an arrow
+      shape with a bézier curve. Used for displaying user guidance. \\
+      UIImage (Zoom)                      & Adds a method to crop an image to a
+      rectangle centered on the image center, effectively zooming in. Used to
+      allow the user to zoom the camera image. \\
+      UIScrollView (Center)               & Adds methods to center the content
+      and zoom to a particular size. Used fo display of the original image. \\
+      UIColor (CustomColors)              & Contrarily to Android, iOS possesses
+      no Resources framework, so this Category declares some commonly used
+      colours for the user interface \\
+      UIView (Effects)                    & Adds some animation methods to all
+      views to avoid repeating boilerplate code. \\
+      \bottomrule
+   \end{tabularx}
+   \caption{Summary of categories}
+   \label{tab:categories}
+\end{table}
+
+\FloatBarrier
+
+\subsection{Other Classes -- \code{PoseDifferenceEstimationOperation}}
+
+\begin{wrapfigure}{l}{.35\textwidth}
+   \includegraphics[width=.35\textwidth]{gfx/posediffop.pdf}
+\end{wrapfigure}
+iOS supports different APIs for parallelisation. Besides manual thread creation,
+Grand Central Dispatch allows to easily dispatch blocks (function objects) to
+different kinds of queues. The runtime automatically removes blocks from the
+queue for execution. Dispatch queues can be serial or concurrent and both
+synchronous and asynchronous dispatch is possible as well as synchronisation,
+but the API is not object-oriented and some useful features are unavailable.  Is
+not possible to specify how many blocks should be executed in parallel or to
+cancel tasks after submission. Since the application should make optimal use of
+the hardware due to high computational demand while not queueing up many tasks,
+or tasks which are obsolete, such functionality is desirable.
+
+Operation queues---internally implemented with
+GCD\footnote{\citep{nsopgcd}}---sacrifice some efficiency, but expose a more
+high-level object-oriented interface in which \code{NSOperation} objects are
+submitted to \code{NSOperationQueue}s and their
+\code{maxConcurrentOperationCount} property limits the maximum number of
+concurrent operations. The application sets this limit to $3$ for an iPad
+(assuming $3$ cores like an iPad Air 2) and $2$ for iPhones, as the current
+devices possess two cores. Since there is no concurrent modification of data and
+tasks are started in slow intervals, explicit sychronisation is not needed.
+
+A \code{PoseDifferenceEstimationOperation} is created with two images (one of
+which will always be the first frame), a scale parameter for downsampling and
+computed values for the relative pose between first and reference frames and the
+goal scale. Furthermore, a block is passed which can accept three \texttt{float}
+parameters---one for the direction in the XY-plane, one for the ratio between
+reference and current world scale, and one for the magnitude of translation along
+the optical axis. The intended purpose of this block is to drive some kind of
+visualisation. The operation then computes the relative pose and the necessary
+translation as in \eqref{eq:necessary_trans}. 
+
+If $\sub{T}{current,ref} = (x,y,z)$\footnote{One should note that this
+   calculation depends on the coordinate system. In OpenCV, the origin is at the
+   top left corner of an image, the positive $x$-axis is the image width, the
+   positive $y$-axis the image height and points downward. In a more canonical
+representation, the $y$-value thus may be flipped}, then the vector direction
+in th XY-plane is given by 
+\begin{equation*}
+   \alpha = \atan2{(y,x)}.
+\end{equation*}
+Let $d_0$ be the average distance of points to the first frame's camera,
+computed with the second frame, and $d_i$ the same with the current frame. The
+ratio of scales $r=\frac{d_i}{d_0}$ is used to scale the translation vector. $d_i$
+increases with decreasing distance to the first frame (see \autoref{fig:scale}),
+which in turn (usually) means it should decrease when approaching the target,
+since when done right, motion away from the first frame is motion towards the
+original viewpoint.
+
+The completion block is called with $z$, $\alpha$ and $r$.
 
 \section{Objective-C \& C++ --- The PIMPL pattern}
 
@@ -192,361 +595,6 @@ struct CVMatWrapperImpl
 }
 @end
 \end{lstlisting}
-
-\section{Software Modules}
-
-Although Objective-C does not support modularisation by packages, namespace or
-similar, the software can be divided into five parts.
-
-\subsection{User Interface}
-
-For the user interface, several custom views classes are implemented.
-\begin{enumerate}
-   \item \code{ArrowView} A view which is backed by an \code{ArrowLayer} and
-      allows displaying it as \code{CALayer}s cannot be shown without a
-      wrapping \code{UIView}.
-   \item \code{ArrowLayer} A \code{CALayer} subclass which can display a
-      parametrisable arrow shape whose parameters can be seamlessly animated.
-      \code{CALayers} are the backbone of all \code{UIView} objects.
-   \item \code{ImageScrollView} A \code{ScrollView} subclass which allows
-      displaying a zoomable and pannable image while also preserving the visible
-      portion when the user interface orientation changes.
-   \item \code{CircleView} A simple view purely for drawing a circle parametrised
-      with colour and line width.
-   \item \code{MaskableUIImageView} An \code{UIImageView} which allows the
-      image to be clipped to some percentage of its width. This is used to
-      display a before-after comparison of the original and repeat photographs.
-\end{enumerate}
-
-Furthermore, two view hierarchies and the Storyboard belong to this module.  If
-a custom view must exhibit some particular behviour which necessitates custom
-methods, creating classes is appropriate. For interface elements which contain a
-larger hierarchy of nested views without exposing any particular behaviour,
-specifying them in a visual manner is less involved. Such view hierarchies can
-be built visually as \code{XIB} files in an XML format. The
-\code{CameraOverlay} overlayed on the current camera picture is created like
-this, as well as the launch screen shown when starting the app.
-
-
-\subsection{Image Processing}
-
-The bulk of the work is done inside the utility class' \code{ImageUtils} static
-methods. To compute the pose difference between two frames, clients can call the
-public method
-\code{+[computePoseDifferenceBetweenCamera:secondCamera:calibrationFile:scale:]}.
-The two images must be passed, as well as the path to a calibration file in
-OpenCV's \code{FileStorage} format. A scale parameter can be used to speed up
-the computation by downsampling the images.  The scale is set to $0.33$
-compromise between speed and matching robustness, taking into account that
-compared to the computations performed on a computer (see
-\autoref{ch:evaluation}) some detail is lost due to conversion between iOS's
-\code{UIImage} format and OpenCV's \code{Mat} type.
-
-Internally, the method converts the images, uses OpenCV image processing
-functions to compute the pose difference and the average distance of the matched
-features to the first camera. The client is returned an \code{NSDictionary}
-containing the rotation, translation, average point distance, and---should the
-computation fail---an error code in which case all other values are invalid.
-
-The method first runs \texttt{AKAZE} on both images, the parameters used are
-shown in \autoref{tab:akaze_params}.  Computation is aborted if one of the
-images yields fewer than $100$ keypoints.  Matches are found by brute force with
-a ratio test as suggested by \citet{lowe2004}. Let $d(x,y)$ denote the distance
-(here the $L_2$-norm) of descriptors $x$ and $y$. For all descriptors $x$ in the
-first image, the two best matching descriptors $y_1$ and $y_2$ in the other
-image are found. If
-\begin{equation*}
-   \frac{d(x,y_1)}{d(x,y_2)} < \rho
-\end{equation*}
-then the pair $(x,y_1)$ is chosen as a match. Lowe suggests $\rho=0.8$, the app
-uses a stricter ratio of $\rho=0.7$. This test will filter unstable matches
-between e.g. repeating patterns in an image (windows, wall structure etc.) as
-for such a point the corresponding point is very ambiguous and its best matches
-will be similar in distance.
-
-The function then removes the image distortion on the sparse set of keypoints
-instead of the whole image for efficiency\footnote{Since undistortion requires
-resampling of the image, it is better to find features beforehand as some
-information may be lost by interpolation.}. On the correspondences, RANSAC and
-the five-point algorithm are used to find the best-fitting essential matrix. 
-
-Once $E$ is fixed, the optimal triangulation method (see \citep[ch.  12.5.2]{h&z2004})
-is used to correct the corresponding points. Since one assumes
-the computed essential matrix is correct, the information can be used to
-refine the position of corresponding points. This should make pose recovery
-with $E$ and the points for accurate.
-
-The essential matrix is then decomposed into $R$ and $T$. The confidence
-threshold is set to $0.999$, a point is considered an outlier if its distance
-to its epipolar line exceeds $3$ pixels. A sanity check for a valid rotation
-matrix is performed by checking that $|\det R|\approx 1$\footnote{A rotation
-matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
-
-\rowcolors{2}{gray!5}{white} % alternating colours
-\begin{table}
-   \begin{center}
-      \begin{tabular}{>{\ttfamily}ll}
-         \rowcolor{white}
-         \toprule
-         \rmfamily Parameter     & Value \\
-         \midrule
-         nOctaves                & $4$ \\
-         threshold               & 0.001 \\
-         nOctaveLayers/sublevels & $4$ \\
-         descriptor\_size        & $486$\tablefootnote{\texttt{AKAZEFeatures.cpp line $720$}} bits \\
-         descriptor\_channels    & $3$ \\
-         \bottomrule
-      \end{tabular}
-      \caption{Parameters used for AKAZE}
-      \label{tab:akaze_params}
-   \end{center}
-\end{table}
-
-
-
-\subsection{View Controllers}
-
-\subsection*{\code{MainViewController}}
-
-\newcommand*{\button}[1]{
-   \tikzexternaldisable
-   \tikz[baseline=-.5ex]{\node[inner sep=1pt,outer sep=0,draw,rounded corners=2pt]{\small\texttt{#1}};}
-   \tikzexternalenable
-}
-
-When the app starts up, the user is shown a \code{MainViewController} which
-offers a choice whether to make a new rephotograph or view existing ones.
-Clicking the \button{Take Rephoto} button will trigger a segue to a
-\code{PhotoChooserController}, while tapping \button{View Rephotos} will modally
-present an \code{ELCImagePickerController}.
-
-\subsection*{\code{PhotoChooserController}}
-
-This view controller displays a scrollable and pannable view and a button
-\button{Choose Photo from Library} to load a reference photograph into it. The
-photo is picked from the user's photo album.  Furthermore, the navigation bar
-contains a button to access the settings
-(\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, presents a
-\code{SettingsViewController}) as well as a button to start the rephotograph
-(\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}). The latter
-will modally present a \code{UIImagePickerController} and attach to it a
-\code{RephotoMangager} that controls the rephotography.
-
-When an image is picked, the controller uses the Canny edge detection algorithm
-\citep{canny1986} to generate an overlay which will then help the user in
-finding the perfect aligment.
-
-\subsection*{\code{SettingsViewController}}
-
-The \code{SettingsViewController} possesses three panels which allow for
-modification of the color of the edge overlay and insert authentication data for
-future use with an envisioned online platform. The third panel is unused in the current
-version and can be used for other kinds of preferences such as the default type
-of visualisation for the necessary camera motion.
-
-\subsection*{\code{ResultViewController}}
-
-This controller must be passed a completed rephotograph in an \code{ImageData}
-object and displays the new image over the orginal. 
-\begin{wrapfigure}{r}{.35\textwidth}
-   \includegraphics[width=.3\textwidth]{gfx/image_data.pdf}
-\end{wrapfigure}
-With a slider, the new image
-is horizontally clipped to some percentage of it width and can thus be
-dynamically unrolled over the original. Depending on a flag in the
-\code{ImageData} object, the rephoto passed to the controller will be saved. For
-this, the app makes use of the \code{sqlite} library. The \code{DBManager} class
-manages communication with a lightweight SQL database. Since all photos are
-part of the user's photo library---there is no way to save assets locally for an
-application---they are saved as a tuple of two \code{NSURL}s. Both the built-in
-\code{UIImagePickerController} and the \code{ELCImagePickerController} return
-the URL of a selected image, so it can be used to map a rephoto on its original
-or vice versa when it should be displayed.
-
-On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
-lets the user upload a rephoto to an experimental test server for display, but the
-functionality is only rudimentary and requires the server to be running in the
-same local network with a known IP address.
-
-\subsection*{\code{ELCImagePickerController}}
-
-For the task of reviewing rephotographs, the \code{ELCImagePickerController} is
-used. Contrarily to the built-in \code{UIImagePickerController}, this
-reimplementation by \citet{nutting2013} allows to inspect a specific asset, like
-a photo album instead of all assets there are. In the album display, the user is
-shown the new photographs of each rephoto and upon selection is presented a
-\code{ResultViewController} with the rephotograph.
-
-\subsection{Categories}
-
-Code reuse in Objective-C can be accomplished by inheritance as in other
-object-oriented languages, but often, when only one piece of behaviour is to be
-added, not overridden\footnote{The behaviour is undefined when a Category method
-has the same signature as one of the class \citep{customizing}}, the
-lightweight Category concept is employed. A Category on a class adds methods
-or properties to that class The header file declaring the category can be
-included by all clients that wish to make use of the modified or added
-behaviour, and left out by all others. This way, no unnecessarily large class
-hierarchy is created.
-
-In this application, categories are used for different purposes. They are
-summarised in \autoref{tab:categories}.
-
-\begin{table}
-   \begin{tabularx}{\linewidth}{>{\ttfamily}p{4cm}X}
-      \toprule
-      \rowcolor{white}
-      {\rmfamily Category Name}           & Function \\
-      \midrule
-      NSMutableURLRequest (RephotoUpload) & Adds method to post a rephoto to an
-      experimental server via HTTP \\
-      ALAssetsLibrary (CustomPhotoAlbum)  & Adds method to add an image to a
-      specific album, not possible per default. Used to save rephotos to the
-      \code{Rephotos} album \\
-      NSUserDefaults (UIColor)            & By default, only some types can be
-      persistently saved in the user defaults. Adds method to save colours. Used
-      to remember the user's edge colour.\\
-      CALayer (UIColor)                   & Properties for view objects can be
-      set in Interface Builder, but only if they are of object type. To set a
-      view's backing layer's border colour outside of the code, a colour
-      property of object type is defined, mapped to the C type \code{CGColor}
-      used by \code{CALayer}. \\
-      UIBezierPath (Arrow)                & Adds a method to generate an arrow
-      shape with a bézier curve. Used for displaying user guidance. \\
-      UIImage (Zoom)                      & Adds a method to crop an image to a
-      rectangle centered on the image center, effectively zooming in. Used to
-      allow the user to zoom the camera image. \\
-      UIScrollView (Center)               & Adds methods to center the content
-      and zoom to a particular size. Used fo display of the original image. \\
-      UIColor (CustomColors)              & Contrarily to Android, iOS possesses
-      no Resources framework, so this Category declares some commonly used
-      colours for the user interface \\
-      UIView (Effects)                    & Adds some animation methods to all
-      views to avoid repeating boilerplate code. \\
-      \bottomrule
-   \end{tabularx}
-   \caption{Summary of categories}
-   \label{tab:categories}
-\end{table}
-
-\FloatBarrier
-
-\subsection{Other Classes -- \code{RephotoManager}}
-
-The two most important classes are the \code{RephotoManager} and the
-\code{PoseDifferenceEstimationOperation}. A \code{RephotoManager} is attached to
-a \code{UIImagePickerController} in camera mode and controls the execution of
-the rephotograph. The camera overlay contains a shutter button and information
-labels telling the user what to do next. Tapping the info button
-(\raisebox{-2pt}{\includegraphics[width=1em]{gfx/info.png}}) expands the label
-to reveal more information. The manager is realised as a state machine, depicted
-as a flow chart in \autoref{fig:rephoto_manager}.
-
-\begin{figure}[h]
-   {\centering      
-      \input{gfx/rephoto_manager.tex}
-      \caption{States of the rephoto manager object}
-   \label{fig:rephoto_manager}}
-\end{figure}
-
-\subsubsection*{\code{START}}
-
-Initially, the user interface presents shutter and cancel buttons in a toolbar
-at the bottom and an info indictator on the top left, telling the user the take
-the first frame. When the user taps the shutter button, the first frame is
-captured and saved.
-
-\subsubsection*{\code{HAS\_FIRST\_FRAME}}
-
-When transitioning to this state, the manager changes the info label accordingly
-and displays a check mark for the first frame in the centre of the toolbar.
-Furthermore, at this point the precomputed edge overlay is presented so that
-taking the second frame which shoul be reasonably close to the original
-viewpoint is possible.
-
-\subsubsection*{\code{HAS\_SECOND\_FRAME}}
-
-Once the second frame is captured, the second checkmark is shown, the info
-label changes again and the preprocessing step is attempted. A
-\code{PoseDifferenceEstimationOperation} is started with the first and reference
-frames and another for the reference scale computation by use of first and
-second frames. Relative translation, rotation and goal scale are saved.
-
-Should one of the computations fail, the UI resets to the initial state execpt
-for an error label at the bottom centre informing the user that the matching
-failed. Otherwise a timer is initiated that will take pictures at a certain
-interval which should accord with the hardwary running the program. For the
-tested device, it is set to $1$ second, although somewhat higher frame rates are
-possible.
-
-Meanwhile, a panel at the bottom centre is revealed which visualises the
-necessary motion of the camera. For this, several ideas are possible.
-\citet{bae2010} found that an arrow visualisation for the translation in the
-XY-plane and Z-direction is most effective so this approach has been chosen
-here. Two camera pictograms are shown, one back view and one top view. There is
-one arrow positioned on each so that the transaltion in the XY-plane and
-Z-direction are independently visualised.
-
-\subsubsection*{\code{DONE}}
-
-After the final image is captured, the manager informs its delegate (in this
-case the \code{PhotoChooserController}) that its task is finished and hands over
-the final capture.
-
-\subsection{Other Classes -- \code{PoseDifferenceEstimationOperation}}
-
-\begin{wrapfigure}{l}{.35\textwidth}
-   \includegraphics[width=.35\textwidth]{gfx/posediffop.pdf}
-\end{wrapfigure}
-iOS supports different APIs for parallelisation. Besides manual thread creation,
-Grand Central Dispatch allows to easily dispatch blocks (function objects) to
-different kinds of queues. The runtime automatically removes blocks from the
-queue for execution. Dispatch queues can be serial or concurrent and both
-synchronous and asynchronous dispatch is possible as well as synchronisation,
-but the API is not object-oriented and some useful features are unavailable.  Is
-not possible to specify how many blocks should be executed in parallel or to
-cancel tasks after submission. Since the application should make optimal use of
-the hardware due to high computational demand while not queueing up many tasks,
-or tasks which are obsolete, such functionality is desirable.
-
-Operation queues---internally implemented with
-GCD\footnote{\citep{nsopgcd}}---sacrifice some efficiency, but expose a more
-high-level object-oriented interface in which \code{NSOperation} objects are
-submitted to \code{NSOperationQueue}s and their
-\code{maxConcurrentOperationCount} property limits the maximum number of
-concurrent operations. The application sets this limit to $3$ for an iPad
-(assuming $3$ cores like an iPad Air 2) and $2$ for iPhones, as the current
-devices possess two cores. Since there is no concurrent modification of data and
-tasks are started in slow intervals, explicit sychronisation is not needed.
- 
-A \code{PoseDifferenceEstimationOperation} is created with two images (one of
-which will always be the first frame), a scale parameter for downsampling and
-computed values for the relative pose between first and reference frames and the
-goal scale. Furthermore, a block is passed which can accept three \texttt{float}
-parameters---one for the direction in the XY-plane, one for the ratio between
-reference and current world scale, and one for the magnitude of translation along
-the optical axis. The intended purpose of this block is to drive some kind of
-visualisation. The operation then computes the relative pose and the necessary
-translation as in \eqref{eq:necessary_trans}. 
-
-If $\sub{T}{current,ref} = (x,y,z)$\footnote{One should note that this
-   calculation depends on the coordinate system. In OpenCV, the origin is at the
-   top left corner of an image, the positive $x$-axis is the image width, the
-   positive $y$-axis the image height and points downward. In a more canonical
-representation, the $y$-value thus may be flipped}, then the vector direction
-in th XY-plane is given by 
-\begin{equation*}
-   \alpha = \atan2{(y,x)}.
-\end{equation*}
-Let $d_0$ be the average distance of points to the first frame's camera,
-computed with the second frame, and $d_i$ the same with the current frame. The
-ratio of scales $r=\frac{d_i}{d_0}$ is used to scale the translation vector. $d_i$
-increases with decreasing distance to the first frame (see \autoref{fig:scale}),
-which in turn (usually) means it should decrease when approaching the target,
-since when done right, motion away from the first frame is motion towards the
-original viewpoint.
-
-The completion block is called with $z$, $\alpha$ and $r$.
 
 \section{Hardware}
 
