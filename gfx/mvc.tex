@@ -34,21 +34,24 @@
    \draw (0,0) node[mynode] (model) {
       \makebox[3cm]{Model}\\
       \hrulefill \\
+      \texttt{Core} \texttt{Data}
    };
    \node[mynode,right=of model] (view) {
       \makebox[3cm]{View}\\
       \hrulefill \\
+      \texttt{UIKit} : \texttt{UIView}
    };
 
    \node[mynode] (controller) at ($(model) !0.5! (view) + (0,-\nodedist)$) {
       \makebox[3cm]{Controller}\\
       \hrulefill \\
+      \texttt{UIKit} : \texttt{UIViewController}
    };
-   \draw[arrow] (controller.west) to[bend left]  node[arrow label] {Change state} (model.south);
-   \draw[arrow] (controller.east) to[bend right]  node[arrow label] {Update display} (view.south);
-   \draw[arrow]  (view.west) to[bend right]  node[arrow label] {Send user input} (controller.north);
-   \draw[arrow]  (view.north) to[bend right]  node[arrow label] {Request state} (model.north);
-   \draw[arrow]  (model.east) to[bend left] node[arrow label] {Notify of change} (view.north west);
+   \draw [ arrow ] (controller.west) to [ bend left  ] node [ arrow label ] {Change state} (model.south);
+   \draw [ arrow ] (controller.east) to [ bend right ] node [ arrow label ] {Update display} (view.south);
+   \draw [ arrow ] (view.west) to       [ bend right ] node [ arrow label ] {Send user input} (controller.north);
+   \draw [ arrow ] (view.north) to      [ bend right ] node [ arrow label ] {Request state} (model.north);
+   \draw [ arrow ] (model.east) to      [ bend left  ] node [ arrow label ] {Notify of change} (view.north west);
 
 \end{tikzpicture}
 

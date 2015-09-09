@@ -50,7 +50,8 @@ events in the associated view's life cycle. For example
       controller.
 \end{itemize}
 
-In order to respond to user input, the delegate pattern \citep[ch. 1.6]{gamma1995}
+In order to implement the relationship between view and model (c.f.
+\autoref{fig:mvc}) and respond to user input, the delegate pattern \citep[ch. 1.6]{gamma1995}
 is used. Views delegate the responsibility of deciding what should happen on
 user input to a delegate object. For example, a view controller might conform to
 the \code{UIScrollViewDelegate} protocol (an equivalent of interfaces in other
@@ -88,10 +89,22 @@ the application developed in this work is shown in \autoref{fig:storyboard}.
    \label{fig:storyboard}}
 \end{figure}
 
+\FloatBarrier
+
 \section{Application Layout}
 
 This section will walk through the different screens presented to the user and
-elaborate on the functions of the associated view controllers.
+elaborate on the functions of the associated view controllers. An overview of
+the sequence of screens and controllers is shown in \autoref{fig:app_tree}.
+
+\begin{figure}[h]
+   {\centering      
+      \input{gfx/app_flow.tex}
+   \caption{Sequence of view controllers}
+   \label{fig:app_tree}}
+\end{figure}
+
+\FloatBarrier
 
 \newcommand*{\button}[1]{
    \tikzexternaldisable
@@ -221,17 +234,9 @@ the final capture.
 
 \subsection{\code{ResultViewController}}
 
-\newenvironment{mywrapfigure}[2]{
-   \setlength\intextsep{0pt} % wrapfigure 'isn't a real environment' apparently; http://tex.stackexchange.com/a/266431/31250
-   \wrapfigure#1#2
-}
-{
-   \endwrapfigure
-}
-
 \setlength\intextsep{0pt}
-\begin{wrapfigure}{r}{.3\textwidth}
-   \includegraphics[width=.25\textwidth]{gfx/image_data.pdf}
+\begin{wrapfigure}{r}{.25\textwidth}
+   \includegraphics[width=.2\textwidth]{gfx/image_data.pdf}
 \end{wrapfigure}
 
 This controller must be passed a completed rephotograph in an \code{ImageData}

@@ -1,0 +1,63 @@
+\newcommand{\treenodedist}{1.8}
+\begin{tikzpicture}[
+      every node/.style={font=\ttfamily,draw=black,thick,anchor=west},
+      grow via three points={
+         one child at (0.5,-\treenodedist) and
+      two children at (0.5,-\treenodedist) and (0.5,-2*\treenodedist)},
+      edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)},
+      edge from parent/.style={draw,-latex},
+   ]
+   \node {
+      \begin{tabular}{l}
+         MainViewController \\
+         \rmfamily\small View or make rephotos
+      \end{tabular}
+   }
+   child { node {
+         \begin{tabular}{l}
+            PhotoChooserController \\
+            \rmfamily\small Select original or set settings
+         \end{tabular}
+      }
+      child { node {
+            \begin{tabular}{c}
+               RephotoManager \\
+               \rmfamily\small Retrieve viewpoint
+            \end{tabular}
+         }
+         child { node {
+               \begin{tabular}{c}
+                  ResultViewController \\
+                  \rmfamily\small Review rephoto
+               \end{tabular}
+            }
+            child [missing] {}
+         }
+      }
+      child [missing] {}
+      child { node {
+            \begin{tabular}{c}
+               SettingsViewController \\
+               \rmfamily\small Adjust settings
+            \end{tabular}
+         } 
+      }
+   }    
+   child [missing] {}
+   child [missing] {}
+   child [missing] {}
+   child { node {
+         \begin{tabular}{c}
+            ELCImagePickerController \\ 
+            \rmfamily\small Select rephoto to view
+         \end{tabular}
+      }
+      child { node {
+            \begin{tabular}{c}
+               ResultViewController \\
+               \rmfamily\small Review rephoto
+            \end{tabular}
+         } 
+      }
+   };
+\end{tikzpicture}

@@ -22,5 +22,5 @@ clean:
 	$(RM) Thesis.pdf *.aux *.log Chapters/*.aux Chapters/*.log FrontBackMatter/*.aux FrontBackMatter/*.log gfx/*.aux gfx/*.log *.toc *.bbl *.blg *.out gfx/autogen/*
 
 %.pdf: gfx/%.tex
-	$(TEX_CMD) -jobname $(basename $@) -output-directory gfx '\documentclass{standalone} \usepackage[dvipsnames]{xcolor} \usepackage{tikz,pgfplots} \begin{document} \input{' $< '} \end{document}';
+	$(TEX_CMD) -jobname $(basename $@) -output-directory gfx '\documentclass{standalone} \usepackage[dvipsnames]{xcolor} \usepackage{tikz,pgfplots}\usetikzlibrary{trees} \begin{document} \input{' $< '} \end{document}';
 	open -g -a Skim gfx/$*.pdf

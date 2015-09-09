@@ -39,12 +39,11 @@
       \node[draw,text width={}] (t first current) at ($(current frame) !.5! (triangulation2) +
       (0,-3cm)$) {$T_{\text first,current}$};
 
-      \node[descision node,below=1cm of t first current] (ifequal) {$T_{\text first,current} =
-      T_{\text first,ref}$?};
+      \node[descision node,below=1cm of t first current,inner sep=10pt] (ifequal) {$T_{\text first,current} = T_{\text first,ref}$?};
       \node[boxnode,right=of t first current] (final frame) {Final image};
 
       \draw[->] (ifequal.west) -- ++(-2cm,0) |- (0,-1) node[midway,left=1em,rotate=90] {No};
-      \draw[->] (ifequal.east) -| (final frame.south) node[midway,right] {Yes};
+      \draw[->] (ifequal.east) -| (final frame.south) node[midway,right=-1em] {Yes};
 
       \coordinate (c) at ($(t first current.north) + (0,1em)$);
       \draw[->] (c) -- (t first current);
