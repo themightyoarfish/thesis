@@ -60,7 +60,8 @@ languages) and is then required to implement callbacks such as
    \item \code{scrollViewDidScroll}
    \item \code{scrollViewDidZoom}
 \end{itemize}
-and more. The pattern is used for all complex views.
+and more for controlling the associated \code{UIScrollView}. The pattern is used
+for all complex views.
 
 \begin{figure}[h]
    {\centering      
@@ -71,15 +72,19 @@ and more. The pattern is used for all complex views.
 
 Generally, an iOS application is a sequence of view controllers presented to the
 user in various ways---some may be full-fledged screens, while others are only
-presented modally. Apple's XCode integrated development environment allows to
-visually model the flow of the application by use of \code{Storyboard}s. These
-are XML files which define controllers and their relationships. While
-it is equally possible to specifiy the presentation order programmatically, this
-allows for a cleaner separation between user interface and business logic.
-Storyboards consist of a number of view controllers with associated views which
-are connected by \code{Segue}s. A Segue is triggered by actions like a button
-press and will present the next view controller to the user. The Storyboard for
-the application developed in this work is shown in \autoref{fig:storyboard}.
+presented modally. 
+
+Apple's XCode integrated development environment allows to visually model the
+flow of the application by use of \code{Storyboard}s. These are XML files which
+define controllers and their relationships. While it is equally possible to
+specifiy the presentation order programmatically, this allows for a cleaner
+separation between user interface and business logic.  Storyboards consist of a
+number of view controllers with associated views which are connected by
+\code{Segue}s. When an application developed with storyboards starts up, a
+\code{UINavigationController} is created which maintains a stack of view
+controllers on which segues push new ones or pop old ones (\emph{unwind segue}).
+The Storyboard for the application developed in this work is shown in
+\autoref{fig:storyboard}.
 
 \begin{figure}[h]
    {\centering      
@@ -123,7 +128,6 @@ the sequence of screens and controllers is shown in \autoref{fig:app_tree}.
 
 \subsection{\code{MainViewController}}
 
-
 When the app starts up, the user is shown a \code{MainViewController} which
 offers a choice whether to make a new rephotograph or view existing ones.
 Clicking the \button{Take Rephoto} button will trigger a segue to a
@@ -141,8 +145,12 @@ contains a button to access the settings
 (\raisebox{-3pt}{\includegraphics[width=1em]{gfx/settings_icon.png}}, presents a
 \code{SettingsViewController}) as well as a button to start the rephotograph
 (\raisebox{-1pt}{\includegraphics[width=1em]{gfx/cam_icon.png}}). The latter
-will modally present a \code{UIImagePickerController} and attach to it a
-\code{RephotoManager} that controls the rephotography.
+will modally present a \code{UIImagePickerController} which exposes a simple API
+to access the device's camera. A
+\code{RephotoManager} is attached to it that controls the rephotography. The
+\code{RephotoManager} has a delegate property which points to the
+\code{PhotoChooserController}. The controller can then be informed when the
+rephotograph is done or cancelled.
 
 \nofloat{gfx/photochoosercontroller.PNG}{\code{PhotoChooserController} view
 layout}
@@ -159,8 +167,8 @@ with loaded image}
 The \code{SettingsViewController} possesses three panels which allow for
 modification of the color of the edge overlay and insert authentication data for
 future use with an envisioned online platform. The third panel is unused in the current
-version and can be used for other kinds of preferences such as the default type
-of visualisation for the necessary camera motion.
+version and could be appropriated for other kinds of preferences such as the default type
+of visualisation for the necessary camera motion (see \autoref{ch:outlook}).
 
 \nofloat{gfx/settingsviewcontroller.PNG}{\code{SettingsViewController} view
 layout}
@@ -201,17 +209,17 @@ viewpoint is possible.
 
 \subsubsection*{\code{HAS\_SECOND\_FRAME}}
 
-Once the second frame is captured, the second checkmark is shown, the info
+Once the second frame is captured, the second check mark is shown, the info
 label changes again and the preprocessing step is attempted. A
 \code{PoseDifferenceEstimationOperation} is started with the first and reference
 frames and another for the reference scale computation by use of first and
 second frames. Relative translation, rotation and goal scale are saved.
 
-Should one of the computations fail, the UI resets to the initial state execpt
+Should one of the computations fail, the UI resets to the initial state except
 for an error label at the bottom centre informing the user that the matching
 failed. Otherwise a timer is initiated that will take pictures at a certain
-interval which should accord with the hardwary running the program. For the
-tested device, it is set to $1$ second, although somewhat higher frame rates are
+interval which should accord with the hardware running the program. For the
+tested device, it is set to one second, although somewhat higher frame rates are
 possible.
 
 Meanwhile, a panel at the bottom centre is revealed which visualises the
@@ -219,7 +227,7 @@ necessary motion of the camera. For this, several ideas are possible.
 \citet{bae2010} found that an arrow visualisation for the translation in the
 XY-plane and Z-direction is most effective so this approach has been chosen
 here. Two camera pictograms are shown, one back view and one top view. There is
-one arrow positioned on each so that the transaltion in the XY-plane and
+one arrow positioned on each so that the translation in the XY-plane and
 Z-direction are independently visualised.
 
 \nofloat{gfx/rephoto_manager.PNG}{\code{RephotoManager} in
