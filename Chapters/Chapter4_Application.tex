@@ -594,8 +594,7 @@ struct CVMatWrapperImpl;
    header in addition to the wrapper one.},
    label={lst:pimpl2},
 ]
-struct CVMatWrapperImpl
-{
+struct CVMatWrapperImpl {
    cv::Mat cvMatrix; ///< The wrapped matrix
 };
 \end{lstlisting}
@@ -609,36 +608,25 @@ struct CVMatWrapperImpl
 #import "CVMatWrapperImpl.h"
 
 @implementation CVMatWrapper
--(instancetype)init
-{
+-(instancetype)init {
    self = [super init];
    if (self) self.impl = new CVMatWrapperImpl; // allocate the struct wrapping the matrix
    return self;
 }
-
--(void)dealloc
-{
+-(void)dealloc {
    if (self.impl)
    delete self.impl;
 }
-
--(NSString*)description
-{
+-(NSString*)description {
    //...
 }
-
--(NSArray*)eulerAngles
-{
+-(NSArray*)eulerAngles {
    // ...
 }
-
--(int)rows
-{
+-(int)rows {
    return (self.impl->cvMatrix).rows;
 }
-
--(int)cols
-{
+-(int)cols {
    return (self.impl->cvMatrix).cols;
 }
 @end
@@ -655,5 +643,3 @@ enables frequent updates of the visualisation. Images with $1077\times 807$
 process, so that updates can be delivered more than once per second. The
 concurrent operation count is set to two for iPhones owing to their smaller
 processing power and number of CPU cores.
-
-
