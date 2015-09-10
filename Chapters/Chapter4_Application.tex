@@ -117,6 +117,105 @@ respectively\footnote{Pose recovery functions for calibrated images were
 unavailable prior to version 3.0. Furthermore, all patented feature detection
 algorithms were moved to a separate repository.}.
 
+\subsection{Objective-C \& C++ --- The PIMPL pattern}
+
+ OpenCV encodes images in its \code{Mat} type which is
+the only type perforating other parts of the application.  While it is possible
+to mix Objective-C and C++ code, using C++ types in header files forces every
+client including them to also be compiled as Objective-C++ which may be
+unwanted. For instance, XCode's refactoring tools cannot be used on these
+sources. It is thus reasonable to create wrapper classes for all C++ types
+encapsulating the access to the data so that the interface is pure Objective-C.
+Only the implementation of the wrapper class would need to be compiled as C++,
+no client would be affected. Ideally, all a large amount of boilerplate code to
+translate Objective-C messages in C++ calls to the wrapped object.  It is
+therefore convenient to encapsulate a C++ type but make it still accessible to
+client classes if needed. 
+
+One solution is a variant of the \emph{Pointer-to-Implementation} pattern
+(PIMPL, also known as \emph{Bridge} in \citep{gamma1995}). The wrapper class'
+interface (\autoref{lst:pimpl}) is specified in pure Objective-C and contains an
+opaque pointer to a C \code{struct} representing the wrapped data as a C type
+which therefore does not lead to compatibility issues as all C code is valid
+Objective-C. For the original pattern, this allows modifying the wrapper
+hierarchy independently of the implementation hierarchy (e.g. different
+implementations could be behind the pointers, for different platforms). The
+definition of this pointer-to-implementation type is placed in a second header
+file (\autoref{lst:pimpl2}) and is imported only by those clients which actually
+need to access the data, not only pass it on. This permits compiling only those
+source files as Objective-C++ which must deal with the actual OpenCV \code{Mat}.
+In principle, it would be possible to create methods in the wrapper class for
+all uses of the C++ type throughout the program. However, this would waste the
+benefits which e.g. C++ operator overloading yields for readability. Since all
+image processing is done in C++ anyway, it is more economic to simply provide
+access to the wrapped data to those classes that need it.
+
+\lstset{
+   language=[Objective]C,
+   float,
+}
+
+\begin{lstlisting}[
+   caption={\code{CVMatWrapper.h}. The wrapper interface contains an opaque pointer to a C
+      \code{struct}. \code{\#include}ing this header does not invalidate
+   othewise valid Objective-C code.},
+   label={lst:pimpl},
+]
+struct CVMatWrapperImpl;
+@interface CVMatWrapper : NSObject
+@property (nonatomic,readwrite) struct CVMatWrapperImpl* impl; ///< Pointer to struct wrapping the matrix
+@property (nonatomic,readonly) int rows; ///< Number of rows of the wrapped matrix
+@property (nonatomic,readonly) int cols; ///< Number of columns of the wrapped matrix
+-(NSArray*)eulerAngles;
+-(NSString*)description;
+@end
+\end{lstlisting}
+
+\begin{lstlisting}[
+   caption={\code{CVMatWrapperImpl.h}. The implementation header defines the actually wrapped type.
+      Including it will force a client to compile as Objective-C++ since a C++
+      type is used. Every class which deals with the data itself can include this
+   header in addition to the wrapper one.},
+   label={lst:pimpl2},
+]
+struct CVMatWrapperImpl {
+   cv::Mat cvMatrix; ///< The wrapped matrix
+};
+\end{lstlisting}
+
+\begin{lstlisting}[
+   caption={\code{CVMatWrapper.mm}. The wrapper class' implementation must be Objective-C++ and can
+   encapsulate all access to the underlying data, if necessary.},
+   label={lst:pimpl3},
+]
+#import "CVMatWrapper.h"
+#import "CVMatWrapperImpl.h"
+
+@implementation CVMatWrapper
+-(instancetype)init {
+   self = [super init];
+   if (self) self.impl = new CVMatWrapperImpl; // allocate the struct wrapping the matrix
+   return self;
+}
+-(void)dealloc {
+   if (self.impl)
+   delete self.impl;
+}
+-(NSString*)description {
+   //...
+}
+-(NSArray*)eulerAngles {
+   // ...
+}
+-(int)rows {
+   return (self.impl->cvMatrix).rows;
+}
+-(int)cols {
+   return (self.impl->cvMatrix).cols;
+}
+@end
+\end{lstlisting}
+
 \section{Application Layout}
 
 This section will walk through the different screens presented to the user and
@@ -478,7 +577,7 @@ summarised in \autoref{tab:categories}.
 
 \FloatBarrier
 
-\subsection{Other Classes -- \code{PoseDifferenceEstimationOperation}}
+\subsection{Parallel Computation Of Necessary Translation}
 
 \begin{wrapfigure}{l}{.35\textwidth}
    \includegraphics[width=.35\textwidth]{gfx/posediffop.pdf}
@@ -533,104 +632,6 @@ original viewpoint.
 
 The completion block is called with $z$, $\alpha$ and $r$.
 
-\section{Objective-C \& C++ --- The PIMPL pattern}
-
- OpenCV encodes images in its \code{Mat} type which is
-the only type perforating other parts of the application.  While it is possible
-to mix Objective-C and C++ code, using C++ types in header files forces every
-client including them to also be compiled as Objective-C++ which may be
-unwanted. For instance, XCode's refactoring tools cannot be used on these
-sources. It is thus reasonable to create wrapper classes for all C++ types
-encapsulating the access to the data so that the interface is pure Objective-C.
-Only the implementation of the wrapper class would need to be compiled as C++,
-no client would be affected. Ideally, all a large amount of boilerplate code to
-translate Objective-C messages in C++ calls to the wrapped object.  It is
-therefore convenient to encapsulate a C++ type but make it still accessible to
-client classes if needed. 
-
-One solution is a variant of the \emph{Pointer-to-Implementation} pattern
-(PIMPL, also known as \emph{Bridge} in \citep{gamma1995}). The wrapper class'
-interface (\autoref{lst:pimpl}) is specified in pure Objective-C and contains an
-opaque pointer to a C \code{struct} representing the wrapped data as a C type
-which therefore does not lead to compatibility issues as all C code is valid
-Objective-C. For the original pattern, this allows modifying the wrapper
-hierarchy independently of the implementation hierarchy (e.g. different
-implementations could be behind the pointers, for different platforms). The
-definition of this pointer-to-implementation type is placed in a second header
-file (\autoref{lst:pimpl2}) and is imported only by those clients which actually
-need to access the data, not only pass it on. This permits compiling only those
-source files as Objective-C++ which must deal with the actual OpenCV \code{Mat}.
-In principle, it would be possible to create methods in the wrapper class for
-all uses of the C++ type throughout the program. However, this would waste the
-benefits which e.g. C++ operator overloading yields for readability. Since all
-image processing is done in C++ anyway, it is more economic to simply provide
-access to the wrapped data to those classes that need it.
-
-\lstset{
-   language=[Objective]C,
-   float,
-}
-
-\begin{lstlisting}[
-   caption={\code{CVMatWrapper.h}. The wrapper interface contains an opaque pointer to a C
-      \code{struct}. \code{\#include}ing this header does not invalidate
-   othewise valid Objective-C code.},
-   label={lst:pimpl},
-]
-struct CVMatWrapperImpl;
-@interface CVMatWrapper : NSObject
-@property (nonatomic,readwrite) struct CVMatWrapperImpl* impl; ///< Pointer to struct wrapping the matrix
-@property (nonatomic,readonly) int rows; ///< Number of rows of the wrapped matrix
-@property (nonatomic,readonly) int cols; ///< Number of columns of the wrapped matrix
--(NSArray*)eulerAngles;
--(NSString*)description;
-@end
-\end{lstlisting}
-
-\begin{lstlisting}[
-   caption={\code{CVMatWrapperImpl.h}. The implementation header defines the actually wrapped type.
-      Including it will force a client to compile as Objective-C++ since a C++
-      type is used. Every class which deals with the data itself can include this
-   header in addition to the wrapper one.},
-   label={lst:pimpl2},
-]
-struct CVMatWrapperImpl {
-   cv::Mat cvMatrix; ///< The wrapped matrix
-};
-\end{lstlisting}
-
-\begin{lstlisting}[
-   caption={\code{CVMatWrapper.mm}. The wrapper class' implementation must be Objective-C++ and can
-   encapsulate all access to the underlying data, if necessary.},
-   label={lst:pimpl3},
-]
-#import "CVMatWrapper.h"
-#import "CVMatWrapperImpl.h"
-
-@implementation CVMatWrapper
--(instancetype)init {
-   self = [super init];
-   if (self) self.impl = new CVMatWrapperImpl; // allocate the struct wrapping the matrix
-   return self;
-}
--(void)dealloc {
-   if (self.impl)
-   delete self.impl;
-}
--(NSString*)description {
-   //...
-}
--(NSArray*)eulerAngles {
-   // ...
-}
--(int)rows {
-   return (self.impl->cvMatrix).rows;
-}
--(int)cols {
-   return (self.impl->cvMatrix).cols;
-}
-@end
-\end{lstlisting}
 
 \section{Hardware}
 
