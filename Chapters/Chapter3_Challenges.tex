@@ -109,9 +109,11 @@ being much faster to compute and compare. Another recent development by
 previously proposed KAZE detector \citep{alcantarilla2012}, also using binary
 strings to describe feature points. This detector has been chosen for this work
 as it offers significant speed improvements over SIFT or SURF while sacrificing
-no quality in the tested scenarios (see \autoref{ch:evaluation}).
+no quality in the tested scenarios (see \autoref{ch:evaluation})\footnote{SIFT
+and SURF are both protected by US patents and cannot be used without a license
+in a commercial application in this country.}.
 
-\subsection{SIFT \& AKAZE}
+\subsection{SIFT \& AKAZE}\label{subsec:sift_akaze}
 
 The SIFT detector attempts to find keypoints by convolving an input image with
 gaussian kernels of successively larger variance, thus building a stack of image
@@ -227,7 +229,7 @@ take two photographs of the scene with a reasonably wide baseline (about
 taken from some distance from the original viewpoint, the \emph{second
 frame} should be the user's best eyeballed approximation of it. The wide
 baseline allows for a more reliable 3D-reconstrution of the scene used to
-tackle problems 2 and 3. 
+tackle problems 2. and 3. 
 
 SIFT features are computed and matched between the two images.  Given these
 correspondences, 3D coordinates of the points can be computed. A selection of
@@ -265,7 +267,7 @@ versa, the equations will look different, as they do in \citep{bae2010}}.
    \sub{X}{first}    & =  & \sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) && (1, $R$ orthogonal)\IEEEnonumber\\
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) \\
                      &    & + \sub{T}{ref,first} & & (2, substitute 1)\IEEEnonumber\\
-   \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\sub{X}{current} \\
+   \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\sub{X}{current} \IEEEnonumber\\
                      &    & - \sub{R}{ref,first}\sub{R^T}{current,first}\sub{T}{current,first} + \sub{T}{ref,first}
 \end{IEEEeqnarray}
 and thus

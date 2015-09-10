@@ -1,5 +1,8 @@
 \chapter{Outlook}\label{ch:outlook}
-\section{Future Extensions \& Improvements}
+\section{Future Work}
+
+
+\section{Usability And Performance}
 
 The focus of this work was the theoretical exploration and evaluation of Bae et.
 al's ansatz to computational rephotography, not on the design of release-ready
@@ -37,6 +40,11 @@ extensively tested. Notable shortcomings are
       previously unavailable. It should be fairly straighforward to create
       versions of the UI without these elements.
 
+   \item The calibration data cannot currently be loaded from a user-supplied
+      file. Ideally, since not all deviced will have the exact same camera
+      chracteristics, each user would have to individually calibrate their
+      camera.
+
    \item The rephotography makes use of the simple
       \code{UIImagePickerController} which is presented modally. This makes the
       flow of the app less seamless. For instance, when the
@@ -64,6 +72,7 @@ extensively tested. Notable shortcomings are
 
 \end{enumerate}
 
+
 Some features from Bae et. al's work have been simplified away, so that
 currently, no really historic photograph can be used. The app should therefore
 be extended with another view controller presented after first and second frames
@@ -78,6 +87,8 @@ results in the scale estimation jumping rapidly. A feature tracking may increase
 the stability as the already-found points are found again, instead of radically
 different ones.
 
+\subsection{Rephoto Postprocessing}
+
 It is probable that despite all assistance, the user will not manage to
 perfectly recreate the original photgraph.  In order to better register the
 original and final images, the latter can be warped according to the last pose
@@ -88,6 +99,8 @@ view onto vanishing points in the other. Details can be found in \citep[ch. 13.4
 Given the calibration matrices of both views and their relative
 rotation, the homography can be computed and one image can be warped with it
 by remapping the pixels.
+
+\subsection{Other Visualisation Options}\label{subsec:alternative_visualisation}
 
 \citet{bae2010} explored different ways of visualising the necessary motion.
 A side-by-side view or a linear blend were less helpful than the arrow

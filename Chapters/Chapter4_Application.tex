@@ -5,7 +5,10 @@ the theory outlined in the previous chapter. The iOS platform will be briefly
 introduced before the user interface, features and implementation of the app
 will be described.
 
-\section{iOS Overview}
+\section{Overview}
+
+
+\subsection{iOS Operating System}
 
 % this macro enables hyphenation on typewritten words and makes an invisible
 % codepoint the hyphenchar.
@@ -29,7 +32,7 @@ will be compatible with it.}. Code of these languages can be freely mixed. An
 Objective-C++ dialect exists to support C++ as well.
 
 The software development kit for the platform employs Objective-C for most
-high-level APIs and C for more low-level functionality. In regards to
+high-level APIs and C for more low-level functionality. With respect to
 application design, the Model-View-Controller (see \autoref{fig:mvc}) pattern is
 used throughout the Cocoa library which incorporates the standard
 (\code{Foundation} classes) and graphical user interface (\code{AppKit} on OSX,
@@ -51,11 +54,12 @@ events in the associated view's life cycle. For example
 \end{itemize}
 
 In order to implement the relationship between view and model (c.f.
-\autoref{fig:mvc}) and respond to user input, the delegate pattern \citep[ch. 1.6]{gamma1995}
-is used. Views delegate the responsibility of deciding what should happen on
-user input to a delegate object. For example, a view controller might conform to
-the \code{UIScrollViewDelegate} protocol (an equivalent of interfaces in other
-languages) and is then required to implement callbacks such as
+\autoref{fig:mvc}) and respond to user input, the delegate pattern \citep[ch.
+1.6]{gamma1995} is used. Views delegate the responsibility of deciding what
+should happen on user input to a delegate object, typically the view controller.
+For example, a view controller might conform to the \code{UIScrollViewDelegate}
+protocol\footnote{Protocols are an Objective-C equivalent of interfaces in other
+languages} and is then required to implement callbacks such as
 \begin{itemize}
    \item \code{scrollViewDidScroll}
    \item \code{scrollViewDidZoom}
@@ -71,19 +75,21 @@ for all complex views.
 \end{figure}
 
 Generally, an iOS application is a sequence of view controllers presented to the
-user in various ways---some may be full-fledged screens, while others are only
-presented modally. 
+user in various ways---they can be independent or presented modally over other
+view controllers which typically control them by becoming their delegate. This
+form of presentation is used for instance for image pickers giving quick access
+to the user's photo library or the camera.
 
 Apple's XCode integrated development environment allows to visually model the
 flow of the application by use of \code{Storyboard}s. These are XML files which
-define controllers and their relationships. While it is equally possible to
-specifiy the presentation order programmatically, this allows for a cleaner
-separation between user interface and business logic.  Storyboards consist of a
-number of view controllers with associated views which are connected by
-\code{Segue}s. When an application developed with storyboards starts up, a
-\code{UINavigationController} is created which maintains a stack of view
-controllers on which segues push new ones or pop old ones (\emph{unwind segue}).
-The Storyboard for the application developed in this work is shown in
+define controllers and their relationships.  This allows for a cleaner
+separation between user interface and business logic, while it is equally
+possible to specifiy the presentation order programmatically.  Storyboards
+consist of a number of view controllers with associated views which are
+connected by \code{Segue}s. When an application developed with storyboards
+starts up, a \code{UINavigationController} is created which maintains a stack of
+view controllers on which segues push new ones or pop old ones from (\emph{unwind
+segue}).  The Storyboard for the application developed in this work is shown in
 \autoref{fig:storyboard}.
 
 \begin{figure}[h]
@@ -95,6 +101,21 @@ The Storyboard for the application developed in this work is shown in
 \end{figure}
 
 \FloatBarrier
+
+\subsection{The OpenCV Library}
+
+For all image processing, the Open Source Computer Vision library (OpenCV) is
+used in version 3.0. Originally developed by Intel and then by Willow Garage,
+development is led today by itseez\footnote{\url{http://itseez.com/OpenCV/}},
+but is strongly community-driven. The library contains many alogrithms for image
+processing for purposes such as segmentation, geometric transformation, feature
+and object detection and 3D reconstruction. It can be natively used from C++,
+but Python and Java bindings as well as a deprecated C API exist.
+The modules used in this work are the \texttt{features2d} and \texttt{calib3d}
+modules for feature extraction and multiview geometry,
+respectively\footnote{Pose recovery functions for calibrated images were
+unavailable prior to version 3.0. Furthermore, all patented feature detection
+algorithms were moved to a separate repository.}.
 
 \section{Application Layout}
 
@@ -138,6 +159,7 @@ present an \code{ELCImagePickerController}.
 
 \subsection{\code{PhotoChooserController}}
 
+\setlength\emergencystretch{2em}
 This view controller displays a scrollable and pannable view and a button
 \button{Choose Photo from Library} to load a reference photograph into it. The
 photo is picked from the user's photo album.  Furthermore, the navigation bar
@@ -175,15 +197,15 @@ layout}
 
 \subsection{\code{RephotoManager}}
 
-\hyphenation{Pose-Diff-er-ence-Es-ti-ma-tion-Op-er-at-ion}
-The two most important classes are the \code{RephotoManager} and the
+\hyphenation{Pose-Diff-er-ence-Es-ti-ma-tion-Op-er-at-ion} The two most
+important classes are the \code{RephotoManager} and the
 \code{PoseDifferenceEstimationOperation}. A \code{RephotoManager} is attached to
 a \code{UIImagePickerController} in camera mode and controls the execution of
-the rephotograph. The camera overlay contains a shutter button and information
-labels telling the user what to do next. Tapping the info button
-(\raisebox{-2pt}{\includegraphics[width=1em]{gfx/info.png}}) expands the label
-to reveal more information. The manager is realised as a state machine, depicted
-as a flow chart in \autoref{fig:rephoto_manager}.
+the rephotograph. An overlay view is added to the camera stream and contains a
+shutter button and information labels telling the user what to do next. Tapping
+the info button (\raisebox{-2pt}{\includegraphics[width=1em]{gfx/info.png}})
+expands the label to reveal more information. The manager is realised as a state
+machine, depicted as a flow chart in \autoref{fig:rephoto_manager}.
 
 \begin{figure}[h]
    {\centering      
@@ -204,7 +226,7 @@ captured and saved.
 When transitioning to this state, the manager changes the info label accordingly
 and displays a check mark for the first frame in the centre of the toolbar.
 Furthermore, at this point the precomputed edge overlay is presented so that
-taking the second frame which shoul be reasonably close to the original
+taking the second frame which should be reasonably close to the original
 viewpoint is possible.
 
 \subsubsection*{\code{HAS\_SECOND\_FRAME}}
@@ -212,33 +234,39 @@ viewpoint is possible.
 Once the second frame is captured, the second check mark is shown, the info
 label changes again and the preprocessing step is attempted. A
 \code{PoseDifferenceEstimationOperation} is started with the first and reference
-frames and another for the reference scale computation by use of first and
-second frames. Relative translation, rotation and goal scale are saved.
+frames to obtain $T_{ref,first}$ and $R_{ref,first}$ to be used in
+\eqref{eq:necessary_trans}. A second operation is run for the reference scale
+computation by use of first and second frames. Relative translation, rotation
+and goal scale are saved.
 
 Should one of the computations fail, the UI resets to the initial state except
 for an error label at the bottom centre informing the user that the matching
-failed. Otherwise a timer is initiated that will take pictures at a certain
+failed, underpinned by a red box. Otherwise a timer is initiated that will take pictures at a certain
 interval which should accord with the hardware running the program. For the
 tested device, it is set to one second, although somewhat higher frame rates are
-possible.
+possible. For each frame captured like this, a
+\code{PoseDifferenceEstimationOperation} (see below) is started. The captured
+frame and the first frame are processed and their relative pose computed. With
+the information computed during preprocessing, the necessary translation is
+inferred with \eqref{eq:necessary_trans}.
 
-Meanwhile, a panel at the bottom centre is revealed which visualises the
-necessary motion of the camera. For this, several ideas are possible.
+Meanwhile, a panel at the bottom centre is revealed which visualises this
+necessary motion of the camera. For this, several means are possible and
+discussed in \autoref{subsec:alternative_visualisation}.
 \citet{bae2010} found that an arrow visualisation for the translation in the
 XY-plane and Z-direction is most effective so this approach has been chosen
 here. Two camera pictograms are shown, one back view and one top view. There is
 one arrow positioned on each so that the translation in the XY-plane and
 Z-direction are independently visualised.
 
-\nofloat{gfx/rephoto_manager.PNG}{\code{RephotoManager} in
-\code{HAS\_SECOND\_FRAME} state}
+\nofloat{gfx/rephoto_manager.PNG}{\code{RephotoManager} in \code{HAS\_SECOND\_FRAME} state}
 
 \subsubsection*{\code{DONE}}
 
-After the final image is captured, the manager informs its delegate (in this
-case the \code{PhotoChooserController}) that its task is finished and hands over
-the final capture.
-
+Once the final image is taken, the controller informs its delegate that the
+rephotograph has finished and passes the final capture. The delegate---in this
+case the \code{PhotoChooserController}---can then put together an
+\code{ImageData} object to present the rephoto to the user.
 
 \subsection{\code{ResultViewController}}
 
@@ -248,14 +276,13 @@ the final capture.
 \end{wrapfigure}
 
 This controller must be passed a completed rephotograph in an \code{ImageData}
-object and displays the new image over the orginal. 
-With a slider, the new image
-is horizontally clipped to some percentage of it width and can thus be
+object and displays the new image over the orginal.  With a slider, the new
+image is horizontally clipped to some percentage of its width and can thus be
 dynamically unrolled over the original. Depending on a flag in the
 \code{ImageData} object, the rephoto passed to the controller will be saved. For
 this, the app makes use of the \code{sqlite} library. The \code{DBManager} class
-manages communication with a lightweight SQL database. Since all photos are
-part of the user's photo library---there is no way to save assets locally for an
+manages communication with a lightweight SQL database. Since all photos are part
+of the user's photo library---there is no way to save assets locally for an
 application---they are saved as a tuple of two \code{NSURL}s. Both the built-in
 \code{UIImagePickerController} and the \code{ELCImagePickerController} return
 the URL of a selected image, so it can be used to map a rephoto on its original
@@ -315,18 +342,19 @@ this, as well as the launch screen shown when starting the app.
 
 \subsection{Image Processing}
 
-\hyphenation{computePoseDifferenceBetweenCamera:-secondCamera:calibrationFile:scale:}
+\hyphenation{com-pute-Po-se-Diff-er-ence-Be-tween-Cam-er-a:-sec-ond-Cam-er-a:-cal-i-bra-tion-File:-sca-le:}
 % dirty hack
 
 The bulk of the work is done inside the utility class' \code{ImageUtils} static
 methods. To compute the pose difference between two frames, clients can call the
-public method \code{+[computePoseDifferenceBetweenCamera:secondCamera:calibrationFile:scale:]}.
+public method
+\code{+[computePoseDifferenceBetweenCamera:secondCamera:calibrationFile:scale:]}.
 The two images must be passed, as well as the path to a calibration file in
 OpenCV's \code{FileStorage} format. A scale parameter can be used to speed up
-the computation by downsampling the images.  The scale is set to $0.33$
-compromise between speed and matching robustness, taking into account that
-compared to the computations performed on a computer (see
-\autoref{ch:evaluation}) some detail is lost due to conversion between iOS's
+the computation by downsampling the images.  The scale is set to $0.33$,
+compromising between speed and matching robustness. This number takes into
+account that compared to the computations performed on a computer (see
+\autoref{ch:evaluation}) some detail is lost during conversion between iOS's
 \code{UIImage} format and OpenCV's \code{Mat} type.
 
 Internally, the method converts the images, uses OpenCV image processing
@@ -357,11 +385,11 @@ instead of the whole image for efficiency\footnote{Since undistortion requires
 information may be lost by interpolation.}. On the correspondences, RANSAC and
 the five-point algorithm are used to find the best-fitting essential matrix. 
 
-Once $E$ is fixed, the optimal triangulation method (see \citep[ch.  12.5.2]{h&z2004})
+Once $E$ is fixed, the optimal triangulation method (see \citet[ch.  12.5.2]{h&z2004})
 is used to correct the corresponding points. Since one assumes
 the computed essential matrix is correct, the information can be used to
 refine the position of corresponding points. This should make pose recovery
-with $E$ and the points for accurate.
+with $E$ and the points more accurate.
 
 The essential matrix is then decomposed into $R$ and $T$. The confidence
 threshold is set to $0.999$, a point is considered an outlier if its distance
@@ -384,7 +412,9 @@ matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
          descriptor\_channels    & $3$ \\
          \bottomrule
       \end{tabular}
-      \caption{Parameters used for AKAZE}
+      \caption{Parameters used for AKAZE (numer of octaves, detector response
+      threshold, levels per octave, size of the descriptor and the number of
+   channels, see \autoref{subsec:sift_akaze})}
       \label{tab:akaze_params}
    \end{center}
 \end{table}
@@ -461,7 +491,7 @@ synchronous and asynchronous dispatch is possible as well as synchronisation,
 but the API is not object-oriented and some useful features are unavailable.  Is
 not possible to specify how many blocks should be executed in parallel or to
 cancel tasks after submission. Since the application should make optimal use of
-the hardware due to high computational demand while not queueing up many tasks,
+the hardware due to high computational demand while not queueing up many tasks
 or tasks which are obsolete, such functionality is desirable.
 
 Operation queues---internally implemented with
@@ -505,9 +535,7 @@ The completion block is called with $z$, $\alpha$ and $r$.
 
 \section{Objective-C \& C++ --- The PIMPL pattern}
 
-For all image processing, the OpenCV library used in version 3.0. The library
-can be natively used from C++, but Python and Java bindings as well as a
-deprecated C API exist. OpenCV encodes images in its \code{Mat} type which is
+ OpenCV encodes images in its \code{Mat} type which is
 the only type perforating other parts of the application.  While it is possible
 to mix Objective-C and C++ code, using C++ types in header files forces every
 client including them to also be compiled as Objective-C++ which may be
