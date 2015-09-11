@@ -4,20 +4,30 @@ This thesis gave an overview of how to retrieve the location of a photograph
 with help of image processing. After introducing the basic geometry underlying
 world-to-image mapping and the geometry relating two views of a scene, a
 computational approach developed by Bae, Durand and Argawala has been presented.
-The theoretical and practical problems have been
+Structure-from-motion is used to compute the necessary motion between two
+captures of the same scene.  The theoretical and practical problems have been
 highlighted, including scenes which do not allow determining the relative pose
 of cameras and how to acquire matching points in two images. Algorithms to solve
 the pose recovery problem have been introduced.
 
-Evaluation revealed that only certain elements---the necessary
-camera rotation and the closeness to the goal---show promising estimates. The
-direction of necessary translation could not be recovered with this method.
-Since this aspect is not further documented in Bae et. al's work, it warrants
-furhter investigation.
+Evaluation on two real scenes revealed that only two elements---the necessary
+camera rotation and the closeness to the goal---show promising with this
+approach. The direction of necessary translation could not be recovered with
+this method.  Since this aspect is not further documented in Bae et. al's work,
+it warrants furhter investigation.
 
 An implementation of most of the ideas as a mobile application has been prototyped and
-described, being the first of its kind despite not being as functional has
-intended. Several simplifications have been made and the 
+described, being the first of its kind despite not being as functional as
+intended. Several simplifications have been made. The application requires the
+user to load an image, instructs them two capture two images of the scene and
+then visualises an estimate for the necessary motion with two arrows, one for the
+sensor plane and one for the optical axis. Further assistance is provided by
+overlaying the edges of the original image over the current camera picture,
+making the application usefuls despite the failure of the arrow visualisation.
+When the final image is captured, the app lets the user review the rephoto. A
+slider is used to mask the old over the new image and the change of the scene
+can be dynamically visualised. Rephotos are saved to the gallery to be viewed at
+a later time.
 
 It must be concluded that the original objective could not be achieved and
 the application is not more useful than existing approaches. With an edge

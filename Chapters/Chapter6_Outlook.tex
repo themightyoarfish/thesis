@@ -2,23 +2,28 @@
 
 \section{Extensions}
 
-\subsection{Historic Images}
+\subsection*{Historic Images}
 
 Some features from Bae et. al's work have been simplified away, so that
 currently, no really historic photograph can be used. The app should therefore
 be extended with another view controller presented after first and second frames
-have been taken, in order for the user to label correspondences. Furthermore, a
-higher rate of processing could be achieved by also using fast feature tracking
-between robust pose estimations where the AKAZE detector is run. Bae et al. use
-Lucas-Kanade-Tomasi tracking for this \citep{lucas1981,tomasi1991}, an OpenCV
-implementation is already available. During automatic capture, it can be
+have been taken, in order for the user to label correspondences. These
+correspondences can be used to fit a homography between the two views and warp
+one of them according to it.
+
+\subsection*{Realtime User Guidance}
+
+A higher rate of processing could be achieved by also using fast feature
+tracking between robust pose estimations where the AKAZE detector is run. Bae et
+al. use Lucas-Kanade-Tomasi tracking for this \citep{lucas1981,tomasi1991}, an
+OpenCV implementation is already available. During automatic capture, it can be
 observed that the found features often change abruptly between successive
 frames. This and the fact that the number of found features changes strongly
 results in the scale estimation jumping rapidly. A feature tracking may increase
 the stability as the already-found points are found again, instead of radically
 different ones.
 
-\subsection{Rephoto Postprocessing}
+\subsection*{Rephoto Postprocessing}
 
 It is probable that despite all assistance, the user will not manage to
 perfectly line up the original photgraph with the current camera picture.  In
@@ -31,7 +36,7 @@ found in \citep[ch. 13.4]{h&z2004}.  Given the calibration matrices of both
 views and their relative rotation, the homography can be computed and one image
 can be warped with it by remapping the pixels.
 
-\subsection{Other Visualisation Options}\label{subsec:alternative_visualisation}
+\subsection*{Other Visualisation Options}\label{subsec:alternative_visualisation}
 
 \citet{bae2010} explored different ways of visualising the necessary motion.
 A side-by-side view or a linear blend were less helpful than the arrow
@@ -41,20 +46,43 @@ or. A more sophisticated idea is to project an approximation of the correct
 location into the camera picture, but this would require a more detailed
 reconstruction of the scene.
 
-\subsection{Online Platform}
+\subsection*{Online Platform}
 
 It is envisioned to create social-network-like online community where
-rephotographs can be uploaded by users.
-There are web applications dedicated to rephotography already. There is
-\emph{Third View}, a project directed by Mark Klett dealing mostly with repeated
-captures of geographical landmarks, not man-made structures \citep{thirdview}. However, it is a documentation
-project and not community-driven.
+rephotographs can be uploaded by users.  There are web applications dedicated to
+rephotography already, for example \emph{Third View}, a project directed by Mark
+Klett dealing mostly with repeated captures of geographical landmarks, not
+man-made structures \citep{thirdview}. However, it is a documentation project
+and not community-driven. In contrast, the aforementioned Timera app also comes
+with a community where users can upload their rephotos which are then presented
+in the same fashion as in the app itself, or old photos for others to use as a
+reference.
 
-A platform letting users upload their pictures is the subject of another ongoing work. Therefore the currently
-experimental upload feature should be adapted once it is done to easily log in
-and share a rephoto created on the device.
+A platform letting users upload their pictures is also the subject of another
+thesis by \citet{weber2015}. The web service developed in this work sports the
+following features.
 
-\section{Usability And Performance}
+\begin{itemize}
+   \item Users can upload, rate and comment on rephotographs.
+   \item Rephotos can be viewed in detail in an overlay and a slider masks the
+      images just as in the iOS app presented here.
+    \item Rephotos can be tagged with metadata, including time, location or
+       title.
+    \item Rephotos can be filtered by timespan between the two images, the
+       geographic location and the category.
+    \item A map displays the locations for which users have shared their
+       rephotos.
+    \item The two images can be registered in the web form via identification of
+       corresponding points. With OpenCV, a homography is estimated to better
+       register the images.
+\end{itemize}
+
+The webservice supplies an application programming interface of which the mobile
+app should make use in the future. Rudimentary provisions have been made, but
+the authentication must be implemented and the HTTP request adapted to interface
+with the server.
+
+\section{Usability \& Performance}
 
 The focus of this work was the theoretical exploration and evaluation of Bae et.
 al's ansatz to computational rephotography, not on the design of release-ready
@@ -125,6 +153,9 @@ extensively tested. Notable shortcomings are
 
    \item The application creates a photo album for the rephotos with the name
       \emph{Rephotos}, without checking if it already exists.
+
+   \item Every finished rephotograph is saved. There should be an option to
+      discard an attempt in the result view.
 
 \end{enumerate}
 

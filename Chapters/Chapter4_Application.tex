@@ -70,7 +70,13 @@ for all complex views.
 \begin{figure}[h]
    {\centering      
       \input{gfx/mvc.tex}
-      \caption{Model-View-Controller pattern}
+      \caption[The Model-View-Controller pattern]{The Model-View-Controller pattern postulates three components.
+         The model is the backing store for all data which is presented by the view
+         component. Interaction between the user and the data is mediated by the
+         controller. Decoupling a system like this allows the components to be
+         interchangeable. For example, should the mode of presentation be changed form a
+         graphical to a command-line interface, only view and possibly controller must be
+      swapped, which is also possible at runtime.}
    \label{fig:mvc}}
 \end{figure}
 
@@ -117,7 +123,7 @@ respectively\footnote{Pose recovery functions for calibrated images were
 unavailable prior to version 3.0. Furthermore, all patented feature detection
 algorithms were moved to a separate repository.}.
 
-\subsection{Objective-C \& C++ --- The PIMPL pattern}
+\subsection{Mixing Objective-C \& C++}
 
  OpenCV encodes images in its \code{Mat} type which is
 the only type perforating other parts of the application.  While it is possible
@@ -246,7 +252,7 @@ the sequence of screens and controllers is shown in \autoref{fig:app_tree}.
    \end{center}
 }
 
-\subsection{\code{MainViewController}}
+\subsection{MainViewController}
 
 When the app starts up, the user is shown a \code{MainViewController} which
 offers a choice whether to make a new rephotograph or view existing ones.
@@ -254,9 +260,9 @@ Clicking the \button{Take Rephoto} button will trigger a segue to a
 \code{PhotoChooserController}, while tapping \button{View Rephotos} will modally
 present an \code{ELCImagePickerController}.
 
-\nofloat{gfx/mainviewcontroller.PNG}{\code{MainViewController} view layout}
+\nofloat{gfx/mainviewcontroller.PNG}{MainViewController view layout}
 
-\subsection{\code{PhotoChooserController}}
+\subsection{PhotoChooserController}
 
 \setlength\emergencystretch{2em}
 This view controller displays a scrollable and pannable view and a button
@@ -273,17 +279,15 @@ to access the device's camera. A
 \code{PhotoChooserController}. The controller can then be informed when the
 rephotograph is done or cancelled.
 
-\nofloat{gfx/photochoosercontroller.PNG}{\code{PhotoChooserController} view
-layout}
+\nofloat{gfx/photochoosercontroller.PNG}{PhotoChooserController view layout}
 
 When an image is picked, the controller uses the Canny edge detection algorithm
 \citep{canny1986} to generate an overlay which will then help the user in
 finding the perfect aligment.
 
-\nofloat{gfx/photochoosercontroller_photo.PNG}{\code{PhotoChooserController}
-with loaded image}
+\nofloat{gfx/photochoosercontroller_photo.PNG}{PhotoChooserController with loaded image}
 
-\subsection{\code{SettingsViewController}}
+\subsection{SettingsViewController}
 
 The \code{SettingsViewController} possesses three panels which allow for
 modification of the color of the edge overlay and insert authentication data for
@@ -291,10 +295,9 @@ future use with an envisioned online platform. The third panel is unused in the 
 version and could be appropriated for other kinds of preferences such as the default type
 of visualisation for the necessary camera motion (see \autoref{ch:outlook}).
 
-\nofloat{gfx/settingsviewcontroller.PNG}{\code{SettingsViewController} view
-layout}
+\nofloat{gfx/settingsviewcontroller.PNG}{SettingsViewController view layout}
 
-\subsection{\code{RephotoManager}}
+\subsection{RephotoManager}
 
 \hyphenation{Pose-Diff-er-ence-Es-ti-ma-tion-Op-er-at-ion} The two most
 important classes are the \code{RephotoManager} and the
@@ -358,7 +361,7 @@ here. Two camera pictograms are shown, one back view and one top view. There is
 one arrow positioned on each so that the translation in the XY-plane and
 Z-direction are independently visualised.
 
-\nofloat{gfx/rephoto_manager.PNG}{\code{RephotoManager} in \code{HAS\_SECOND\_FRAME} state}
+\nofloat{gfx/rephoto_manager.PNG}{RephotoManager after second frame was captured}
 
 \subsubsection*{\code{DONE}}
 
@@ -367,7 +370,7 @@ rephotograph has finished and passes the final capture. The delegate---in this
 case the \code{PhotoChooserController}---can then put together an
 \code{ImageData} object to present the rephoto to the user.
 
-\subsection{\code{ResultViewController}}
+\subsection{ResultViewController}
 
 \setlength\intextsep{0pt}
 \begin{wrapfigure}{r}{.25\textwidth}
@@ -387,14 +390,14 @@ application---they are saved as a tuple of two \code{NSURL}s. Both the built-in
 the URL of a selected image, so it can be used to map a rephoto on its original
 or vice versa when it should be displayed.
 
-\nofloat{gfx/resultviewcontroller.PNG}{\code{ResultViewController} view layout}
+\nofloat{gfx/resultviewcontroller.PNG}{ResultViewController view layout}
 
 On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
 lets the user upload a rephoto to an experimental test server for display, but the
 functionality is only rudimentary and requires the server to be running in the
 same local network with a known IP address.
 
-\subsection{\code{ELCImagePickerController}}
+\subsection{ELCImagePickerController}
 
 For the task of reviewing rephotographs, the \code{ELCImagePickerController} is
 used. Contrarily to the built-in \code{UIImagePickerController}, this
@@ -404,10 +407,11 @@ shown the new photographs of each rephoto and upon selection is presented a
 \code{ResultViewController} with the rephotograph.
 
 
-\section{Software Modules}
+\section{Implementation}
 
-Although Objective-C does not support modularisation by packages, namespace or
-similar, the software can be divided into five parts.
+This section will survey the more important pieces of the software and elaborate
+on the particular challenges addressed by them. The implementation of the
+relative pose estimation is described in detail.
 
 \subsection{User Interface}
 
@@ -577,18 +581,22 @@ summarised in \autoref{tab:categories}.
 
 \FloatBarrier
 
-\subsection{Parallel Computation Of Necessary Translation}
+\subsection{Computation Of Necessary Translation}
 
 \begin{wrapfigure}{l}{.35\textwidth}
    \includegraphics[width=.35\textwidth]{gfx/posediffop.pdf}
 \end{wrapfigure}
-iOS supports different APIs for parallelisation. Besides manual thread creation,
+The computation of the necessary translation is implemented by the
+\code{PoseDifferenceEstimationOperation} class and was conceived to allow
+parallelisation.
+
+iOS supports different APIs for concurrency. Besides manual thread creation,
 Grand Central Dispatch allows to easily dispatch blocks (function objects) to
 different kinds of queues. The runtime automatically removes blocks from the
 queue for execution. Dispatch queues can be serial or concurrent and both
 synchronous and asynchronous dispatch is possible as well as synchronisation,
-but the API is not object-oriented and some useful features are unavailable.  Is
-not possible to specify how many blocks should be executed in parallel or to
+but the API is not object-oriented and some useful features are unavailable. It
+is not possible to specify how many blocks should be executed in parallel or to
 cancel tasks after submission. Since the application should make optimal use of
 the hardware due to high computational demand while not queueing up many tasks
 or tasks which are obsolete, such functionality is desirable.
