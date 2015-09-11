@@ -14,7 +14,7 @@ Degenerate configurations are those in which the data on which the essential
 matrix is estimated allows for more than one mathematically valid solution. Two
 different cases can be observed.
 
-\subsection{Structure degeneracy}
+\subsection{Structure Degeneracy}
 
 Structure degeneracy is a configuration of points in the observed scene which do
 not provide enough information to wholly determine an essential matrix. The
@@ -58,6 +58,16 @@ It is unlikely in rephotography that the observed scene will be completely
 planar, or that the user will move from the first frame in a motion which is
 pure rotation or translation, these degeneracies can be labelled edge cases and
 are not specifically handled in the application.
+
+However, the most degenerate case is the one with zero motion between the frames
+and of primary importance for this application. An initial idea to simply
+compare the original image with the current frame cannot be successful as
+relative pose estimation from corresponding points becomes unstable when the
+motion between the two cameras approaches zero. But this is the ultimate goal one
+wishes to achieve. When na\"ivley comparing the current camera
+image to the reference photograph, the estimate for relative rotation and
+translation would become increasingly unreliable as the camera approaches the
+original viewpoint.  
 
 \section{Finding Correspondences}
 
@@ -183,6 +193,18 @@ differences and the two image derivatives. The three properties are referred to 
 \emph{channels} and the descriptor may include one, two or all three of them,
 with three yielding best performance.
 
+\section{Scale Ambiguity}
+
+Computing relative translation between two cameras from corresponding image
+points is possible only up to an unknown scale (see
+\autoref{sec:eight-point}), meaning it is impossible to determine e.g. if an
+object viewed by the camera is small and close or large and further away. That
+fact alone would not be problematic, but an iterative procedure requires to
+maintain a consistens scale for all estimates of necessary motion.
+This poses the problem of how to determine if the user is close to the
+desired viewpoint and whether or not they have come closer or moved further
+away over the iterations. 
+
 \section{Practical Problems}
 \label{sec:app_challenges}
 
@@ -196,20 +218,11 @@ identified.
       adjustments for the others to improve the registration. Furthermore, the
       number of degrees of freedom makes it difficult to communicate to the
       user how they must move the camera.
-   \item Computing relative translation between two cameras from corresponding
-      image points is possible only up to an unknown scale (see
-      \autoref{sec:eight-point}), meaning it is impossible to
-      determine e.g. if an object viewed by the camera is small and close or
-      large and further away. This poses the problem of how to determine if the
-      user is close to the desired viewpoint and whether or not they have come
-      closer or moved further away over iterations. 
-   \item Relative pose estimation from corresponding points becomes unstable
-      when the motion between the two cameras approaches zero, which is the
-      ultimate goal one wishes to achieve, as this is a degenerate configuration
-      (see \autoref{subsec:motion_degen}). When na\"ivley comparing the current
-      camera image to the reference photograph, the estimate for relative
-      rotation and translation would become increasingly unreliable as the
-      camera approaches the original viewpoint.
+   \item The estimate for relative translation between two views will be defined
+      only up to an unknown scale (see above)
+   \item The original photo cannot be used directly for pose retrieval, because
+      the estimate degenerates when the user approaches the original viewpoint
+      (see above)
    \item Automated computation of relative camera pose will rely on feature
       detection to find correspondences. However, historical images will often
       be vastly different from the current scene. Not only may the scene itself
@@ -258,7 +271,7 @@ Given the locations of the reference camera and the current frame's camera, each
 relative to the first frame, one can compute the location of the reference
 relative to the current frame and thus guide the user in the right
 direction\footnote{Depending on the coordinate system used and whether $R$ and
-$T$ are given such that they transform points from frame $1$ to frame $2$ or vice
+   $T$ are given such that they transform points from frame $1$ to frame $2$ or vice
 versa, the equations will look different, as they do in \citep{bae2010}}.
 
 \begin{IEEEeqnarray}{rCllt}
@@ -312,28 +325,28 @@ and compared across iterations to make the scale consistent.
 \begin{figure}
    {\centering      
       \begin{subfigure}{\linewidth}
-      \input{gfx/intercept1.tex}
-      \caption{Per the intercept theorem $\frac{|s c_1^\prime|}{|s c_1|} = \frac{b^\prime}{b}$.  
-      With increasing baseline, $|s c_1|$ also increases to fulfil the equation.}
+         \input{gfx/intercept1.tex}
+         \caption{Per the intercept theorem $\frac{|s c_1^\prime|}{|s c_1|} = \frac{b^\prime}{b}$.  
+         With increasing baseline, $|s c_1|$ also increases to fulfil the equation.}
       \end{subfigure}
 
       \begin{subfigure}{\linewidth}
-      \input{gfx/intercept2.tex}
-      \caption{For another baseline, the estimate will still yield a translation
-      with unit length.}
+         \input{gfx/intercept2.tex}
+         \caption{For another baseline, the estimate will still yield a translation
+         with unit length.}
       \end{subfigure}
 
       \begin{subfigure}{\linewidth}
-      \input{gfx/intercept3.tex}
-      \caption{Equalising the scales in both estimates shows that the distance
-      of the object to $c_1$ is smaller if $c_3$ was further away than $c_2$}
+         \input{gfx/intercept3.tex}
+         \caption{Equalising the scales in both estimates shows that the distance
+         of the object to $c_1$ is smaller if $c_3$ was further away than $c_2$}
       \end{subfigure}
 
       \caption[Relation between object distance and camera baseline]{The camera
          baseline length is inversely proportional to the distance of the viewed
-      object to one of the cameras. Evaluating the distance of viewed objects to
-   the first frame's camera yields a measure for how far the two cameras are
-apart.}
+         object to one of the cameras. Evaluating the distance of viewed objects to
+         the first frame's camera yields a measure for how far the two cameras are
+      apart.}
    \label{fig:scale}}
 \end{figure}
 
