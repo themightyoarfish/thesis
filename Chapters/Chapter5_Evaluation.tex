@@ -52,7 +52,7 @@ In this series, the camera was moved horizontally from the reference to the
 right while also coming closer to the building.
 A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene}.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
    {\centering      
       \input{gfx/bahnhof_scene.tex}
       \caption[Schematic of the train scene]{Schematic representation of the Train Station data set. Lengths and angles are not
@@ -66,7 +66,7 @@ A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene
 \newcolumntype{m}{>{$}c<{$}} % math column
 \rowcolors{2}{gray!5}{white} % alternating colours
 
-\begin{table}[h]
+\begin{table}
    \caption[Train data ground truth]{Ground truth for the train data. Image 0 is the reference frame,
       translations and rotations are given as in \eqref{eq:camera_transform}
    relative to the reference frame.}
@@ -113,7 +113,7 @@ descriptor.
 Generally, it can be concluded that on this data set, AKAZE features are an
 appropriate means of estimating the scale of relative camera translation.
 
-\begin{figure}[h]
+\begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_dist_ratio_plot.tex}
@@ -147,7 +147,7 @@ absolute magnitude.
 The performance of SIFT is even better for scales $s=1$ and $s=2$, but slightly
 worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
 
-\begin{figure}[h]
+\begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_angles_plot_resize1.tex}
@@ -172,7 +172,7 @@ worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
    \label{fig:train_rotation_KAZE}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/train_SIFT_angles_plot_resize1.tex}
@@ -204,7 +204,7 @@ degree between the actual necessary translation and the computed one. The
 reference frame $0$ is omitted since the translation vector to compare with is
 $(0,0,0)$.
 
-\begin{figure}[h]
+\begin{figure}
    \begin{subfigure}[b]{.5\linewidth}
       \centering      
       \input{gfx/train_KAZE_direction.tex}
@@ -221,10 +221,13 @@ $(0,0,0)$.
    \label{fig:train_direction}
 \end{figure}
 
-It is obvious that the estimates are completely useless, the difference
-exceeds $80$ degrees in all cases. The results are so staggeringly bad as to be
-suggestive of conceptual or mathematical error, though none could be found. With
-these estimates, the user will be sent into an entirely wrong direction.
+% It is obvious that the estimates are completely useless, the difference
+% exceeds $80$ degrees in all cases. The results are so staggeringly bad as to
+% be suggestive of conceptual or mathematical error, though none could be found.
+% With these estimates, the user will be sent into an entirely wrong direction.
+It is obvious that the estimates are completely useless, the difference exceeds
+$80$ degrees in all cases. With these estimates, the user will be sent into an
+entirely wrong direction.
 
 \FloatBarrier
 
@@ -248,7 +251,7 @@ The ground truth data is summarised in \autoref{tab:manor_data}.
 \end{figure}
 
 
-\begin{table}[h]
+\begin{table}
    \caption[Manor data ground truth]{Ground truth for the manor data. Image $0$ is the reference frame,
       translations and rotations are given as in \eqref{eq:camera_transform}
    relative to the reference frame.}
@@ -335,7 +338,9 @@ $3$ (the direction is wrong, not only the magnitude).
          sigma                   & $1.6$ \\
          \bottomrule
       \end{tabular}
-      \caption{Parameters used for SIFT}
+      \caption{Parameters used for SIFT (number of octaves, number of sublevels
+      per octave, detector response threshold, edge threshold for filtering
+   edges, standard deviation of the gaussian for the initial image)}
       \label{tab:sift_params}
    \end{center}
 \end{table}
@@ -345,7 +350,7 @@ particularly on full resolution where it grossly overestimates the necessary
 rotation. The results are better on the scaled-down images, possibly because of
 the reduction of noise, but still only partly useful on the smallest resolution.
 
-\begin{figure}[h]
+\begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_KAZE_angles_plot_resize1.tex}
@@ -370,7 +375,7 @@ the reduction of noise, but still only partly useful on the smallest resolution.
    \label{fig:manor_KAZE_rotation}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}
    \begin{subfigure}{.5\linewidth}
       \centering      
       \input{gfx/manor_SIFT_angles_plot_resize1.tex}
@@ -418,6 +423,8 @@ SIFT displaying a larger variance than AKAZE, but neither are useful.
    \caption[Manor data: Translation]{Manor data set: Angular difference between actually necessary translation and estimate}
    \label{fig:manor_direction}
 \end{figure}
+
+\FloatBarrier
 
 \section{Summary}
 

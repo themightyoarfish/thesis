@@ -1,4 +1,58 @@
-\chapter{Outlook \& Future Work}\label{ch:outlook}
+\chapter{Application Evaluation, Outlook \& Future Work}\label{ch:outlook}
+
+\section{Extensions}
+
+\subsection{Historic Images}
+
+Some features from Bae et. al's work have been simplified away, so that
+currently, no really historic photograph can be used. The app should therefore
+be extended with another view controller presented after first and second frames
+have been taken, in order for the user to label correspondences. Furthermore, a
+higher rate of processing could be achieved by also using fast feature tracking
+between robust pose estimations where the AKAZE detector is run. Bae et al. use
+Lucas-Kanade-Tomasi tracking for this \citep{lucas1981,tomasi1991}, an OpenCV
+implementation is already available. During automatic capture, it can be
+observed that the found features often change abruptly between successive
+frames. This and the fact that the number of found features changes strongly
+results in the scale estimation jumping rapidly. A feature tracking may increase
+the stability as the already-found points are found again, instead of radically
+different ones.
+
+\subsection{Rephoto Postprocessing}
+
+It is probable that despite all assistance, the user will not manage to
+perfectly line up the original photgraph with the current camera picture.  In
+order to better register the original and final images, the latter can be warped
+according to the last pose difference estimate. Bae et. al use an infinite
+homography. The infinite homography is the one between two views induced by the
+plane at infinity, i.e.  the set of all projective points $(x,y,z,0)$ and maps
+vanishing points in one view onto vanishing points in the other. Details can be
+found in \citep[ch. 13.4]{h&z2004}.  Given the calibration matrices of both
+views and their relative rotation, the homography can be computed and one image
+can be warped with it by remapping the pixels.
+
+\subsection{Other Visualisation Options}\label{subsec:alternative_visualisation}
+
+\citet{bae2010} explored different ways of visualising the necessary motion.
+A side-by-side view or a linear blend were less helpful than the arrow
+visualisation, but one could image to offer evaluate different kinds, such as
+a three-dimensional arrow which shows both parts of the necessary translation
+or. A more sophisticated idea is to project an approximation of the correct
+location into the camera picture, but this would require a more detailed
+reconstruction of the scene.
+
+\subsection{Online Platform}
+
+It is envisioned to create social-network-like online community where
+rephotographs can be uploaded by users.
+There are web applications dedicated to rephotography already. There is
+\emph{Third View}, a project directed by Mark Klett dealing mostly with repeated
+captures of geographical landmarks, not man-made structures \citep{thirdview}. However, it is a documentation
+project and not community-driven.
+
+A platform letting users upload their pictures is the subject of another ongoing work. Therefore the currently
+experimental upload feature should be adapted once it is done to easily log in
+and share a rephoto created on the device.
 
 \section{Usability And Performance}
 
@@ -27,11 +81,14 @@ extensively tested. Notable shortcomings are
       server and is a blocking request.
 
    \item To enhance user experience, a choice between different overlays should
-      be offered, where at this time only an edge overlay is implemented.
+      be offered, where at this time only an edge overlay is implemented. The
+      edge overlay could also be made more helpful by post-processing it into a
+      more distinctive subset of lines to remove noisy clutter when fine-grained
+      patterns are present (e.g. vegetation).
 
    \item All frames are matched with the first frame so it would suffice to
       compute the keypoints once for it and reuse them. Currently, the keypoints
-      are recomputed for every \code{PoseDifferenceEstimationOperation}.
+      are recomputed for every relative pose estimation.
 
    \item The application requires iOS 8, but actually has few dependencies on
       it. The user interface employs \code{UIVisualEfffectView}s which were
@@ -46,10 +103,11 @@ extensively tested. Notable shortcomings are
    \item The rephotography makes use of the simple
       \code{UIImagePickerController} which is presented modally. This makes the
       flow of the app less seamless. For instance, when the
-      \code{PhotoChooserController} is presented and the user loads an image,
+      \code{PhotoChooserController} is presented and the user loads an original image,
       the image picker will pop up, but upon image selection, one is not
       immediately shown the camera, but is briefly shown the photo chooser again
-      before the rephoto starts with yet another \code{UIImagePickerController}.
+      before the rephoto starts with yet another \code{UIImagePickerController}
+      (this time in camera mode instead of gallery).
       Furthermore, the possibility to modify the camera stream is limited to
       affine transformations, which precludes projective transformation. This
       would be necessary to implement the image warping used by \citet{bae2010}.
@@ -57,9 +115,9 @@ extensively tested. Notable shortcomings are
       attempt to process frames as they come and simply drop them if no CPU time
       is available which would also scale more easily to other devices. Both
       could be accomplished by rebasing the app on the much more customisable
-      \code{AVFoundation} framework which gives direct access to the device's
-      camera. For this, OpenCV wrappers exist already which would simplify
-      processing the frames.  
+      \code{AVFoundation} framework which gives more low-level access to the device's
+      camera at the cost of significantly more development effort.
+      For this, OpenCV wrappers exist already which would simplify processing the frames.  
 
    \item The application has only been tested on a single device. While it
       should work on iPhones as well, this could not be tested and some tuning
@@ -71,39 +129,3 @@ extensively tested. Notable shortcomings are
 \end{enumerate}
 
 
-Some features from Bae et. al's work have been simplified away, so that
-currently, no really historic photograph can be used. The app should therefore
-be extended with another view controller presented after first and second frames
-have been taken, in order for the user to label correspondences. Furthermore, a
-higher rate of processing could be achieved by also using fast feature tracking
-between robust pose estimations where the AKAZE detector is run. Bae et al. use
-Lucas-Kanade-Tomasi tracking for this \citep{lucas1981,tomasi1991}, an OpenCV
-implementation is already available. During automatic capture, it can be
-observed that the found features often change abruptly between successive
-frames. This and the fact that the number of found features changes strongly
-results in the scale estimation jumping rapidly. A feature tracking may increase
-the stability as the already-found points are found again, instead of radically
-different ones.
-
-\subsection{Rephoto Postprocessing}
-
-It is probable that despite all assistance, the user will not manage to
-perfectly recreate the original photgraph.  In order to better register the
-original and final images, the latter can be warped according to the last pose
-difference estimate. Bae et. al use an infinite homography. The infinite
-homography is the one between two views induced by the plane at infinity, i.e.
-the set of all projective points $(x,y,z,0)$ and maps vanishing points in one
-view onto vanishing points in the other. Details can be found in \citep[ch. 13.4]{h&z2004}.
-Given the calibration matrices of both views and their relative
-rotation, the homography can be computed and one image can be warped with it
-by remapping the pixels.
-
-\subsection{Other Visualisation Options}\label{subsec:alternative_visualisation}
-
-\citet{bae2010} explored different ways of visualising the necessary motion.
-A side-by-side view or a linear blend were less helpful than the arrow
-visualisation, but one could image to offer evaluate different kinds, such as
-a three-dimensional arrow which shows both parts of the necessary translation
-or. A more sophisticated idea is to project an approximation of the correct
-location into the camera picture, but this would require a more detailed
-reconstruction of the scene.
