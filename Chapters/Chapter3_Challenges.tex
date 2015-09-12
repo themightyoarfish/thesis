@@ -196,14 +196,16 @@ with three yielding best performance.
 \section{Scale Ambiguity}
 
 Computing relative translation between two cameras from corresponding image
-points is possible only up to an unknown scale (see
-\autoref{sec:eight-point}), meaning it is impossible to determine e.g. if an
-object viewed by the camera is small and close or large and further away. That
-fact alone would not be problematic, but an iterative procedure requires to
-maintain a consistens scale for all estimates of necessary motion.
-This poses the problem of how to determine if the user is close to the
-desired viewpoint and whether or not they have come closer or moved further
-away over the iterations. 
+points is possible only up to an unknown scale (see \autoref{sec:eight-point}),
+meaning it is impossible to determine e.g. if an object viewed by the camera is
+small and close or large and further away.  This poses the problem of how to
+determine if the user is close to the desired viewpoint and whether or not they
+have come closer or moved further away over the iterations.  The issue of
+unknown scale alone would not be problematic, but an iterative procedure
+requires to maintain a consistent scale for all estimates of necessary motion.
+If at one point, the estimate says ``go right'' and after doing so, again ``go
+right'', it is impossible to say whether the camera has moved into the right
+direction or the opposite one.
 
 \section{Practical Problems}
 \label{sec:app_challenges}
