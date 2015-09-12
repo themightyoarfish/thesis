@@ -33,17 +33,20 @@ Objective-C++ dialect exists to support C++ as well.
 
 The software development kit for the platform employs Objective-C for most
 high-level APIs and C for more low-level functionality. With respect to
-application design, the Model-View-Controller (see \autoref{fig:mvc}) pattern is
-used throughout the Cocoa library which incorporates the standard
+application design, the Model-View-Controller pattern (see \autoref{fig:mvc}) is
+used throughout the Cocoa library. Cocoa incorporates the standard
 (\code{Foundation} classes) and graphical user interface (\code{AppKit} on OSX,
-\code{UIKit} on iOS) libraries as well as \code{Core} \texttt{Data} for
-persistence. For applications with little or no need for data manipulation,
+\code{UIKit} on iOS) libraries as well as \texttt{Core} \texttt{Data} for
+persistence. For applications such as this one with little or no need for data manipulation,
 there are no dedicated model classes and the controller objects can fill in the
-role of those.  For every view hierarchy, a view
-controller must exist to present it to the user and mediate interaction with
-them. View controllers by virtue of being derived from \code{UIViewController}
-have many methods which are automatically called by the runtime for certain
-events in the associated view's life cycle. For example
+role of those.  
+
+Following the MVC pattern, iOS requires a view controller for every view hierarchy
+to present it to the user and mediate interaction with them. View controllers, by
+virtue of being derived from \code{UIViewController}, have many methods which are
+automatically called by the runtime for certain events in the associated view's
+life cycle. For example
+
 \begin{itemize}[align=left]
    \item[\code{viewDidLoad}] Invoked after the controller's view hierarchy was
       loaded/inflated from an archive, but before it appears.
@@ -90,19 +93,25 @@ Apple's XCode integrated development environment allows to visually model the
 flow of the application by use of \code{Storyboard}s. These are XML files which
 define controllers and their relationships.  This allows for a cleaner
 separation between user interface and business logic, while it is equally
-possible to specifiy the presentation order programmatically.  Storyboards
+possible to specify the presentation order programmatically.  Storyboards
 consist of a number of view controllers with associated views which are
-connected by \code{Segue}s. When an application developed with storyboards
+connected by \emph{segues}. When an application developed with storyboards
 starts up, a \code{UINavigationController} is created which maintains a stack of
 view controllers on which segues push new ones or pop old ones from (\emph{unwind
-segue}).  The Storyboard for the application developed in this work is shown in
+segue}). The storyboard for the application developed in this work is shown in
 \autoref{fig:storyboard}.
 
 \begin{figure}[h]
    {\centering      
       \input{gfx/storyboard.tex}
       \caption[Storyboard example]{The Storyboard of this application. There is
-      always a root view controller on whose stack new controllers are pushed or popped from.}
+      always a root view controller on whose stack new controllers are pushed or
+   popped from, here on the top left. The different view controllers are
+connected by segues. The navigation controller on the top left initially has a
+Main View Controller pushed on its stack. This one is connected with other
+controllers with different actions attached to the two buttons and so forth.
+Inside the storyboard, the actual user interface can be created with
+drag-and-drop of widgets.}
    \label{fig:storyboard}}
 \end{figure}
 
@@ -113,42 +122,43 @@ segue}).  The Storyboard for the application developed in this work is shown in
 For all image processing, the Open Source Computer Vision library (OpenCV) is
 used in version 3.0. Originally developed by Intel and then by Willow Garage,
 development is led today by itseez\footnote{\url{http://itseez.com/OpenCV/}},
-but is strongly community-driven. The library contains many alogrithms for image
+but is strongly community-driven. The library contains many algorithms for image
 processing for purposes such as segmentation, geometric transformation, feature
 and object detection and 3D reconstruction. It can be natively used from C++,
-but Python and Java bindings as well as a deprecated C API exist.
-The modules used in this work are the \texttt{features2d} and \texttt{calib3d}
-modules for feature extraction and multiview geometry,
-respectively\footnote{Pose recovery functions for calibrated images were
-unavailable prior to version 3.0. Furthermore, all patented feature detection
-algorithms were moved to a separate repository.}.
+but Python and Java bindings as well as a deprecated C API exist.  The modules
+used in this work are the \texttt{features2d} and \texttt{calib3d} modules for
+feature extraction and multiview geometry (pose recovery), respectively\footnote{Pose recovery
+   functions for calibrated images were unavailable prior to version 3.0.
+Furthermore, the new version moved all patented feature detection algorithms to a separate
+repository.}.
 
 \subsection{Mixing Objective-C \& C++}
 
- OpenCV encodes images in its \code{Mat} type which is
-the only type perforating other parts of the application.  While it is possible
-to mix Objective-C and C++ code, using C++ types in header files forces every
-client including them to also be compiled as Objective-C++ which may be
+OpenCV encodes images in its \code{Mat} data type, which is the only C++ type
+also used in other (Obj-C) parts of the application.  While it is possible to
+mix Objective-C and C++ code, using C++ types in header files forces every
+client including them to also be compiled as Objective-C++, which may be
 unwanted. For instance, XCode's refactoring tools cannot be used on these
 sources. It is thus reasonable to create wrapper classes for all C++ types
 encapsulating the access to the data so that the interface is pure Objective-C.
-Only the implementation of the wrapper class would need to be compiled as C++,
-no client would be affected. Ideally, all a large amount of boilerplate code to
-translate Objective-C messages in C++ calls to the wrapped object.  It is
-therefore convenient to encapsulate a C++ type but make it still accessible to
-client classes if needed. 
+Only the implementation of the wrapper class would need to be compiled as
+Objective-C++, no client would be affected. A large amount of boilerplate code would
+be required to translate Objective-C messages to the wrapper in C++ calls to the
+wrapped object.  It is therefore convenient to encapsulate a C++ type but make
+it still accessible to client classes if needed. 
 
-One solution is a variant of the \emph{Pointer-to-Implementation} pattern
-(PIMPL, also known as \emph{Bridge} in \citep{gamma1995}). The wrapper class'
-interface (\autoref{lst:pimpl}) is specified in pure Objective-C and contains an
-opaque pointer to a C \code{struct} representing the wrapped data as a C type
-which therefore does not lead to compatibility issues as all C code is valid
-Objective-C. For the original pattern, this allows modifying the wrapper
-hierarchy independently of the implementation hierarchy (e.g. different
-implementations could be behind the pointers, for different platforms). The
-definition of this pointer-to-implementation type is placed in a second header
-file (\autoref{lst:pimpl2}) and is imported only by those clients which actually
-need to access the data, not only pass it on. This permits compiling only those
+One way of limiting the Objective-C++ to one class is a variant of the
+\emph{Pointer-to-Implementation} pattern (PIMPL, also known as \emph{Bridge} in
+\citep{gamma1995}). The wrapper class' interface (\autoref{lst:pimpl}) is
+specified in pure Objective-C and contains an opaque pointer to a C
+\code{struct} representing the wrapped data as a C type, which therefore does not
+lead to compatibility issues as all C code is valid Objective-C. For the
+original pattern this allows modifying the wrapper hierarchy independently of
+the implementation hierarchy (e.g. different implementations could be behind the
+pointers for different platforms). The definition of this
+pointer-to-implementation type is placed in a second header file
+(\autoref{lst:pimpl2}) and is imported only by those clients which actually need
+to access the data, not only pass it on. This permits compiling only those
 source files as Objective-C++ which must deal with the actual OpenCV \code{Mat}.
 In principle, it would be possible to create methods in the wrapper class for
 all uses of the C++ type throughout the program. However, this would waste the
@@ -163,7 +173,7 @@ access to the wrapped data to those classes that need it.
 
 \begin{lstlisting}[
    caption={\code{CVMatWrapper.h}. The wrapper interface contains an opaque pointer to a C
-      \code{struct}. \code{\#include}ing this header does not invalidate
+      \code{struct}. including this header does not invalidate
    othewise valid Objective-C code.},
    label={lst:pimpl},
 ]
@@ -283,14 +293,14 @@ rephotograph is done or cancelled.
 
 When an image is picked, the controller uses the Canny edge detection algorithm
 \citep{canny1986} to generate an overlay which will then help the user in
-finding the perfect aligment.
+finding the perfect alignment.
 
 \nofloat{gfx/photochoosercontroller_photo.PNG}{PhotoChooserController with loaded image}
 
 \subsection{SettingsViewController}
 
 The \code{SettingsViewController} possesses three panels which allow for
-modification of the color of the edge overlay and insert authentication data for
+modification of the colour of the edge overlay and insert authentication data for
 future use with an envisioned online platform. The third panel is unused in the current
 version and could be appropriated for other kinds of preferences such as the default type
 of visualisation for the necessary camera motion (see \autoref{ch:outlook}).
@@ -319,7 +329,7 @@ machine, depicted as a flow chart in \autoref{fig:rephoto_manager}.
 \subsubsection*{\code{START}}
 
 Initially, the user interface presents shutter and cancel buttons in a toolbar
-at the bottom and an info indictator on the top left, telling the user the take
+at the bottom and an info indicator on the top left, telling the user the take
 the first frame. When the user taps the shutter button, the first frame is
 captured and saved.
 
@@ -341,12 +351,12 @@ frames to obtain $T_{ref,first}$ and $R_{ref,first}$ to be used in
 computation by use of first and second frames. Relative translation, rotation
 and goal scale are saved.
 
-Should one of the computations fail, the UI resets to the initial state except
-for an error label at the bottom centre informing the user that the matching
-failed, underpinned by a red box. Otherwise a timer is initiated that will take pictures at a certain
-interval which should accord with the hardware running the program. For the
-tested device, it is set to one second, although somewhat higher frame rates are
-possible. For each frame captured like this, a
+Should one of the computations fail, the user interface resets to the initial
+state except for an error label at the bottom centre informing the user that the
+matching failed, underpinned by a red box. Otherwise a timer is initiated that
+will take pictures at a certain interval which should accord with the hardware
+running the program. For the tested device, it is set to one second, although
+somewhat higher frame rates are possible. For each frame captured like this, a
 \code{PoseDifferenceEstimationOperation} (see below) is started. The captured
 frame and the first frame are processed and their relative pose computed. With
 the information computed during preprocessing, the necessary translation is
@@ -378,7 +388,7 @@ case the \code{PhotoChooserController}---can then put together an
 \end{wrapfigure}
 
 This controller must be passed a completed rephotograph in an \code{ImageData}
-object and displays the new image over the orginal.  With a slider, the new
+object and displays the new image over the original.  With a slider, the new
 image is horizontally clipped to some percentage of its width and can thus be
 dynamically unrolled over the original. Depending on a flag in the
 \code{ImageData} object, the rephoto passed to the controller will be saved. For
@@ -434,7 +444,7 @@ For the user interface, several custom views classes are implemented.
 \end{enumerate}
 
 Furthermore, two view hierarchies and the Storyboard belong to this module.  If
-a custom view must exhibit some particular behviour which necessitates custom
+a custom view must exhibit some particular behaviour which necessitates custom
 methods, creating classes is appropriate. For interface elements which contain a
 larger hierarchy of nested views without exposing any particular behaviour,
 specifying them in a visual manner is less involved. Such view hierarchies can
@@ -515,13 +525,12 @@ matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
          descriptor\_channels    & $3$ \\
          \bottomrule
       \end{tabular}
-      \caption[Parameters for AKAZE]{Parameters used for AKAZE (nubmer of octaves, detector response
+      \caption[Parameters for AKAZE]{Parameters used for AKAZE (number of octaves, detector response
       threshold, levels per octave, size of the descriptor and the number of
    channels, see \autoref{subsec:sift_akaze})}
       \label{tab:akaze_params}
    \end{center}
 \end{table}
-
 
 
 % \subsection{View Controllers}
@@ -564,10 +573,10 @@ summarised in \autoref{tab:categories}.
       UIBezierPath (Arrow)                & Adds a method to generate an arrow
       shape with a bézier curve. Used for displaying user guidance. \\
       UIImage (Zoom)                      & Adds a method to crop an image to a
-      rectangle centered on the image center, effectively zooming in. Used to
+      rectangle centred on the image centre, effectively zooming in. Used to
       allow the user to zoom the camera image. \\
-      UIScrollView (Center)               & Adds methods to center the content
-      and zoom to a particular size. Used fo display of the original image. \\
+      UIScrollView (Center)               & Adds methods to centre the content
+      and zoom to a particular size. Used for display of the original image. \\
       UIColor (CustomColors)              & Contrarily to Android, iOS possesses
       no Resources framework, so this Category declares some commonly used
       colours for the user interface \\
@@ -609,7 +618,7 @@ submitted to \code{NSOperationQueue}s and their
 concurrent operations. The application sets this limit to $3$ for an iPad
 (assuming $3$ cores like an iPad Air 2) and $2$ for iPhones, as the current
 devices possess two cores. Since there is no concurrent modification of data and
-tasks are started in slow intervals, explicit sychronisation is not needed.
+tasks are started in slow intervals, explicit synchronisation is not needed.
 
 A \code{PoseDifferenceEstimationOperation} is created with two images (one of
 which will always be the first frame), a scale parameter for downsampling and
@@ -626,7 +635,7 @@ If $\sub{T}{current,ref} = (x,y,z)$\footnote{One should note that this
    top left corner of an image, the positive $x$-axis is the image width, the
    positive $y$-axis the image height and points downward. In a more canonical
 representation, the $y$-value thus may be flipped}, then the vector direction
-in th XY-plane is given by 
+in the XY-plane is given by 
 \begin{equation*}
    \alpha = \atan2{(y,x)}.
 \end{equation*}
@@ -643,7 +652,7 @@ The completion block is called with $z$, $\alpha$ and $r$.
 
 \section{Hardware}
 
-The applicication has been developed on an iPad Air 2. This model features an
+The application has been developed on an iPad Air 2. This model features an
 A8X processor with three cores and $1.5$GHz per core\footnote{The number is not
 official and based on empirical tests \citep{a8x}}. The number of concurrently
 running \code{PoseDifferenceEstimationOperation}s is thus set to three which

@@ -19,13 +19,13 @@ idealised assumptions.
 \end{enumerate}
 
 \marginpar{Homogeneous vectors are
-the elements of projective geometry. They can be obtained from cartesian
+the elements of projective geometry. They can be obtained from Cartesian
 coordinates by appending a 1-element. All projective entities which differ only
 by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
 $\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
 points at infinity can be represented by vectors whose last coordinate is zero.}
 
-Given a camera $C$ whose center of projection is the origin and a point
+Given a camera $C$ whose centre of projection is the origin and a point
 $\mbf{X}$ in camera-centric coordinates, the central projection of
 $\mbf{X}$ onto $C$'s image plane is depicted in a side-view in
 \autoref{pinhole}.  The image plane is virtually moved to the front of the
@@ -59,13 +59,12 @@ This can be written with homogeneous coordinates as
          \end{array}
 \right)}}_{\text{Projection Matrix of $C$}} \left(\begin{array}{c} X \\ Y \\ Z \\ 1 \end{array}\right)
 \end{IEEEeqnarray}
-
 or in short
 \begin{equation}
    \mbf{x} \sim P\mbf{X}
 \end{equation}
 
-% If the unit of the coordinatesystem is chosen to be $f$, then the image plane is
+% If the unit of the coordinate system is chosen to be $f$, then the image plane is
 % $Z = f$ and 
 % \eqref{eq:projection} becomes
 % \begin{IEEEeqnarray}{rCl}
@@ -168,10 +167,10 @@ rectangular. In practice however, there are variances introduced by different
 causes such as imprecise manufacturing or physical impacts which may decentre
 the lens such that the principal point is no longer at the centre. 
 
-A further compilcation is introduced by the camera lens which will often have a
-non-negligible distortion, most prominently radial distorion as depicted in
+A further complication is introduced by the camera lens which will often have a
+non-negligible distortion, most prominently radial distortion as depicted in
 \autoref{distortion}, but the thin lens assumption precludes distorted images.  It
-can be modeled by the application of a distortion factor to the ideal
+can be modelled by the application of a distortion factor to the ideal
 undistorted image coordinates $(\tilde{x}, \tilde{y})$
 and thus removed to satisfy the thin lens assumption. Distorted an ideal image
 coordinates are related as
@@ -192,7 +191,7 @@ coordinates are related as
 \end{figure}
 
 where $L$ is a nonlinear function of the distance $r$ from the distortion
-center---usually coincident with the principal point. The function can be
+centre---usually coincident with the principal point. The function can be
 approximated as an exponential with a Taylor expansion
 \begin{equation}
    L(r) = 1 + \sum\limits_{i=1}^k \kappa_i r^i
@@ -207,7 +206,7 @@ methods exist \citep[e.g][]{zhang2000} but will not be examined here.
 \label{sec:epipolar}
 
 Epipolar geometry is the geometry which relates the image points in two views of
-the same scene. \autoref{epipolar} shows the basic setup. 
+the same scene. \autoref{epipolar} shows the basic set-up. 
 
 We consider a scene viewed by two cameras with optical centres $c_1$ and $c_2$,
 where $c_1$ defines the origin,
@@ -389,7 +388,7 @@ Direct methods such as the five-point or eight-point algorithms are frequently
 used in schemes like RANSAC, which make the estimation more robust to outliers
 (correspondences which are imprecise or incorrect). For a number of iterations,
 a hypothesis for $E$ is computed on a minimal number of correspondences and then
-evauluated on the whole data set. If the inliers in the data far outweigh the
+evaluated on the whole data set. If the inliers in the data far outweigh the
 outliers, it is probable that a noise-free subsample is selected. The best hypothesis is kept.
 The simplified algorithm is shown in \autoref{alg:ransac}
 \citep[c.f.][ch. 4.8]{h&z2004} and requires an error measure for $E$.
@@ -425,4 +424,4 @@ geometrical scenarios \citep[see][ch. 9.6]{h&z2004}. Only one of the
 solutions will place a point $\mbf{X}_2 = R\mbf{X}_1 + T$ in front of both
 cameras, the others cannot be realised in practice.  Triangulating one point
 from its corresponding image points in the two views will therefore reveal the
-one correct solution, with the translation scale unkown.
+one correct solution, with the translation scale unknown.

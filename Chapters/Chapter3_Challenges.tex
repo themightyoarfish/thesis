@@ -126,10 +126,10 @@ in a commercial application in this country.}.
 \subsection{SIFT \& AKAZE}\label{subsec:sift_akaze}
 
 The SIFT detector attempts to find keypoints by convolving an input image with
-gaussian kernels of successively larger variance, thus building a stack of image
+Gaussian kernels of successively larger variance, thus building a stack of image
 \emph{scales}. This process is repeated for several \emph{octaves}, each starting
 from a downsampled version of one of the blurred images from the previous scale
-octave. The resulting pyramid is termed \emph{scale space}.  From these gaussian
+octave. The resulting pyramid is termed \emph{scale space}.  From these Gaussian
 images, difference-of-gaussians are computed by subtracting neighbours in scale
 space. These difference images approximate an application of the Laplacian of
 Gaussian (a Laplacian filter with prior smoothing to remove noise) which computes
@@ -141,7 +141,7 @@ space. This search is conducted in all DOG images for all octaves which
 contributes to the scale invariance. After locating the keypoint with subpixel
 accuracy in the image, keypoints are discarded if their absolute DOG value is
 below some threshold as those are unstable and unlikely to be found under
-differenc conditions. Furthermore, the Hessian of the
+different conditions. Furthermore, the Hessian of the
 image (the matrix of second-order partial derivatives of the image intensity
 function) is computed to filter out keypoints on edges as they are not accurately
 localised and thus likewise unstable. Descriptors are computed by assigning a
@@ -165,7 +165,7 @@ space is built for AKAZE by means of fast explicit diffusion
 of the image gradient at a given point---meaning that it will be smaller for
 areas of strong change and larger for others. As in SIFT, the scale space
 consists of several octaves, each downsampled by two with respect to the
-previous octave. Within the ocataves, the images are called \emph{sublevels}.
+previous octave. Within the octaves, the images are called \emph{sublevels}.
 The Hessian matrix determinant is used to identify possible keypoints (in SIFT,
 this is used to filter out bad candidates),  but the candidate must be extremal
 compared to other keypoint candidates in its neighbourhood instead of
@@ -243,7 +243,7 @@ take two photographs of the scene with a reasonably wide baseline (about
 20\textdegree). One of them, termed \emph{first frame} is supposed to be
 taken from some distance from the original viewpoint, the \emph{second
 frame} should be the user's best eyeballed approximation of it. The wide
-baseline allows for a more reliable 3D-reconstrution of the scene used to
+baseline allows for a more reliable 3D-reconstruction of the scene used to
 tackle problems 2. and 3. 
 
 SIFT features are computed and matched between the two images.  Given these
@@ -255,7 +255,7 @@ of the historical camera by running an optimisation algorithm on an initial
 estimate for relative rotation and translation between first frame and reference
 image. Also sensor skew, focal length and principal point of the historical
 camera can be inferred this way (problem 5.).  The reference photograph
-is not needed anymore after this initial step, circumventing problem 4.  The
+is not needed any more after this initial step, circumventing problem 4.  The
 principal point's initial guess is found again with help of the user who
 identifies three sets of parallel lines in the historical image
 \citep[see][chapter 8.8]{h&z2004}.
@@ -313,7 +313,7 @@ if also the distance to the goal could be communicated.
 
 A key observation in this regard is that the actual scale of the translation is
 irrelevant, it is sufficient that there be a way to make the scale consistent
-accross iterations. That is, it is unnecessary to know whether the goal is a
+across iterations. That is, it is unnecessary to know whether the goal is a
 specific distance away, if one can ensure that the translations computed one
 after the other can be somehow meaningfully compared. For this, \citet{bae2010}
 observe that when triangulating 3D coordinates from corresponding points, their
