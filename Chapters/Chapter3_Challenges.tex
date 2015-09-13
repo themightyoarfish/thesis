@@ -246,17 +246,20 @@ frame} should be the user's best eyeballed approximation of it. The wide
 baseline allows for a more reliable 3D-reconstruction of the scene used to
 tackle problems 2. and 3. 
 
-SIFT features are computed and matched between the two images.  Given these
-correspondences, 3D coordinates of the points can be computed. A selection of
-these is reprojected into the second frame after which the user identifies six
-or more points in the historical photograph corresponding to these points in the
-second frame. This allows estimating extrinsic and intrinsic camera parameters
-of the historical camera by running an optimisation algorithm on an initial
-estimate for relative rotation and translation between first frame and reference
-image. Also sensor skew, focal length and principal point of the historical
-camera can be inferred this way (problem 5.).  The reference photograph
-is not needed any more after this initial step, circumventing problem 4.  The
-principal point's initial guess is found again with help of the user who
+\subsection*{Problems 4. \& 5. --- Missing calibration and visual differences}
+
+
+SIFT features are computed and matched between the first and second frames.
+Given these correspondences, 3D coordinates of the points can be computed. A
+selection of these is reprojected into the second frame after which the user
+identifies six or more points in the historical photograph corresponding to
+these points in the second frame. This allows estimating extrinsic and intrinsic
+camera parameters of the historical camera by running an optimisation algorithm
+on an initial estimate for relative rotation and translation between first frame
+and reference image. Also sensor skew, focal length and principal point of the
+historical camera can be inferred this way (problem 5.).  The reference
+photograph is not needed any more after this initial step, circumventing problem
+4.  The principal point's initial guess is found again with help of the user who
 identifies three sets of parallel lines in the historical image
 \citep[see][chapter 8.8]{h&z2004}.
 
@@ -264,17 +267,19 @@ In this work, this problem is neglected and it is assumed that the original
 image can be matched with current photographs, so it should not actually be
 historic. This restriction is envisioned to be removed in the future.
 
+\subsection*{Problem 3. --- Motion degeneracy}
+
 A this point the pose of the reference camera relative to the first
-camera $T_{\text ref,first},~R_{\text ref,first}$ is known. During the homing
+camera $T_{\text ref,first}$ and $R_{\text ref,first}$ is known. During the homing
 process, the current camera frame is compared to the first frame (not the
 reference frame, avoiding problem 3.), which avoids degeneracy due to the wide
-baseline. Thus one obtains $T_{\text current,first},~R_{\text current,first}$.
+baseline. Thus one obtains $T_{\text current,first}$ and $R_{\text current,first}$.
 Given the locations of the reference camera and the current frame's camera, each
 relative to the first frame, one can compute the location of the reference
 relative to the current frame and thus guide the user in the right
-direction\footnote{Depending on the coordinate system used and whether $R$ and
+direction.\footnote{Depending on the coordinate system used and whether $R$ and
    $T$ are given such that they transform points from frame $1$ to frame $2$ or vice
-versa, the equations will look different, as they do in \citep{bae2010}}.
+versa, the equations will look different, as they do in \citep{bae2010}}
 
 \begin{IEEEeqnarray}{rCllt}
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{X}{first} + \sub{T}{ref,first} & \hspace{1em}\\
@@ -294,6 +299,8 @@ and
    \sub{R}{ref,current} = \sub{R}{ref,first}\sub{R^T}{current,first}
 \end{equation}
 
+\subsection*{Problem 1. --- Complicated motion}
+
 During homing, Bae et. al warp the current camera frame according to the
 necessary rotation before being shown to the user, allowing them to focus only
 on the translation (problem 1.). This is possible since for rephotography
@@ -302,6 +309,8 @@ otherwise the warped image would be unusable. This kind of support is also
 disregarded in this work, as achieving the correct rotation with the help of an
 overlayed edge image is easy enough, as long as one is directed to the correct
 spot. Therefore, only the translation is communicated.
+
+\subsection*{Problem 2. --- Unknown scale}
 
 A remaining problem (2.) is that the scale of the necessary translation is
 unknown, so that only the direction can be determined. This poses the question
@@ -320,7 +329,11 @@ observe that when triangulating 3D coordinates from corresponding points, their
 computed distance from the camera (the first frame) is inversely proportional
 to the distance between the cameras. An intuition can be obtained from
 \autoref{fig:scale}. To measure the scale of the world, the application uses the
-matches between two images and computes 3D coordinates by triangulation. The
+matches between the first and current frames and computes 3D coordinates by
+triangulation.\footnote{The constraints $\mbf{x} = P\mbf{X}$ and $\mbf{x}^\prime =
+P^\prime\mbf{X}$ give rise to a linear equation system which can be solved for
+$\mbf{X}$ by singular value decomposition as used in the 8-point-algorithm in \autoref{sec:eight-point}.
+For details, see \citep[ch. 12.2]{h&z2004}.} The
 average distance of those points to the first frame's camera centre is computed
 and compared across iterations to make the scale consistent.
 
@@ -352,20 +365,18 @@ and compared across iterations to make the scale consistent.
    \label{fig:scale}}
 \end{figure}
 
-Therefore, in each iteration, the scale of the world is computed by
-triangulating correspondences between the first and current frames and computing
-the average distance to the first frame's camera. The scale is
-compared to the scale computed in the initial step for the first and second
-frames. Scaling the current translation vector by the ratio of the
-two scales makes the length consistent across iterations and decreasing with the
-distance to the goal. However, as this estimate relies on the intercept theorem,
-it is only valid as long as the user moves on a straight line between the
-initial estimate (position of the second frame) and the goal. Empirical
-analysis (see evaluation in \autoref{ch:evaluation}) demonstrates that strong
-movement along the optical axis will decrease the usefulness of the scale
-estimation. However, in reality this should be a minor problem, as the movement
-around a scene will be stronger than towards or away from it when
-rephotographing.
+
+The scale computed in the current iteration compared to the one computed in the
+initial step for the first and second frames. Scaling the current translation
+vector by the ratio of the two scales makes the length consistent across
+iterations and decreasing with the distance to the goal. However, as this
+estimate relies on the intercept theorem, it is only valid as long as the user
+moves on a straight line between the initial estimate (position of the second
+frame) and the goal. Empirical analysis (see evaluation in
+\autoref{ch:evaluation}) demonstrates that strong movement along the optical
+axis will decrease the usefulness of the scale estimation. However, in reality
+this should be a minor problem, as the movement around a scene will be stronger
+than towards or away from it when rephotographing.
 
 For a summary, \autoref{fig:procedure} shows the complete pipeline.
 \begin{figure}[h]

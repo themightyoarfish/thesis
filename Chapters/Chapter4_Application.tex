@@ -159,10 +159,11 @@ pointers for different platforms). The definition of this
 pointer-to-implementation type is placed in a second header file
 (\autoref{lst:pimpl2}) and is imported only by those clients which actually need
 to access the data, not only pass it on. This permits compiling only those
-source files as Objective-C++ which must deal with the actual OpenCV \code{Mat}.
-In principle, it would be possible to create methods in the wrapper class for
+source files as Objective-C++ that must deal with the actual OpenCV \code{Mat}.
+In principle it would be possible to create methods in the wrapper class for
 all uses of the C++ type throughout the program. However, this would waste the
-benefits which e.g. C++ operator overloading yields for readability. Since all
+benefits which e.g. C++ operator overloading yields for readability as all
+operations would have to be node with method calls. Since all
 image processing is done in C++ anyway, it is more economic to simply provide
 access to the wrapped data to those classes that need it.
 
@@ -256,7 +257,7 @@ the sequence of screens and controllers is shown in \autoref{fig:app_tree}.
 \newcommand*{\nofloat}[2]{
    \begin{center}
       \fbox{
-         \includegraphics[width=\textwidth]{#1}
+         \includegraphics[width=.8\textwidth]{#1}
       }
       \captionof{figure}{#2}
    \end{center}
@@ -397,7 +398,7 @@ manages communication with a lightweight SQL database. Since all photos are part
 of the user's photo library---there is no way to save assets locally for an
 application---they are saved as a tuple of two \code{NSURL}s. Both the built-in
 \code{UIImagePickerController} and the \code{ELCImagePickerController} return
-the URL of a selected image, so it can be used to map a rephoto on its original
+the URL of a selected image so it can be used to map a rephoto on its original
 or vice versa when it should be displayed.
 
 \nofloat{gfx/resultviewcontroller.PNG}{ResultViewController view layout}
@@ -425,7 +426,7 @@ relative pose estimation is described in detail.
 
 \subsection{User Interface}
 
-For the user interface, several custom views classes are implemented.
+For the user interface several custom views classes are implemented.
 \begin{enumerate}
    \item \code{ArrowView} A view which is backed by an \code{ArrowLayer} and
       allows displaying it as \code{CALayer}s cannot be shown without a
@@ -443,10 +444,11 @@ For the user interface, several custom views classes are implemented.
       display a before-after comparison of the original and repeat photographs.
 \end{enumerate}
 
-Furthermore, two view hierarchies and the Storyboard belong to this module.  If
+Furthermore, two view hierarchies and the storyboard belong to this module.  If
 a custom view must exhibit some particular behaviour which necessitates custom
 methods, creating classes is appropriate. For interface elements which contain a
-larger hierarchy of nested views without exposing any particular behaviour,
+larger hierarchy of nested views without exposing any particular behaviour
+besides what the contained views can do,
 specifying them in a visual manner is less involved. Such view hierarchies can
 be built visually as \code{XIB} files in an XML format. The
 \code{CameraOverlay} overlayed on the current camera picture is created like
@@ -471,7 +473,7 @@ account that compared to the computations performed on a computer (see
 \code{UIImage} format and OpenCV's \code{Mat} type.
 
 Internally, the method converts the images, uses OpenCV image processing
-functions to compute the pose difference and the average distance of the matched
+functions to compute the pose difference, and the average distance of the matched
 features to the first camera. The client is returned an \code{NSDictionary}
 containing the rotation, translation, average point distance, and---should the
 computation fail---an error code in which case all other values are invalid.
@@ -492,11 +494,12 @@ between e.g. repeating patterns in an image (windows, wall structure etc.) as
 for such a point the corresponding point is very ambiguous and its best matches
 will be similar in distance.
 
-The function then removes the image distortion on the sparse set of keypoints
-instead of the whole image for efficiency\footnote{Since undistortion requires
-   resampling of the image, it is better to find features beforehand as some
-information may be lost by interpolation.}. On the correspondences, RANSAC and
-the five-point algorithm are used to find the best-fitting essential matrix. 
+The function then removes the image distortion (see \autoref{subsec:intrinsics})
+on the sparse set of keypoints instead of the whole image for
+efficiency.\footnote{Since undistortion requires resampling of the image, it is
+   better to find features beforehand as some information may be lost by
+interpolation.} On the correspondences, RANSAC and the five-point algorithm are
+used to find the best-fitting essential matrix. 
 
 Once $E$ is fixed, the optimal triangulation method (see \citet[ch.  12.5.2]{h&z2004})
 is used to correct the corresponding points. Since one assumes
@@ -507,8 +510,8 @@ with $E$ and the points more accurate.
 The essential matrix is then decomposed into $R$ and $T$. The confidence
 threshold is set to $0.999$, a point is considered an outlier if its distance
 to its epipolar line exceeds $3$ pixels. A sanity check for a valid rotation
-matrix is performed by checking that $|\det R|\approx 1$\footnote{A rotation
-matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
+matrix is performed by checking that $|\det R|\approx 1$.\footnote{A rotation
+matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}
 
 \rowcolors{2}{gray!5}{white} % alternating colours
 \begin{table}
@@ -521,7 +524,7 @@ matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
          nOctaves                & $4$ \\
          threshold               & 0.001 \\
          nOctaveLayers/sublevels & $4$ \\
-         descriptor\_size        & $486$\tablefootnote{\texttt{AKAZEFeatures.cpp line $720$}} bits \\
+         descriptor\_size        & $486$ bits\tablefootnote{\texttt{AKAZEFeatures.cpp line $720$}} \\
          descriptor\_channels    & $3$ \\
          \bottomrule
       \end{tabular}
@@ -539,11 +542,11 @@ matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}.
 \subsection{Categories}
 
 Code reuse in Objective-C can be accomplished by inheritance as in other
-object-oriented languages, but often, when only one piece of behaviour is to be
+object-oriented languages. But when only one piece of behaviour is to be
 added, not overridden\footnote{The behaviour is undefined when a Category method
 has the same signature as one of the class \citep{customizing}}, the
-lightweight Category concept is employed. A Category on a class adds methods
-or properties to that class The header file declaring the category can be
+lightweight Category concept is often employed instead. A Category on a class adds methods
+or properties to that class. The header file declaring the category can be
 included by all clients that wish to make use of the modified or added
 behaviour, and left out by all others. This way, no unnecessarily large class
 hierarchy is created.
@@ -601,8 +604,8 @@ parallelisation.
 
 iOS supports different APIs for concurrency. Besides manual thread creation,
 Grand Central Dispatch allows to easily dispatch blocks (function objects) to
-different kinds of queues. The runtime automatically removes blocks from the
-queue for execution. Dispatch queues can be serial or concurrent and both
+different kinds of dispatch queues. The runtime automatically removes blocks
+from the queues for execution. Dispatch queues can be serial or concurrent and both
 synchronous and asynchronous dispatch is possible as well as synchronisation,
 but the API is not object-oriented and some useful features are unavailable. It
 is not possible to specify how many blocks should be executed in parallel or to
@@ -621,9 +624,9 @@ devices possess two cores. Since there is no concurrent modification of data and
 tasks are started in slow intervals, explicit synchronisation is not needed.
 
 A \code{PoseDifferenceEstimationOperation} is created with two images (one of
-which will always be the first frame), a scale parameter for downsampling and
+which will always be the first frame), a scale parameter for downsampling, and
 computed values for the relative pose between first and reference frames and the
-goal scale. Furthermore, a block is passed which can accept three \texttt{float}
+goal scale. Furthermore, a completion block is passed which can accept three \texttt{float}
 parameters---one for the direction in the XY-plane, one for the ratio between
 reference and current world scale, and one for the magnitude of translation along
 the optical axis. The intended purpose of this block is to drive some kind of

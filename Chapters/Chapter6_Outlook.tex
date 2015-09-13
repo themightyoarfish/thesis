@@ -11,7 +11,7 @@ have been taken, in order for the user to label correspondences. These
 correspondences can be used to fit a homography between the two views and warp
 one of them accordingly.
 
-\subsection*{Realtime User Guidance}
+\subsection*{Real-time User Guidance}
 
 A higher rate of processing could be achieved by also using fast feature
 tracking between robust pose estimations where the AKAZE detector is run. Bae et
@@ -26,7 +26,7 @@ different ones.
 \subsection*{Rephoto Postprocessing}
 
 It is probable that despite all assistance, the user will not manage to
-perfectly line up the original photgraph with the current camera picture.  In
+perfectly line up the original photograph with the current camera picture.  In
 order to better register the original and final images, the latter can be warped
 according to the last pose difference estimate. Bae et. al use an infinite
 homography. The infinite homography is the one between two views induced by the
@@ -39,8 +39,8 @@ can be warped with it by remapping the pixels.
 \subsection*{Other Visualisation Options}\label{subsec:alternative_visualisation}
 
 \citet{bae2010} explored different ways of guiding the user.  A side-by-side
-view or a linear blend with the origianl photo were less helpful than the arrow
-visualisation, but one could imagine to offer different kinds, such as a
+view or a linear blend with the original photo were less helpful than the arrow
+visualisation, but one could imagine offering different kinds, such as a
 three-dimensional arrow which shows both parts of the necessary translation. A
 more sophisticated idea is to project an approximation of the correct location
 into the camera picture, but this would require a more detailed reconstruction
@@ -77,7 +77,7 @@ following features.
        register the images.
 \end{itemize}
 
-The webservice supplies an application programming interface of which the mobile
+The web service supplies an application programming interface of which the mobile
 app should make use in the future. Rudimentary provisions have been made, but
 the authentication must be implemented and the HTTP request adapted to interface
 with the server.
@@ -85,7 +85,7 @@ with the server.
 \section{Usability \& Performance}
 
 The focus of this work was the theoretical exploration and evaluation of Bae et.
-al's ansatz to computational rephotography, not on the design of release-ready
+al's approach to computational rephotography, not on the design of release-ready
 application. As such, some functionality is missing and the app is not
 extensively tested. Notable shortcomings are
 \begin{enumerate}
@@ -105,7 +105,7 @@ extensively tested. Notable shortcomings are
       %    picks the first record for which the URL of the selected image matches so
       %    that only the first rephoto can be reviewed. Additional logic would
 
-   \item The upload of rephotos is experimentally hardcoded to work with a test
+   \item The upload of rephotos is experimentally hard-coded to work with a test
       server and is a blocking request.
 
    \item To enhance user experience, a choice between different overlays should
@@ -120,12 +120,12 @@ extensively tested. Notable shortcomings are
 
    \item The application requires iOS 8, but actually has few dependencies on
       it. The user interface employs \code{UIVisualEfffectView}s which were
-      previously unavailable. It should be fairly straighforward to create
+      previously unavailable. It should be fairly straightforward to create
       versions of the UI without these elements.
 
    \item The calibration data cannot currently be loaded from a user-supplied
-      file. Ideally, since not all deviced will have the exact same camera
-      chracteristics, each user would have to individually calibrate their
+      file. Ideally, since not all devices will have the exact same camera
+      characteristics, each user would have to individually calibrate their
       camera.
 
    \item The rephotography makes use of the simple
