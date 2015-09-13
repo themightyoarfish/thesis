@@ -7,15 +7,15 @@ computational approach developed by Bae, Durand and Argawala has been presented.
 Structure-from-motion is used to compute the motion between two captures of the
 same scene and infer the original viewpoint from the reference photo and two
 images of the current scene.  The theoretical and practical problems have been
-highlighted, including such subjects which do not allow determining the relative
+highlighted, including such scenes which do not allow determining the relative
 pose of cameras viewing them and how to acquire matching points in two images.
 Algorithms to solve the pose recovery problem have been introduced.
 
 Evaluation on two real scenes revealed that only two elements---the necessary
 camera rotation and the closeness to the goal---show promising estimates with
 this approach. The direction of necessary translation could not be recovered
-with this method, while the rotation and a distance measure can.  Since this
-aspect is not further documented in Bae et. al's work, it warrants furhter
+with this method.  Since this
+aspect is not further documented in Bae et. al's work, it warrants further
 investigation.
 
 An implementation of most of the ideas as a mobile application has been
@@ -25,7 +25,7 @@ instructs them two capture two images of the scene and then visualises an
 estimate for the necessary motion with two arrows, one for the sensor plane and
 one for the optical axis. Further assistance is provided by overlaying the edges
 of the original image over the current camera picture, making the application
-usefuls despite the failure of the arrow visualisation.  When the final image is
+useful despite the failure of the arrow visualisation.  When the final image is
 captured, the app lets the user review the rephoto. A slider is used to mask the
 old over the new image and the change of the scene can be dynamically
 visualised. Rephotos are saved to the gallery to be viewed at a later time.
