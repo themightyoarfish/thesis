@@ -18,12 +18,6 @@ idealised assumptions.
       the small aperture
 \end{enumerate}
 
-\footnote{Homogeneous vectors are
-the elements of projective geometry. They can be obtained from Cartesian
-coordinates by appending a 1-element. All projective entities which differ only
-by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
-$\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
-points at infinity can be represented by vectors whose last coordinate is zero.}
 
 Given a camera $C$ whose centre of projection is the origin and a point
 $\mbf{X}$ in camera-centric coordinates, the central projection of
@@ -43,7 +37,13 @@ f \frac{Y}{Z}, f\right)$ by use of the intercept theorem.%, with $\left(fX, fY\r
 \end{figure}
 
 
-When representing the points as homogeneous quantities, the central projection
+When representing the points as homogeneous\footnote{Homogeneous vectors are
+the elements of projective geometry. They can be obtained from Cartesian
+coordinates by appending a 1-element. All projective entities which differ only
+by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
+$\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
+points at infinity can be represented by vectors whose last coordinate is zero.} 
+quantities, the central projection
 can be expressed by a matrix multiplication. 
 This can be written with homogeneous coordinates as
 \begin{IEEEeqnarray}{rCl} \label{eq:projection}
