@@ -1,21 +1,20 @@
 \chapter{Camera Geometry}
 
 This chapter will introduce the geometry of image projection, largely following
-\citep[chapters 6,7]{h&z2004} and the geometry of two views (the epipolar
-geometry, \citet[ch. 5.1]{ma2003}) and
-how it can be used to recover relative camera position from two images of the
-same scene. 
+\citep[chapters 6,7]{h&z2004}, the geometry of two views (the epipolar geometry,
+\citet[ch. 5.1]{ma2003}) and how it can be used to recover relative camera
+position from two images of the same scene. 
 
 \section{Camera Models}
 
-The camera model used is the ideal pinhole camera model which postulates several
-idealised assumptions.
+The camera model canonically used in camera geometry is the ideal pinhole camera
+model which postulates several idealised assumptions.
 \begin{enumerate}
-   \item The aperture size is infinitely small
-   \item There are no lens effects (\emph{thin lens} assumption)
-   \item The angle of view is arbitrarily large
+   \item The aperture size is infinitely small.
+   \item There are no lens effects (\emph{thin lens} assumption).
+   \item The angle of view is arbitrarily large.
    \item All world points projected onto the image plane are in focus, owing to
-      the small aperture
+      the small aperture.
 \end{enumerate}
 
 
@@ -38,25 +37,25 @@ f \frac{Y}{Z}, f\right)$ by use of the intercept theorem.%, with $\left(fX, fY\r
 
 
 When representing the points as homogeneous\footnote{Homogeneous vectors are
-the elements of projective geometry. They can be obtained from Cartesian
-coordinates by appending a 1-element. All projective entities which differ only
-by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
-$\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
+   the elements of projective geometry. They can be obtained from Cartesian
+   coordinates by appending a 1-element. All projective entities which differ only
+   by a scalar factor are equivalent, one writes $\mbf{x} \sim \mbf{y}$ if
+   $\mbf{x} = \lambda\mbf{y}, \lambda \neq 0$. This has the added effect that
 points at infinity can be represented by vectors whose last coordinate is zero.} 
 quantities, the central projection
 can be expressed by a matrix multiplication. 
 This can be written with homogeneous coordinates as
 \begin{IEEEeqnarray}{rCl} \label{eq:projection}
-      \left(
-         \begin{array}{c}
-            fX \\ fY \\ Z
-         \end{array}
-      \right) & = & \underbrace{\addstackgap[6pt]{\left(
-         \begin{array}{cccc}
-            f & 0 & 0 & 0 \\
-            0 & f & 0 & 0 \\
-            0 & 0 & 1 & 0
-         \end{array}
+   \left(
+      \begin{array}{c}
+         fX \\ fY \\ Z
+      \end{array}
+   \right) & = & \underbrace{\addstackgap[6pt]{\left(
+      \begin{array}{cccc}
+         f & 0 & 0 & 0 \\
+         0 & f & 0 & 0 \\
+         0 & 0 & 1 & 0
+      \end{array}
 \right)}}_{\text{Projection Matrix of $C$}} \left(\begin{array}{c} X \\ Y \\ Z \\ 1 \end{array}\right)
 \end{IEEEeqnarray}
 or in short
@@ -91,11 +90,11 @@ and different axes, so that a coordinate transform must be applied to $\mbf{X}$
 before the projection. 
 
 Let $R \in \mathbb{R}^{3\times3}$ be a rotation matrix
-giving the camera's rotation relative to the world frame and $t \in
+giving the camera's rotation relative to the world frame and $T \in
 \mathbb{R}^{3\times1}$ its translation such that
 
 \begin{equation}
-   \mbf{X}_{\text{cam}} = R \mbf{X}_{\text{world}} + t
+   \mbf{X}_{\text{cam}} = R \mbf{X}_{\text{world}} + T
 \end{equation}
 
 Then the projection of a point $\mbf{X}$
@@ -107,7 +106,7 @@ in world coordinates onto the image plane becomes
    f & 0 & 0 \\
    0 & f & 0 \\
    0 & 0 & 1
-   \end{array}\right) \left[R \mid t\right] \mbf{X}
+   \end{array}\right) \left[R \mid T\right] \mbf{X}
 \end{IEEEeqnarray}
 
 \subsection{Camera Intrinsics}
@@ -119,7 +118,7 @@ were in \emph{normalised} image coordinates. In particular, the principal
 point---the intersection of the image plane with the optical axis---was assumed
 to be $(0,0)$. But generally, image coordinates are expressed in pixels relative
 to the upper left corner of the sensor. To convert between normalised and pixel
-coordinates, the camera's five intrinsic parameters and can be written in matrix
+coordinates, the camera's five intrinsic parameters can be written in matrix
 form and premultiplied in \eqref{eq:projection_rt} as
 \begin{IEEEeqnarray}{rCl}
    \mbf{x} & = & \left(
@@ -129,17 +128,17 @@ form and premultiplied in \eqref{eq:projection_rt} as
       0   &       & 1
    \end{array} 
 \right) \left(\begin{array}{ccc}
-   f & 0 & 0 \\
-   0 & f & 0 \\
-   0 & 0 & 1
-\end{array}\right) \left[R \mid t\right] \mbf{X}
+      f & 0 & 0 \\
+      0 & f & 0 \\
+      0 & 0 & 1
+\end{array}\right) \left[R \mid T\right] \mbf{X}
 \end{IEEEeqnarray}
 where $s_x$ and $s_y$ are the focal lengths in $x$- and $y$-directions expressed
 in pixel units per world unit (e.g. cm; $s_x$ and $s_y$ are not necessarily identical, if the sensor has
 non-square pixels), $s$ the sensor skew (the pixels may not be rectangular;
 their edges may not be perpendicular) which is usually zero, and the coordinates
 of the principal point $(c_x,c_y)$ with respect to the origin of the image plane
-which usually placed at the upper left corner.
+which is usually placed at the upper left corner.
 The intrinsic camera parameters are assembled in
 \begin{IEEEeqnarray}{rCl}
    K & = & \left(\begin{array}{ccc}
@@ -148,7 +147,7 @@ The intrinsic camera parameters are assembled in
    0 & 0 & 1
 \end{array}\right)  
 \end{IEEEeqnarray}
-are therefore essential to
+and are therefore essential to
 relate world points to image points which will be important for this
 application. The normalised coordinates $\hat{\mbf{x}}$ for a pixel coordinate
 $\mbf{x}$ can be computed as
@@ -160,7 +159,8 @@ image coordinates independent of the camera's internal characteristics.
 
 In theory, these parameters could be obtained from the camera's
 vendor who knows the precise manufacturing specifications. In practice, only the
-focal lengths $f_x, f_y$ are known, in most cases only one with the assumption
+focal lengths $f_x, f_y$ are known, in most cases only one of them with the
+hopefully correct assumption
 of square pixels. Usually, the principal
 point is assumed to be at the sensor centre and the pixels are assumed to be
 rectangular. In practice however, there are variances introduced by different
@@ -172,7 +172,7 @@ non-negligible distortion, most prominently radial distortion as depicted in
 \autoref{distortion}, but the thin lens assumption precludes distorted images.  It
 can be modelled by the application of a distortion factor to the ideal
 undistorted image coordinates $(\tilde{x}, \tilde{y})$
-and thus removed to satisfy the thin lens assumption. Distorted an ideal image
+and thus removed to satisfy the thin lens assumption. Distorted and ideal image
 coordinates are related as
 \begin{equation}
    \begin{pmatrix}
@@ -186,7 +186,7 @@ coordinates are related as
    {\centering      
       \input{gfx/distortion.tex}
       \caption[Radial distortion]{Radially distorted image on the left, the corrected image on the
-   right.}
+      right.}
    \label{distortion}}
 \end{figure}
 
@@ -212,13 +212,13 @@ We consider a scene viewed by two cameras with optical centres $c_1$ and $c_2$,
 where $c_1$ defines the origin,
 world points $\mbf{X}_i\in\mathbb{R}^3$, where the subscript denotes the coordinate
 frame---the first camera, arbitrarily chosen to be the left one, or the second
-camera---and homogeneous image points $\mbf{x}_i$ which are the projections of $\mbf{X}_i$
+camera---and homogeneous image points $\mbf{x}_i$. Those are the projections of $\mbf{X}_i$
 onto the image planes and thus correspond to the same world point. The cameras
 are related by a rigid body transform $(R,T)$, where $R$ is a $3\times3$
 rotation matrix and $T$ the translation between the camera centres. Throughout
 this work, the direction of coordinate frame transformation will be such that
 \begin{equation}\label{eq:camera_transform}
-   \mbf{X}_2 = R\mbf{X}_1 + T.
+   \mbf{X}_2 = R\mbf{X}_1 + T
 \end{equation}
 
 It is obvious that the following relation holds,
@@ -232,8 +232,8 @@ point.
    {\centering      
       \input{gfx/epipolar.tex}
       \caption[Basic epipolar geometry]{Basic epipolar geometry with camera centres $c_1$, $c_2$, image
-      points $\mbf{x}_1$, $\mbf{x}_2$, a world point $\mbf{X}_1$, epipoles
-   $e_1$, $e_2$ and epipolar lines $l_1$, $l_2$}
+         points $\mbf{x}_1$, $\mbf{x}_2$, a world point $\mbf{X}_1$, epipoles
+      $e_1$, $e_2$ and epipolar lines $l_1$, $l_2$}
    \label{epipolar}}
 \end{figure}
 
@@ -270,7 +270,7 @@ dimension---the epipolar line of $\mbf{x}_1$ in the second camera's image plane.
 The camera centres and the world point define an epipolar plane. The
 backprojection of $\mbf{x}_1$ is the ray through $\mbf{x}_1$ and the optical
 centre $c_1$. All points on this ray are mapped to the same point on the image
-plane of $c_2$. Depending on how far away the world point $\mbf{X}_1$ is from $c_1$, its
+plane of $c_1$. Depending on how far away the world point $\mbf{X}_1$ is from $c_1$, its
 image on the second camera's image plane will vary---but it will be on the
 intersection of the image plane and the epipolar plane, the epipolar line of
 $\mbf{x}_1$. The line $l_2$ may be identified with its coimage (the orthogonal
@@ -306,8 +306,8 @@ the former will be presented below.
 \subsection{The 8-Point Algorithm}\label{sec:eight-point}
 
 The essential matrix has nine elements, but since all image coordinates are
-projective quantities, the set of all essential matrices differing by a constant
-factor is equivalent so that one degree of freedom is removed and at most eight
+projective quantities, all essential matrices differing by a constant
+factor are equivalent so that one degree of freedom is removed and at most eight
 remain. If one were to formulate constraints on the elements as a system of
 linear equations, eight of those should be sufficient to uniquely determine an
 essential matrix. An improvement suggested in \citep{hartley1997} is the
@@ -336,9 +336,9 @@ Let $\mbf{e}$ denote the vector of $E$'s entries in row-major order, then
 If $n$ correspondences are given, they each contribute one row to
 \begin{IEEEeqnarray}{rCl}
    A\mbf{e} & = & \left[ \begin{array}{ccccccccc}
-      x_2^1 x_1^1 & x_2^1 y_1^1 & x_2^1 & y_2^1 x_1^1 & y_2^1 y_1^1 & y_2^1 & x_1^1 & y_1^1 & 1 \\
+   x_2^1 x_1^1 & x_2^1 y_1^1 & x_2^1 & y_2^1 x_1^1 & y_2^1 y_1^1 & y_2^1 & x_1^1 & y_1^1 & 1 \\
    \vdots & & & & & & & & \vdots \\
-      x_2^n x_1^n & x_2^n y_1^n & x_2^n & y_2^n x_1^n & y_2^n y_1^n & y_2^n & x_1^n & y_1^n & 1
+   x_2^n x_1^n & x_2^n y_1^n & x_2^n & y_2^n x_1^n & y_2^n y_1^n & y_2^n & x_1^n & y_1^n & 1
 \end{array} \right] \mbf{e} = 0 \nonumber\\*\label{eq:stacked_essential}
 \end{IEEEeqnarray}
 
@@ -368,10 +368,10 @@ form from \citep{hartley1997} (not related to \emph{normalised image
 coordinates}).
 
 It has been noted above that $E$ can have at most eight degrees of freedom. In
-reality, it has only five, as rotation and translation have three degrees of
+reality it has only five, as rotation and translation have three degrees of
 freedom each, and one is lost due to the indeterminable scale. In theory five
 constraints from five pairs of image points thus are sufficient for finding $E$.
-A solution was put forth by \citet{nister2004}, improved in
+A solution was put forth by \citet{nister2004} and improved in
 \citep{stewenius-engels-nister2006}. The algorithm is nonlinear and
 thus much less easily understood and implemented, involving computing the roots
 of a ten degree polynomial, and requires only five points, but can also be
@@ -381,7 +381,7 @@ presence of noise compares favourably to other
 direct methods requiring six \citep{pizarro2003}, seven or eight points.
 
 Many other methods exist. Some---like the algorithms described above---find a
-globally optimal solution in closed form---, while others employ heuristic
+globally optimal solution in closed form while others employ heuristic
 methods to iteratively approach a local optimum. A review is given in \citep{zhang1998}.
 
 Direct methods such as the five-point or eight-point algorithms are frequently
@@ -394,7 +394,7 @@ The simplified algorithm is shown in \autoref{alg:ransac}
 \citep[c.f.][ch. 4.8]{h&z2004} and requires an error measure for $E$.
 
 
-   \SetAlCapSkip{1ex}
+\SetAlCapSkip{1ex}
 \begin{algorithm}
    \caption{Simplified RANSAC scheme for essential matrix estimation}
    \label{alg:ransac}

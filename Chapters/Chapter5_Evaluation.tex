@@ -16,7 +16,8 @@ sufficiently accurate to evaluate the procedure. For each image pair, 19--27
 correspondences have been labelled, of which the majority is used for pose
 recovery. For pose recovery, RANSAC is used in conjunction with the five-point
 solver, a point is considered an inlier for a given essential matrix if its
-distance to its epipolar line is no more than three pixels. These parameters
+distance to its epipolar line is no more than three pixels, the confidence
+threshold is $0.999$. These parameters
 lead to the majority of points being inliers of the pose recovery, the few
 outliers can be explained by imprecise labelling.
 

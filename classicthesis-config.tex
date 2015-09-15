@@ -81,7 +81,7 @@
    positioning,
    spy
 } 
-\usepackage[english]{babel} 
+\usepackage[english,american]{babel} 
 \usepackage{setspace} % for adjustment of line spacing
 \usepackage[lined,boxed,linesnumbered]{algorithm2e}
 % for programmablaufplans
@@ -350,13 +350,14 @@ iOS\xspace}
 \@ifpackageloaded{babel}%
 {%
    \addto\extrasamerican{%
+      \renewcommand*{\algorithmautorefname}{Algorithm}%
       \renewcommand*{\figureautorefname}{Figure}%
       \renewcommand*{\tableautorefname}{Table}%
       \renewcommand*{\partautorefname}{Part}%
       \renewcommand*{\chapterautorefname}{Chapter}%
       \renewcommand*{\sectionautorefname}{Section}%
-      \renewcommand*{\subsectionautorefname}{Section}%
-      \renewcommand*{\subsubsectionautorefname}{Section}% 	
+      \renewcommand*{\subsectionautorefname}{Subsection}%
+      \renewcommand*{\subsubsectionautorefname}{Subsubsection}% 	
    }%
    \addto\extrasngerman{% 
       \renewcommand*{\paragraphautorefname}{Absatz}%
@@ -418,4 +419,3 @@ iOS\xspace}
 
 %% Should be loaded after classicthesis
 \usepackage{ebgaramond}
-

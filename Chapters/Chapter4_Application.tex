@@ -405,8 +405,7 @@ or vice versa when it should be displayed.
 
 On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
 lets the user upload a rephoto to an experimental test server for display, but the
-functionality is only rudimentary and requires the server to be running in the
-same local network with a known IP address.
+functionality is only rudimentary and requires the server to be running with a known IP address.
 
 \subsection{ELCImagePickerController}
 
@@ -499,7 +498,9 @@ on the sparse set of keypoints instead of the whole image for
 efficiency.\footnote{Since undistortion requires resampling of the image, it is
    better to find features beforehand as some information may be lost by
 interpolation.} On the correspondences, RANSAC and the five-point algorithm are
-used to find the best-fitting essential matrix. 
+used to find the best-fitting essential matrix. The confidence
+threshold is set to $0.999$, a point is considered an outlier if its distance
+to its epipolar line exceeds $3$ pixels.  
 
 Once $E$ is fixed, the optimal triangulation method (see \citet[ch.  12.5.2]{h&z2004})
 is used to correct the corresponding points. Since one assumes
@@ -507,9 +508,7 @@ the computed essential matrix is correct, the information can be used to
 refine the position of corresponding points. This should make pose recovery
 with $E$ and the points more accurate.
 
-The essential matrix is then decomposed into $R$ and $T$. The confidence
-threshold is set to $0.999$, a point is considered an outlier if its distance
-to its epipolar line exceeds $3$ pixels. A sanity check for a valid rotation
+The essential matrix is then decomposed into $R$ and $T$. A sanity check for a valid rotation
 matrix is performed by checking that $|\det R|\approx 1$.\footnote{A rotation
 matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}
 
@@ -642,7 +641,7 @@ in the XY-plane is given by
 \begin{equation*}
    \alpha = \atan2{(y,x)}.
 \end{equation*}
-Let $d_0$ be the average distance of points to the first frame's camera,
+Let $d_0$ be the average distance of scene points to the first frame's camera,
 computed with the second frame, and $d_i$ the same with the current frame. The
 ratio of scales $r=\frac{d_i}{d_0}$ is used to scale the translation vector. $d_i$
 increases with decreasing distance to the first frame (see \autoref{fig:scale}),
@@ -656,8 +655,8 @@ The completion block is called with $z$, $\alpha$ and $r$.
 \section{Hardware}
 
 The application has been developed on an iPad Air 2. This model features an
-A8X processor with three cores and $1.5$GHz per core\footnote{The number is not
-official and based on empirical tests \citep{a8x}}. The number of concurrently
+A8X processor with three cores and $1.5$GHz per core.\footnote{The number is not
+official and based on empirical tests \citep{a8x}} The number of concurrently
 running \code{PoseDifferenceEstimationOperation}s is thus set to three which
 enables frequent updates of the visualisation. Images with $1077\times 807$
 (full resolution with a $0.33$ scale factor) take roughly $0.7$ seconds to

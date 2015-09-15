@@ -119,9 +119,12 @@ being much faster to compute and compare. Another recent development by
 previously proposed KAZE detector \citep{alcantarilla2012}, also using binary
 strings to describe feature points. This detector has been chosen for this work
 as it offers significant speed improvements over SIFT or SURF while sacrificing
-no quality in the tested scenarios (see \autoref{ch:evaluation})\footnote{SIFT
+no quality in the tested scenarios (see \autoref{ch:evaluation}).\footnote{SIFT
 and SURF are both protected by US patents and cannot be used without a license
-in a commercial application in this country.}.
+in a commercial application in this country.}
+
+SIFT is the feature detector used by \citet{bae2010} which is why it and AKAZE
+will be intriduced and compared briefly here.
 
 \subsection{SIFT \& AKAZE}\label{subsec:sift_akaze}
 
@@ -203,7 +206,7 @@ determine if the user is close to the desired viewpoint and whether or not they
 have come closer or moved further away over the iterations.  The issue of
 unknown scale alone would not be problematic, but an iterative procedure
 requires to maintain a consistent scale for all estimates of necessary motion.
-If at one point, the estimate says ``go right'' and after doing so, again ``go
+If at one point the estimate says ``go right'' and after doing so, again ``go
 right'', it is impossible to say whether the camera has moved into the right
 direction or the opposite one.
 
@@ -284,9 +287,10 @@ versa, the equations will look different, as they do in \citep{bae2010}}
 \begin{IEEEeqnarray}{rCllt}
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{X}{first} + \sub{T}{ref,first} & \hspace{1em}\\
    \sub{X}{current}  & =  & \sub{R}{current,first}\sub{X}{first} + \sub{T}{current,first}\\[\baselineskip]
-   \sub{X}{first}    & =  & \sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) && (1, $R$ orthogonal)\IEEEnonumber\\
+   \sub{X}{first}    & =  & \sub{R^T}{current,first}\left(\sub{X}{current} -
+\sub{T}{current,first}\right) && (3.2, $R$ orthogonal)\IEEEnonumber\\
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\left(\sub{X}{current} - \sub{T}{current,first}\right) \\
-                     &    & + \sub{T}{ref,first} & & (2, substitute 1)\IEEEnonumber\\
+                     &    & + \sub{T}{ref,first} & & (3.1, substitute 3.2)\IEEEnonumber\\
    \sub{X}{ref}      & =  & \sub{R}{ref,first}\sub{R^T}{current,first}\sub{X}{current} \IEEEnonumber\\
                      &    & - \sub{R}{ref,first}\sub{R^T}{current,first}\sub{T}{current,first} + \sub{T}{ref,first}
 \end{IEEEeqnarray}
