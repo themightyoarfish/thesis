@@ -20,7 +20,7 @@ Some bugs in the SDK have been discovered in the making of the software.
    \item It is not feasible to support background and foreground transitions
       while using a timed capture on \code{UIImagePickerController} as has been
       done here. If the app becomes inactive while an image is being captured,
-      it appears as the data is released and therefore unavailable when
+      it appears as if sometimes the data is released and therefore unavailable when
       transitioning back to the foreground. This results in an exception being
       thrown, which the developer can do nothing about, except avoid
       \code{UIImagePickerController} for timed capture. The bug ID is 19953748
