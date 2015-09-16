@@ -208,7 +208,7 @@ unknown scale alone would not be problematic, but an iterative procedure
 requires to maintain a consistent scale for all estimates of necessary motion.
 If at one point the estimate says ``go right'' and after doing so, again ``go
 right'', it is impossible to say whether the camera has moved into the right
-direction or the opposite one.
+direction or the opposite one and thus whether the goal was approached.
 
 \section{Practical Problems}
 \label{sec:app_challenges}
@@ -250,7 +250,6 @@ baseline allows for a more reliable 3D-reconstruction of the scene used to
 tackle problems 2. and 3. 
 
 \subsection*{Problems 4. \& 5. --- Missing calibration and visual differences}
-
 
 SIFT features are computed and matched between the first and second frames.
 Given these correspondences, 3D coordinates of the points can be computed. A
@@ -314,7 +313,7 @@ disregarded in this work, as achieving the correct rotation with the help of an
 overlayed edge image is easy enough, as long as one is directed to the correct
 spot. Therefore, only the translation is communicated.
 
-\subsection*{Problem 2. --- Unknown scale}
+\subsection*{Problem 2. --- Unknown scale}\label{subsec:unknown_scale}
 
 A remaining problem (2.) is that the scale of the necessary translation is
 unknown, so that only the direction can be determined. This poses the question

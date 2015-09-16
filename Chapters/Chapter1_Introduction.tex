@@ -157,7 +157,9 @@ Firstly, it is assumed that the ``historic'' photograph is captured with the
 same camera as the one running the application and that the camera is calibrated.
 Secondly, no strong visual differences between the reference and current scenes
 are assumed so that the reference image is accessible to the same feature
-detection algorithm without the user manually labelling correspondences. 
+detection algorithm without the user manually labelling correspondences. This
+entails that the procedure will not work on historic images, but the extension
+is relatively straightforward.
 
 The application targets iOS 8 and current hardware, as image processing is
 computationally intense, and has been tested on an iPad Air 2.

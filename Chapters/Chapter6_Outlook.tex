@@ -29,12 +29,13 @@ It is probable that despite all assistance, the user will not manage to
 perfectly line up the original photograph with the current camera picture.  In
 order to better register the original and final images, the latter can be warped
 according to the last pose difference estimate. Bae et. al use an infinite
-homography. The infinite homography is the one between two views induced by the
-plane at infinity, i.e.  the set of all projective points $(x,y,z,0)$ and maps
-vanishing points in one view onto vanishing points in the other. Details can be
-found in \citep[ch. 13.4]{h&z2004}.  Given the calibration matrices of both
-views and their relative rotation, the homography can be computed and one image
-can be warped with it by remapping the pixels.
+homography during the homing process, but the same method can be used after the
+final capture. The infinite homography is the one between two views induced by
+the plane at infinity, i.e.  the set of all projective points $(x,y,z,0)$ and
+maps vanishing points in one view onto vanishing points in the other. Details
+can be found in \citep[ch. 13.4]{h&z2004}.  Given the calibration matrices of
+both views and their relative rotation, the homography can be computed and one
+image can be warped with it by remapping the pixels.
 
 \subsection*{Other Visualisation Options}\label{subsec:alternative_visualisation}
 

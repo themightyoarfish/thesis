@@ -229,7 +229,8 @@ $(0,0,0)$.
 % With these estimates, the user will be sent into an entirely wrong direction.
 It is obvious that the estimates are completely useless, the difference exceeds
 $80$ degrees in all cases. With these estimates, the user will be sent into an
-entirely wrong direction.
+entirely wrong direction. For an explanation of this failure refer to
+\autoref{sec:eval_summary}.
 
 \FloatBarrier
 
@@ -237,9 +238,10 @@ entirely wrong direction.
 
 Seven images (including the reference photo) have been taken with movement to
 the right and backwards as well as forwards. The motif was always centred in the
-frame, thus there is prominent rotation around the $y$-Axis. 
+frame, thus there is prominent rotation around the $y$-axis. 
 The schematic positions for the seven manor captures (including reference
-photograph) are shown in \autoref{fig:manor_scene}. In contrast to the
+photograph) are shown in \autoref{fig:manor_scene} (note that here the image
+number decreases with distance from the first frame). In contrast to the
 train station set, there is more significant movement along the optical axis.
 
 The ground truth data is summarised in \autoref{tab:manor_data}.
@@ -277,16 +279,19 @@ The ground truth data is summarised in \autoref{tab:manor_data}.
 
 \subsection{Scale Estimation}
 
-The evolution of the translation scale is shown in \autoref{fig:manor_dist_ratio}.
-It is apparent that the movement purely along the optical axis between images
-$2$ and $3$ is a problem. As the real distance to the target marginally
-increases, so should the ratio, but it decreases instead. Frames $5$ and $6$
-illustrate a problem with the scale estimation procedure itself. For it to work
-precisely, only movement along the line between first and reference frames is
-assumed, as a decreased distance to the first frame is interpreted as an
-increased distance to the reference frame, which is not necessarily the case as
-shown here. Even the ``ground truth'' computed from actual camera distances is thus
-of limited use.
+The evolution of the translation scale is shown in
+\autoref{fig:manor_dist_ratio}.  It is apparent that the movement purely along
+the optical axis between images $2$ and $3$ is a problem. As the real distance
+to the target marginally increases, so should the ratio, but it decreases
+instead. Frames $5$ and $6$ illustrate a problem with the scale estimation
+procedure itself. For it to work precisely, only movement along the line between
+first and reference frames is assumed, as a decreased distance to the first
+frame is interpreted as an increased distance to the reference frame, which is
+not necessarily the case as shown here (see \autoref{subsec:unknown_scale}).
+Even the ``ground truth'' computed from actual camera distances is thus of
+limited use. In reality, the assumption is justified that the user will move
+between first, second and reference locations in a more or less straight line,
+with more movement to the sides than front or back.
 
 For the AKAZE descriptor, only the full resolution comes reasonably close in
 magnitude and somewhat in slope. Wit SIFT, the slope is more accurately
@@ -325,27 +330,6 @@ outperforms SIFT with default parameters (see \autoref{tab:akaze_params}). On bo
 half scale, there is negligible deviation from the truth, but on quarter scale,
 there are more than $5$ degrees of difference and a complete failure for frame
 $3$ (the direction is wrong, not only the magnitude).
-
-\rowcolors{2}{gray!5}{white} % alternating colours
-\begin{table}
-   \begin{center}
-      \begin{tabular}{>{\ttfamily}ll}
-         \rowcolor{white}
-         \toprule
-         \rmfamily Parameter     & Value \\
-         \midrule
-         nOctaveLayers/Sublevels & $3$ \\
-         contrastThreshold       & 0.04 \\
-         edgeThreshold           & $10$ \\
-         sigma                   & $1.6$ \\
-         \bottomrule
-      \end{tabular}
-      \caption[Parameters used for SIFT]{Parameters used for SIFT (number of octaves, number of sublevels
-      per octave, detector response threshold, edge threshold for filtering
-   edges, standard deviation of the Gaussian for the initial image)}
-      \label{tab:sift_params}
-   \end{center}
-\end{table}
 
 With default parameters (\autoref{tab:sift_params}), SIFT compares much worse,
 particularly on full resolution where it grossly overestimates the necessary
@@ -428,7 +412,7 @@ SIFT displaying a larger variance than AKAZE, but neither are useful.
 
 \FloatBarrier
 
-\section{Summary}
+\section{Summary}\label{sec:eval_summary}
 
 Of the three pieces of information needed for user guidance, only the most
 important one---the direction of translation---cannot be recovered to any
@@ -443,11 +427,11 @@ computed as in \eqref{eq:necessary_trans}
 \end{equation*}
 then both summands will have mostly the same orientation which will consequently
 be zeroed out by the sign inversion of the first one. If the resulting vector is
-then normalised to unit length, the other two dimensions will have nonzero
-values determined by small differences in their orientation and thus by noise
-and point into a completely wrong direction. Applying scale factors before the
-addition did not improve the situation. It is evident that this solution cannot
-work for movement in only on principal direction.
+then normalised to unit length to be scaled with the appropriate factor, the
+other two dimensions will have nonzero values. These are determined by small
+differences in the vectors' orientation and thus by noise and hence the sum will
+point into a completely wrong direction. It is evident that this solution cannot
+work for movement in only one principal direction.
 
 It could also be demonstrated that AKAZE features yield the more accurate
 results, except on the smallest scale, where SIFT compares somewhat favourably.
@@ -455,6 +439,6 @@ The smallest scale however also leads to general deterioration in quality,
 suggesting that a scale factor between $2$ and $4$ may be required to combine accuracy
 with speed of processing.
 
-Improvements for all estimates could possibly be improved by fine-tuning the
+Improvements for all estimates could possibly be achieved by fine-tuning the
 parameters of both descriptors to adapt them to scenes with buildings, which has
 not been tried here.

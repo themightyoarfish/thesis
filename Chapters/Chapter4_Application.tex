@@ -383,10 +383,6 @@ case the \code{PhotoChooserController}---can then put together an
 
 \subsection{ResultViewController}
 
-\setlength\intextsep{0pt}
-\begin{wrapfigure}{r}{.25\textwidth}
-   \includegraphics[width=.2\textwidth]{gfx/image_data.pdf}
-\end{wrapfigure}
 
 This controller must be passed a completed rephotograph in an \code{ImageData}
 object and displays the new image over the original.  With a slider, the new
@@ -403,6 +399,10 @@ or vice versa when it should be displayed.
 
 \nofloat{gfx/resultviewcontroller.PNG}{ResultViewController view layout}
 
+\setlength\intextsep{0pt}
+\begin{wrapfigure}{r}{.25\textwidth}
+   \includegraphics[width=.2\textwidth]{gfx/image_data.pdf}
+\end{wrapfigure}
 On the top right, a share button (\raisebox{-3pt}{\includegraphics[width=.8em]{gfx/share.png}})
 lets the user upload a rephoto to an experimental test server for display, but the
 functionality is only rudimentary and requires the server to be running with a known IP address.
@@ -534,9 +534,26 @@ matrix is orthogonal and orthogonal matrices' determinants are $\pm 1$}
    \end{center}
 \end{table}
 
-
-% \subsection{View Controllers}
-
+\rowcolors{2}{gray!5}{white} % alternating colours
+\begin{table}
+   \begin{center}
+      \begin{tabular}{>{\ttfamily}ll}
+         \rowcolor{white}
+         \toprule
+         \rmfamily Parameter     & Value \\
+         \midrule
+         nOctaveLayers/Sublevels & $3$ \\
+         contrastThreshold       & 0.04 \\
+         edgeThreshold           & $10$ \\
+         sigma                   & $1.6$ \\
+         \bottomrule
+      \end{tabular}
+      \caption[Parameters used for SIFT]{Parameters used for SIFT (number of octaves, number of sublevels
+      per octave, detector response threshold, edge threshold for filtering
+   edges, standard deviation of the Gaussian for the initial image)}
+      \label{tab:sift_params}
+   \end{center}
+\end{table}
 
 \subsection{Categories}
 
