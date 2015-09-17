@@ -8,14 +8,14 @@ Some bugs in the SDK have been discovered in the making of the software.
       rotating the device will create a black bar at one side of the image.
       Rotating back will remove it but hide the otherwise visible zoom level
       indicator. It is necessary to implement a manual zooming and apply an
-      appropriate transform to the camera stream.
+      appropriate transform to the camera stream. The bug ID is 20992021. The
+      issues is claimed to be fixed in iOS 9.\footnote{Correspondence with Apple}
 
    \item When all images from the app-created rephoto album are deleted, the
       album will not be shown in the gallery anymore, but \code{ALAssetsLibrary}
       does not permit adding images to it or recreate an album of the same name.
-      Since developers are encouraged to move to the more recent Photos
-      framework, this problem is not likely to get fixed. The bug ID is
-      20992021 (unacknowledged by Apple).
+      Since developers are encouraged to move to the more recent \code{Photos}
+      framework, this problem is not likely to get fixed. 
 
    \item It is not feasible to support background and foreground transitions
       while using a timed capture on \code{UIImagePickerController} as has been
@@ -23,6 +23,6 @@ Some bugs in the SDK have been discovered in the making of the software.
       it appears as if sometimes the data is released and therefore unavailable when
       transitioning back to the foreground. This results in an exception being
       thrown, which the developer can do nothing about, except avoid
-      \code{UIImagePickerController} for timed capture. The bug ID is 19953748
-      (unacknowledged by Apple).
+      \code{UIImagePickerController} for timed capture. The bug ID is 19953748.
+      The issue is claimed to be fixed in iOS 9.\footnote{Correspondence with Apple}
 \end{enumerate}
