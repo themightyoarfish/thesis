@@ -4,7 +4,7 @@ The success of recovery of relative pose mainly depends on two factors: The
 accuracy and correctness of image point correspondences and them not being in a
 degenerate configuration, so that an epipolar geometry can be estimated from
 them.  This chapter will examine the preconditions and the feasibility of pose
-recovery in realistic conditions. Several problematic cases will be identified
+recovery under realistic conditions. Several problematic cases will be identified
 and described. Furthermore, an assessment of different feature detection
 algorithms for the purpose of this work will be given.
 
@@ -24,7 +24,7 @@ projection matrix $P\in\mathbb{R}^{3\times3}$ with
 \end{equation*}
 has twelve elements but is a projective quantity, so all non-zero multiples of
 $P$ are equivalent, wherefore it has only eleven degrees of freedom.  A
-degenerate case is for instance when all points observed by the two cameras lie
+degenerate case is for instance one in which all points observed by the two cameras lie
 on the same plane (or worse, a subspace of even lower dimension). The images of
 a planar surface in two cameras as well as the planar surface itself and its
 image are related by a homography \citep[see][ch. 13]{h&z2004}, which is a
@@ -34,10 +34,10 @@ undetermined \citep{torr1999}. A set of coplanar points alone thus does not prov
 enough information to uniquely determine an epipolar geometry.
 
 However, not all algorithms are susceptible to this problem. While the 8-point
-algorithm alone cannot deal with this case, the five-point algorithm can and is
+algorithm alone cannot cope with this case, the five-point algorithm can and is
 generally more robust \citep{li2006}. While there are other approaches to work
-around such issues (e.g. an algorithm developed by \citet{chum2005} or
-\citet{decker2008}), in practice, a five-point algorithm in a RANSAC scheme
+around such issues (e.g. algorithms developed by \citet{chum2005} or
+\citet{decker2008}, respectively), in practice, a five-point algorithm in a RANSAC scheme
 works well and needs fewer iterations than an 8-point approach \citep{li2006}.
 
 \subsection{Motion Degeneracy}
@@ -46,18 +46,18 @@ works well and needs fewer iterations than an 8-point approach \citep{li2006}.
 A second type of degeneracy occurs when the camera motion between two images has
 fewer degrees of freedom than the model to be estimated---the essential matrix.
 If the camera only translates or only rotates between images, the motion has
-maximally three degrees of freedom. As \citet{decker2008} point out, an
+at most three degrees of freedom. As \citet{decker2008} point out, an
 essential matrix estimated under such conditions could be consistent with all
 correct point matches, but also with some false ones due to the mismatch in
 degrees of freedom between data and model. In schemes like RANSAC, such an
 estimate will have a large consensus set---all inliers \emph{plus}
-outliers---and so may lead to the termination of the algorithm, despite being
-inaccurate.
+outliers---and so may lead to the premature termination of the algorithm,
+despite the current hypothesis being inaccurate.
 
 It is unlikely in rephotography that the observed scene will be completely
 planar, or that the user will move from the first frame in a motion which is
-pure rotation or translation, these degeneracies can be labelled edge cases and
-are not specifically handled in the application.
+pure rotation or translation. Therefore, these degeneracies can be labelled edge
+cases and are not specifically handled in the application.
 
 However, the most degenerate case is the one with zero motion between the frames
 and of primary importance for this application. An initial idea to simply
@@ -72,7 +72,7 @@ original viewpoint.
 \section{Finding Correspondences}
 
 There is a variety of automatic feature detection algorithms which differ in
-repeatability, robustness to noise, speed and invariance with respect to image
+repeatability, robustness to noise, speed, and invariance with respect to image
 characteristics such as scale, brightness, or rotation. 
 Generally, a feature detector identifies potentially salient points in an image
 and computes a descriptor for these points in a way that the same point under
@@ -82,12 +82,12 @@ their descriptors can be compared and the best match according to some metric
 can be selected for each keypoint. The matches found can then be used as
 corresponding points for relative pose estimation.
 
-Classical state-of-the-art detectors include e.g. \emph{Scale-invariant feature
-transform} \citep{lowe1999}, \emph{Speeded-up robust features}
+Classical state-of-the-art detectors include \emph{Scale-invariant feature
+transform} \citep{lowe1999} and \emph{Speeded-up robust features}
 \citep{bay2006} which both compute real-valued descriptors. A natural criterion
 for selecting the best matching keypoint for a given keypoint is the $L_2$-norm
 of the difference of their descriptors, which is a relatively expensive
-operation. While e.g. SURF improves performance over the computationally
+computation. While e.g. SURF improves performance over the computationally
 demanding SIFT detector, the speed of matching can still present a bottleneck in
 time-critical contexts. The proliferation of mobile devices with more economic
 hardware increased the demand for faster detection and matching of features and
@@ -118,7 +118,7 @@ being much faster to compute and compare. Another recent development by
 \citet{alcantarilla2013} are AKAZE features, building on and accelerating the
 previously proposed KAZE detector \citep{alcantarilla2012}, also using binary
 strings to describe feature points. This detector has been chosen for this work
-as it offers significant speed improvements over SIFT or SURF while sacrificing
+because it offers significant speed improvements over SIFT or SURF while sacrificing
 no quality in the tested scenarios (see \autoref{ch:evaluation}).\footnote{SIFT
 and SURF are both protected by US patents and cannot be used without a license
 in a commercial application in this country.}
@@ -130,25 +130,25 @@ will be intriduced and compared briefly here.
 
 The SIFT detector attempts to find keypoints by convolving an input image with
 Gaussian kernels of successively larger variance, thus building a stack of image
-\emph{scales}. This process is repeated for several \emph{octaves}, each starting
-from a downsampled version of one of the blurred images from the previous scale
-octave. The resulting pyramid is termed \emph{scale space}.  From these Gaussian
-images, difference-of-gaussians are computed by subtracting neighbours in scale
-space. These difference images approximate an application of the Laplacian of
-Gaussian (a Laplacian filter with prior smoothing to remove noise) which computes
-the second spatial derivatives of the image and whose extremes are locations of
-rapid intensity change like edges or corners. Within this scale space, extrema
-are found which are such pixels in the DOG images whose absolute values are
-maximal or minimal in comparison with their twenty-six neighbours in scale
-space. This search is conducted in all DOG images for all octaves which
-contributes to the scale invariance. After locating the keypoint with subpixel
-accuracy in the image, keypoints are discarded if their absolute DOG value is
-below some threshold as those are unstable and unlikely to be found under
-different conditions. Furthermore, the Hessian of the
-image (the matrix of second-order partial derivatives of the image intensity
-function) is computed to filter out keypoints on edges as they are not accurately
-localised and thus likewise unstable. Descriptors are computed by assigning a
-primary orientation after analysing the intensity gradients in the region around the
+\emph{scales}. This process is repeated for several \emph{octaves}, each
+starting from a downsampled version of one of the blurred images from the
+previous scale octave. The resulting pyramid is termed \emph{scale space}.  From
+these Gaussian images, difference-of-gaussians (DOG for short) are computed by
+subtracting neighbours in scale space. These difference images approximate an
+application of the Laplacian of Gaussian (a Laplacian filter with prior
+smoothing to remove noise) which computes the second spatial derivatives of the
+image and whose extremes are locations of rapid intensity change like edges or
+corners. Within this scale space, extrema are found which are such pixels in the
+DOG images whose absolute values are maximal or minimal in comparison with their
+$26$ neighbours in scale space. This search is conducted in all DOG images
+for all octaves which contributes to the scale invariance. After locating the
+keypoint with subpixel accuracy in the image, keypoints are discarded if their
+absolute DOG value is below some threshold as those are unstable and unlikely to
+be found under different conditions. Furthermore, the Hessian of the image (the
+matrix of second-order partial derivatives of the image intensity function) is
+computed to filter out keypoints on edges as they are not accurately localised
+and thus likewise unstable. Descriptors are computed by assigning a primary
+orientation after analysing the intensity gradients in the region around the
 keypoint and binning them into histograms. A keypoint's coordinate system is
 rotated according to this primary orientation, thus achieving rotation
 invariance. The resulting descriptor has 128 elements which will occupy at least
@@ -183,7 +183,7 @@ keypoint is located (the window is larger at higher scales with more blur).
    \label{fig:lin_vs_nonlin_diffusion}}
 \end{figure}
 
-The AKAZE descriptor is obtained from dividing the image region around a
+The AKAZE descriptor is obtained by dividing the image region around a
 keypoint into a grid and then performing binary tests between all such grid
 cells $i,~j$ which test whether $f(i) > f(j)$ for some function $f$ which
 encapsulates some information of the cell \citep{yang2012}. To achieve rotation
@@ -321,7 +321,7 @@ of how to find out whether the user has come closer to the goal or not. It may
 be feasible to find the original viewpoint nonetheless, if it could be
 determined at least when the user reaches it, but this is not the case without
 further information. On top of that, it would make for a better user experience
-if also the distance to the goal could be communicated.
+if the distance to the goal could be communicated, too.
 
 A key observation in this regard is that the actual scale of the translation is
 irrelevant, it is sufficient that there be a way to make the scale consistent

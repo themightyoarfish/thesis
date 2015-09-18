@@ -2,24 +2,24 @@
 \label{ch:evaluation}
 
 The approach has been evaluated on two realistic datasets which can be found in
-appendix B. Computation was
-performed off-line on a computer with the same C++ code running on the mobile device.
-The most important questions are whether the direction of the necessary
-translation is correctly identified and its scale decreasing with distance to
-the target.  For both sets of images, the ground-truth translation between each
-image and the first frame has been measured with centimetre accuracy, while the
-ground-truth rotation has been estimated from manually labelled correspondence
-as it is difficult to measure without the proper instruments. Since for the case
-of noise-free correspondences in a non-degenerate configuration, relative pose
-estimation algorithms are mathematically correct, this has been deemed
-sufficiently accurate to evaluate the procedure. For each image pair, 19--27
-correspondences have been labelled, of which the majority is used for pose
-recovery. For pose recovery, RANSAC is used in conjunction with the five-point
-solver, a point is considered an inlier for a given essential matrix if its
-distance to its epipolar line is no more than three pixels, the confidence
-threshold is $0.999$. These parameters
-lead to the majority of points being inliers of the pose recovery, the few
-outliers can be explained by imprecise labelling.
+appendix B. Computation was performed off-line on a computer with the same C++
+code running on the mobile device.  The most important questions are whether the
+direction of the necessary translation is correctly identified and its scale
+decreasing with distance to the target.  For both sets of images, the ground
+truth translation between each image and the first frame has been measured with
+centimetre accuracy, while the ground-truth rotation has been estimated from
+manually labelled correspondence as it is difficult to measure without the
+proper instruments. For the case of noise-free correspondences in a
+non-degenerate configuration, relative pose estimation algorithms are
+mathematically correct. Therefore estimating the true rotation like this has
+been deemed sufficiently accurate to evaluate the procedure. For each image
+pair, 19--27 correspondences have been labelled, of which the majority is used
+for pose recovery. For pose recovery, RANSAC is used in conjunction with the
+five-point solver, a point is considered an inlier for a given essential matrix
+if its distance to its epipolar line is no more than three pixels, the
+confidence threshold is $0.999$. These parameters lead to the majority of points
+being inliers of the pose recovery, the few outliers can be explained by
+imprecise labelling.
 
 In both data sets, the translation was mostly in the horizontal direction and
 along the optical axis; the vertical translation is thus neglected. Similarly,
@@ -30,13 +30,13 @@ fill the role of the second frame for world scale computation. In reality, since
 the reference location is unknown, the reference world scale is obtained from a
 position somewhat off, thereby decreasing the accuracy of scale estimation.
 
-$s$ refers to the scale at which the relative pose is computed in all plots.
-Besides the full resolution, the images are scaled down by factor of $2$ (both
+The scale at which the relative pose is computed is referred to as $s$ in all plots.
+Besides the full resolution, the images are scaled down by a factor of $2$ (both
 dimensions are halved, resulting in quarter size) and $4$ (sixteenth size). The
 resolutions evaluated are thus $3264\times2448$, $1632\times1224$, and
 $816\times612$.
 
-The following graphics illustrate three things
+The following graphics illustrate three things.
 \begin{enumerate}
    \item The difference between the computed necessary rotation and the actually
       necessary one
@@ -53,6 +53,7 @@ The following graphics illustrate three things
 In this series, the camera was moved horizontally from the reference to the
 right while also coming closer to the building.
 A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene}.
+\autoref{tab:train_data} summarises the ground truth for the five images.
 
 \begin{figure}[!htbp]
    {\centering      
@@ -61,7 +62,6 @@ A schematic bird's eye view of the captures is shown in \autoref{fig:train_scene
       precise.}
    \label{fig:train_scene}}
 \end{figure}
-\autoref{tab:train_data} summarises the ground truth for the five images.
 
 \subsection{Scale Estimation}
 
@@ -94,7 +94,7 @@ plot illustrates that---especially at full resolution---the ratio based on
 feature matching closely mirrors the real value. The difference increases with
 decreasing image scale, but the slope of the graphs is quite similar. This
 shows that indeed with increasing distance to the first frame, the ratio
-decreases, allowing a deduction as to how close the camera is to the target, at
+decreases. This allows a deduction as to how close the camera is to the target, at
 least with respect to previous iterations, which is the primary objective. 
 The decrease in ratio closely correlates with the decrease in distance which
 is apparent on inspection of \autoref{fig:train_scene}. For instance, the viewpoints
@@ -106,7 +106,7 @@ features than for SIFT ones, where a strong spike for image 1 can be observed.
 For SIFT, the decrease of ratio between images 2 and 3 is also hardly visible at
 $s=2$. The unusual spike for image 1 poses the problem that the visualisation
 would tell the user that they need to move disproportionally far compared to
-the other images. Since the error in this case is corrected for the next image,
+the other images. Since the error in this case is confined to image,
 this may not be a big problem, but will affect user experience. For SIFT
 features, one can also observe that the scale of the images appears to be less
 relevant, possibly an indication for the better scale invariance of the
@@ -137,13 +137,13 @@ appropriate means of estimating the scale of relative camera translation.
 
 \autoref{fig:train_rotation_KAZE} and \autoref{fig:train_rotation_SIFT} illustrate the
 difference between the actually necessary camera rotation and the computed one
-for AKAZE and SIFT features, respectively. Rotations about the optical an X axes
+for AKAZE and SIFT features, respectively. Rotations about the optical and X axes
 are small and thus not very interesting and the deviation is small. 
 
-Focusing on the Y-rotation, it is obvious is that the estimation
-quality decreases especially for $s=4$, but the difference does not exceed 5
-degrees and thus the estimate is very usable, especially since for reasonably
-quick updates, mostly the direction of necessary rotation is important, not the
+Focusing on the Y-rotation, it is obvious that the estimation
+quality decreases especially for $s=4$, but the difference does not exceed $5$
+degrees and thus the estimate is usable. In particular, for reasonably
+quick updates mostly the direction of necessary rotation is important, not the
 absolute magnitude.
 
 The performance of SIFT is even better for scales $s=1$ and $s=2$, but slightly
@@ -203,7 +203,7 @@ worse on the smallest scale (see \autoref{fig:train_SIFT_rotation_4}).
 Finally and most importantly, the directions of the necessary translation must
 be evaluated. \autoref{fig:train_direction} plots the angular difference in
 degree between the actual necessary translation and the computed one. The
-reference frame $0$ is omitted since the translation vector to compare with is
+reference frame $0$ is omitted since its translation relative to itself is
 $(0,0,0)$.
 
 \begin{figure}
@@ -241,12 +241,9 @@ the right and backwards as well as forwards. The motif was always centred in the
 frame, thus there is prominent rotation around the $y$-axis. 
 The schematic positions for the seven manor captures (including reference
 photograph) are shown in \autoref{fig:manor_scene} (note that here the image
-number decreases with distance from the first frame). In contrast to the
-train station set, there is more significant movement along the optical axis.
+number decreases with distance from the first frame).
 
-The ground truth data is summarised in \autoref{tab:manor_data}.
-
-\begin{figure}
+\begin{figure}[h]
    {\centering      
       \input{gfx/manor_scene.tex}
       \caption[Schematic of the manor data set]{Schematic representation of the Manor data set. Lengths and angles are not
@@ -254,11 +251,11 @@ The ground truth data is summarised in \autoref{tab:manor_data}.
    \label{fig:manor_scene}}
 \end{figure}
 
+In contrast to the
+train station set, there is more significant movement along the optical axis.
+The ground truth data is summarised in \autoref{tab:manor_data}.
 
-\begin{table}
-   \caption[Manor data ground truth]{Ground truth for the manor data. Image $0$ is the reference frame,
-      translations and rotations are given as in \eqref{eq:camera_transform}
-   relative to the reference frame.}
+\begin{table}[h]
    \begin{tabular}{cmmm}
       \toprule
       \rowcolor{white}
@@ -274,9 +271,13 @@ The ground truth data is summarised in \autoref{tab:manor_data}.
       5 & [ 0.9284 , 0. , 0.3713  ] & [ -0.1887   , -16.6670 , 1.2211 ] & 2.5495  \\
       6 & [ 0.9363 , 0. , -0.3511 ] & [ -0.8725   , -18.0933 , 1.5385 ] & 2.0155  \\\bottomrule
    \end{tabular}
+   \caption[Manor data ground truth]{Ground truth for the manor data. Image $0$ is the reference frame,
+      translations and rotations are given as in \eqref{eq:camera_transform}
+   relative to the reference frame.}
    \label{tab:manor_data}
 \end{table}
 
+\FloatBarrier
 \subsection{Scale Estimation}
 
 The evolution of the translation scale is shown in
