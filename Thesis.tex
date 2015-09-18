@@ -9,6 +9,9 @@
 ]{scrreprt}
 
 \input{classicthesis-config} % all custom classicthesis config stuff
+% \renewcommand{\bibsection}{\chapter{\bibname}} % this gives the bib entry the
+% same style as the other toc lines, but also makes the bib a true appendix,
+% which is unwanted
 
 \begin{document}
 % \onehalfspacing
@@ -23,18 +26,17 @@
 
 \includepdf{FrontBackmatter/Titlepage.pdf}
 
-% \cleardoublepage
+\cleardoublepage
 \include{FrontBackmatter/Abstract}
 \include{FrontBackmatter/Zusammenfassung}
 
 \pagestyle{scrheadings}
-% \cleardoublepage\include{FrontBackmatter/Contents}
 
 %*******************************************************
 % Mainmatter
 %*******************************************************
 % use \cleardoublepage here to avoid problems with pdfbookmark
-% \cleardoublepage
+\cleardoublepage
 
 % \thispagestyle{empty}
 
@@ -65,6 +67,8 @@
 \include{Chapters/Chapter6_Outlook}
 
 \include{Chapters/Chapter7_Conclusion}
+
+\appendix
 
 \include{Chapters/Chapter8_AppendixA}
 

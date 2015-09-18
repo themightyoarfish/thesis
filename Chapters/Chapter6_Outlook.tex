@@ -25,7 +25,7 @@ different ones.
 
 \subsection*{Rephoto Postprocessing}
 
-It is probable that despite all assistance, the user will not manage to
+It is likely that despite all assistance, the user will not manage to
 perfectly line up the original photograph with the current camera picture.  In
 order to better register the original and final images, the latter can be warped
 according to the last pose difference estimate. Bae et. al use an infinite
@@ -86,9 +86,9 @@ with the server.
 \section{Usability \& Performance}
 
 The focus of this work was the theoretical exploration and evaluation of Bae et.
-al's approach to computational rephotography, not on the design of release-ready
+al's approach to computational rephotography, not the design of a release-ready
 application. As such, some functionality is missing and the app is not
-extensively tested. Notable shortcomings are
+extensively tested. Notable shortcomings are the following.
 \begin{enumerate}
    \item In the gallery inside the app, the final captures of each rephoto are
       shown as thumbnails. Should multiple rephotos be based on the same
@@ -115,8 +115,8 @@ extensively tested. Notable shortcomings are
       more distinctive subset of lines to remove noisy clutter when fine-grained
       patterns are present (e.g. vegetation).
 
-   \item All frames are matched with the first frame so it would suffice to
-      compute the keypoints once for it and reuse them. Currently, the keypoints
+   \item All frames are matched with the first frame, so it would suffice to
+      compute the keypoints once and reuse them. Currently, the first frame's keypoints
       are recomputed for every relative pose estimation.
 
    \item The application requires iOS 8, but actually has few dependencies on
@@ -124,7 +124,7 @@ extensively tested. Notable shortcomings are
       previously unavailable. It should be fairly straightforward to create
       versions of the UI without these elements.
 
-   \item The calibration data cannot currently be loaded from a user-supplied
+   \item Currently, the calibration data cannot be loaded from a user-supplied
       file. Ideally, since not all devices will have the exact same camera
       characteristics, each user would have to individually calibrate their
       camera.
@@ -140,7 +140,7 @@ extensively tested. Notable shortcomings are
       Furthermore, the possibility to modify the camera stream is limited to
       affine transformations, which precludes projective transformation. This
       would be necessary to implement the image warping used by \citet{bae2010}.
-      Also, images are captured by a timer, it would be more intuitive to
+      Also, images are captured by a timer. It would be more intuitive to
       attempt to process frames as they come and simply drop them if no CPU time
       is available which would also scale more easily to other devices. Both
       could be accomplished by rebasing the app on the much more customisable

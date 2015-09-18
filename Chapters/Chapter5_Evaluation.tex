@@ -295,13 +295,13 @@ between first, second and reference locations in a more or less straight line,
 with more movement to the sides than front or back.
 
 For the AKAZE descriptor, only the full resolution comes reasonably close in
-magnitude and somewhat in slope. Wit SIFT, the slope is more accurately
+magnitude and somewhat in slope. With SIFT, the slope is more accurately
 reproduced with $s=2$, but strangely less accurately on full resolution. It is
 possible that the reduction in noise brought about by downsampling can improve
 the estimate, but the other experiments do not show it. For the
 smallest scale, the estimate degenerates strongly.
 
-Generally is can be stated that the estimates are less close than those for the
+In general is can be stated that the estimates are less close than those for the
 train data set, but also that large movement along the optical axis shows the
 limits of this simple approach at scale estimation. Realistically, the user will
 not move as erratically so this kind of scenario is extreme.
@@ -432,7 +432,8 @@ then normalised to unit length to be scaled with the appropriate factor, the
 other two dimensions will have nonzero values. These are determined by small
 differences in the vectors' orientation and thus by noise and hence the sum will
 point into a completely wrong direction. It is evident that this solution cannot
-work for movement in only one principal direction.
+work for movement in only one principal direction as will most often be the case
+in rephotography.
 
 One possible approach to circumvent this issue could be to scale each summand
 before the addition with the inverse of their respective world scales. As the
