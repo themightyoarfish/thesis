@@ -436,11 +436,13 @@ work for movement in only one principal direction as will most often be the case
 in rephotography.
 
 One possible approach to circumvent this issue could be to scale each summand
-before the addition with the inverse of their respective world scales. As the
+before the addition with the inverse of its respective world scale (that is the
+scale computed with current and first frames, and the scale computed with
+reference and first frames). As the
 world scale (computed as the average distance of points to the camera) is
 inversely proportional to the camera distance and thus the length of the
 translation vector, the summands may be scaled to better represent reality. This
-will be attempted in future work.
+and possibly other measures to remove the problem will be attempted in future work.
 
 It could also be demonstrated that AKAZE features yield the more accurate
 results, except on the smallest scale, where SIFT compares somewhat favourably.
