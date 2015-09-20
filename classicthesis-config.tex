@@ -9,6 +9,13 @@
    {\selectcolormodel{gray}}{\relax}
 }
 
+\ifthenelse{\boolean{printout}}
+{
+   \PassOptionsToPackage{colorlinks=false}{hyperref}
+}{
+   \PassOptionsToPackage{colorlinks=true}{hyperref}
+}
+
 \usepackage{float}
 \usepackage{enumitem}
 \usepackage{wrapfig}
@@ -99,12 +106,12 @@
 % for programmablaufplans
 \tikzstyle{typewriter} = [font=\small\ttfamily]
 \tikzstyle{decision} = [diamond, draw, typewriter,
-                        text width=4.5em, text badly centered, inner sep=0pt]
+text width=4.5em, text badly centered, inner sep=0pt]
 \tikzstyle{block}    = [rectangle, rounded corners=5pt, draw, typewriter,
-                        text width=7em, text centered, minimum height=2em]
+text width=7em, text centered, minimum height=2em]
 \tikzstyle{line}     = [draw, -latex', typewriter]
 \tikzstyle{cloud}    = [draw, ellipse,fill=red!20, node distance=3cm,
-                        minimum height=1em, typewriter]
+minimum height=1em, typewriter]
 
 % \expandafter\def\csname ver@subfig.sty\endcsname{} % for subcaption or
 % something
@@ -125,13 +132,13 @@
 \let\originaleqref\ref
 \makeatletter
 \renewcommand{\eqref}[1]{%
-  \begingroup%
-  \let\ref\@refstar%
-  \hyperref[#1]{%
-    equation%
-    ~\originaleqref{#1}%
-  }%
-  \endgroup
+   \begingroup%
+   \let\ref\@refstar%
+   \hyperref[#1]{%
+      equation%
+      ~\originaleqref{#1}%
+   }%
+   \endgroup
 }
 \makeatother
 \DeclareMathOperator{\atan2}{atan2}
@@ -330,8 +337,6 @@ iOS\xspace}
 % ********************************************************************
 % Hyperreferences
 % ********************************************************************
-   \ifthenelse{\boolean{printout}}
-   {\PassOptionsToPackage{colorlinks}{hyperref}}{\relax}
 \hypersetup{%
    %draft,	% = no hyperlinking at all (useful in b/w printouts)
    % colorlinks=true,

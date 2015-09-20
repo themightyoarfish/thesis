@@ -1,3 +1,4 @@
+\usetikzlibrary{calc}
 \begin{tikzpicture}[
       every node/.style={
          outer sep=0,
@@ -5,7 +6,6 @@
       },
       label distance=5pt
    ]
-   \usetikzlibrary{calc}
    \fill (0,0) circle (2pt) node[label=below:{$C$}] (C) {};
    \draw[->,name path=y-axis] (C) -- ++(0,4cm);
    \draw[->,name path=x-axis] (C) -- ++(8cm,0);
