@@ -1,6 +1,9 @@
 \usetikzlibrary{intersections, calc, arrows.meta}
 \begin{tikzpicture}[every node/.style={outer sep=0,inner sep=0},
    label distance=5pt]
+
+   \makegrayinprint
+
    \def\baseline{10cm}
    \draw[fill] (0,0) circle (2pt) node[label=below left:{$c_1$}] (c1) {};
    \draw[fill] (\baseline,0) circle (2pt) node[label=below left:{$c_2$}] (c2) {};

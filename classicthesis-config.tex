@@ -1,6 +1,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Custom adjustments %%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{ifthen}
+\newboolean{printout} % this disables colorlinks and makes some tikzpictures grayscale (except the one oddball ignoring the setting)
+\setboolean{printout}{true}
+\newcommand*{\makegrayinprint}{
+   \ifthenelse{\boolean{printout}}
+   {\selectcolormodel{gray}}{\relax}
+}
+
 \usepackage{float}
 \usepackage{enumitem}
 \usepackage{wrapfig}
@@ -90,7 +98,7 @@
 \usepackage[lined,boxed,linesnumbered]{algorithm2e}
 % for programmablaufplans
 \tikzstyle{typewriter} = [font=\small\ttfamily]
-\tikzstyle{decision} = [diamond, draw, text=white, fill=RoyalBlue, typewriter,
+\tikzstyle{decision} = [diamond, draw, typewriter,
                         text width=4.5em, text badly centered, inner sep=0pt]
 \tikzstyle{block}    = [rectangle, rounded corners=5pt, draw, typewriter,
                         text width=7em, text centered, minimum height=2em]
@@ -322,9 +330,12 @@ iOS\xspace}
 % ********************************************************************
 % Hyperreferences
 % ********************************************************************
+   \ifthenelse{\boolean{printout}}
+   {\PassOptionsToPackage{colorlinks}{hyperref}}{\relax}
 \hypersetup{%
    %draft,	% = no hyperlinking at all (useful in b/w printouts)
-   colorlinks=true, linktocpage=false, pdfstartpage=3, pdfstartview=FitV,%
+   % colorlinks=true,
+   linktocpage=false, pdfstartpage=3, pdfstartview=FitV,%
    % uncomment the following line if you want to have black links (e.g., for printing)
    %colorlinks=false, linktocpage=false, pdfborder={0 0 0}, pdfstartpage=3, pdfstartview=FitV,% 
    breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,%

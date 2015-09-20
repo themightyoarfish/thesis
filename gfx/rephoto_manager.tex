@@ -1,9 +1,14 @@
 \begin{tikzpicture}[very thick,every node/.append style={text
    centered,font=\small\ttfamily,outer sep=0}]
+
+   % \makegrayinprint % :D this graphic just ignores the setting, contrarily to all others. #wtflatex
+
    \tikzset{>=Latex}
    \node[block] (start) {START};
    \node[block,below=of start] (first frame) {HAS\_FIRST \_FRAME};
-   \node[decision,below=of first frame] (can match?) {First and second can be matched?};
+   \node[decision,below=of first frame,
+      % fill=RoyalBlue,
+   ] (can match?) {First and second can be matched?};
    \node[block,below=of can match?] (second frame) {HAS\_SECOND \_FRAME};
    \node[block,below=of second frame] (done) {DONE};
 
