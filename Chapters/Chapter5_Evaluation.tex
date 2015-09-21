@@ -2,14 +2,14 @@
 \label{ch:evaluation}
 
 The approach has been evaluated on two realistic datasets which can be found in
-appendix B. Computation was performed off-line on a computer with the same C++
-code running on the mobile device.  The most important questions are whether the
-direction of the necessary translation is correctly identified and its scale
-decreasing with distance to the target.  For both sets of images, the ground
-truth translation between each image and the first frame has been measured with
-centimetre accuracy, while the ground-truth rotation has been estimated from
-manually labelled correspondence as it is difficult to measure without the
-proper instruments. For the case of noise-free correspondences in a
+\autoref{ch:appendixB}. Computation was performed off-line on a computer with
+the same C++ code running on the mobile device.  The most important questions
+are whether the direction of the necessary translation is correctly identified
+and its scale decreasing with distance to the target.  For both sets of images,
+the ground truth translation between each image and the first frame has been
+measured with centimetre accuracy, while the ground-truth rotation has been
+estimated from manually labelled correspondence as it is difficult to measure
+without the proper instruments. For the case of noise-free correspondences in a
 non-degenerate configuration, relative pose estimation algorithms are
 mathematically correct. Therefore estimating the true rotation like this has
 been deemed sufficiently accurate to evaluate the procedure. For each image
@@ -435,14 +435,46 @@ point into a completely wrong direction. It is evident that this solution cannot
 work for movement in only one principal direction as will most often be the case
 in rephotography.
 
-One possible approach to circumvent this issue could be to scale each summand
-before the addition with the inverse of its respective world scale (that is the
-scale computed with current and first frames, and the scale computed with
-reference and first frames). As the
-world scale (computed as the average distance of points to the camera) is
-inversely proportional to the camera distance and thus the length of the
-translation vector, the summands may be scaled to better represent reality. This
-and possibly other measures to remove the problem will be attempted in future work.
+Two possible approaches to circumvent this issue come to mind.
+
+\begin{enumerate}
+
+   \item One could scale each summand before the addition with the inverse of
+      its respective world scale (that is the scale computed with current and
+      first frames, and the scale computed with reference and first frames). As
+      the world scale (computed as the average distance of points to the camera)
+      is inversely proportional to the camera distance and thus the length of
+      the translation vector, the summands may be scaled to better represent
+      reality. 
+
+   \item The comparison of object distances across iterations is an indirect
+      measure for the camera distance and was shown to be fallible when the
+      movement deviates strongly from the line between first and reference frame
+      locations. Another idea is to relate all iterations via the computed 3D
+      coordinates of the scene objects. For this, 3D coordinates can be
+      triangulated from the first and second frames to create a scene
+      representation in the first frame's coordinate system. Then, assuming the
+      object coordinate system is the first frame's coordinate system, the
+      \emph{Perspective-n-Point} (PnP) problem can be solved with the object
+      points and their corresponding image points in the reference frame (i.e.
+      their projections into the first frame). The
+      problem consists in finding a camera pose from 3D-2D-point correspondences
+      and can be solved for instance with Levenberg-Marquardt optimisation of
+      the projection matrix $P = [R \mid T]$.\footnote{OpenCV supplies the
+      \texttt{solvePnP} function for this purpose, implementing various
+   algorithms including the LM-optimisation or more efficient solvers like
+\citep{lepetit2009}}  Thus one obtains
+      $\sub{T}{ref,first}$ with some scaling---not necessarily unit length. The
+      procedure can be carried out in each iteration with the precomputed object
+      points and their correspondences in the current frame, obtaining
+      $\sub{T}{current,first}$.  This will require caching the first frame's
+      keypoints to keep them constant, just as the object points are constant.
+      Since the 3D scene coordinates stay the same, a consistent scale of the
+      translation vectors should be the result.  
+
+\end{enumerate}
+
+Both approaches will be evaluated in future work.
 
 It could also be demonstrated that AKAZE features yield the more accurate
 results, except on the smallest scale, where SIFT compares somewhat favourably.
