@@ -392,10 +392,10 @@ dynamically unrolled over the original. Depending on a flag in the
 this, the app makes use of the \code{sqlite} library. The \code{DBManager} class
 manages communication with a lightweight SQL database. Since all photos are part
 of the user's photo library---there is no way to save assets locally for an
-application---they are saved as a tuple of two \code{NSURL}s. Both the built-in
-\code{UIImagePickerController} and the \code{ELCImagePickerController} return
-the URL of a selected image so it can be used to map a rephoto on its original
-or vice versa when it should be displayed.
+application with the AVFoundation framework---they are saved as a tuple of two
+\code{NSURL}s. Both the built-in \code{UIImagePickerController} and the
+\code{ELCImagePickerController} return the URL of a selected image so it can be
+used to map a rephoto on its original or vice versa when it should be displayed.
 
 \nofloat{gfx/resultviewcontroller.PNG}{ResultViewController view layout}
 
@@ -449,7 +449,7 @@ larger hierarchy of nested views without exposing any particular behaviour
 besides what the contained views can do,
 specifying them in a visual manner is less involved. Such view hierarchies can
 be built visually as \code{XIB} files in an XML format. The
-\code{CameraOverlay} overlayed on the current camera picture is created like
+\code{CameraOverlay} overlaid on the current camera picture is created like
 this, as well as the launch screen shown when starting the app.
 
 
