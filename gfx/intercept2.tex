@@ -7,7 +7,7 @@
    \node[below left=of c1] {first frame};
    \draw[->] (c1) -- (\camAngle:\arrowLength);
    \node[minimum size=1em,draw] (object) at (\camAngle:3cm) {};
-   \draw[dashed,name path=line1] (c1) -- (object) node[label={180:{$s_2$}}] {};
+   \draw[dashed,name path=line1] (c1) -- (object) node[label={180:{$o_2$}}] {};
    \node[label={0:{$c_3$}},right=5cm of c1] (c3) {};
    \fill (c3) circle (3pt);
    \draw[->] (c3) -- ($(c3) !3em! (object)$) coordinate (tmp);
@@ -18,7 +18,7 @@
    \let\reverseAngle\pgfmathresult
    \draw[thin] (tmp) arc (\reverseAngle:180:\arrowLength) -- (c3);
    \pgfmathparse{\reverseAngle+(180-\reverseAngle)/2}
-   \node at ($(c3) + (\pgfmathresult:2em)$) {$\beta^\prime$};
+   \node at ($(c3) + (\pgfmathresult:2em)$) {$\beta_2$};
 
    \draw[thin,|-|] ($(c1) + (0,-1em)$) -- ($(c3) + (0,-1em)$) node[below,midway] {$b=1$};
 

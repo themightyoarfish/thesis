@@ -242,7 +242,8 @@ the sequence of screens and controllers is shown in \autoref{fig:app_tree}.
 \begin{figure}[h]
    {\centering      
       \input{gfx/app_flow.tex}
-   \caption{Sequence of view controllers. It is always possible to go backwards.}
+      \caption[Sequence of view controllers]{Sequence of view controllers. It is always possible to go
+      backwards.}
    \label{fig:app_tree}}
 \end{figure}
 
@@ -392,7 +393,7 @@ dynamically unrolled over the original. Depending on a flag in the
 this, the app makes use of the \code{sqlite} library. The \code{DBManager} class
 manages communication with a lightweight SQL database. Since all photos are part
 of the user's photo library---there is no way to save assets locally for an
-application with the AVFoundation framework---they are saved as a tuple of two
+application with the \code{ALAssets} framework---they are saved as a tuple of two
 \code{NSURL}s. Both the built-in \code{UIImagePickerController} and the
 \code{ELCImagePickerController} return the URL of a selected image so it can be
 used to map a rephoto on its original or vice versa when it should be displayed.

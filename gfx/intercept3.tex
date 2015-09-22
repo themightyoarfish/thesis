@@ -7,7 +7,7 @@
    \node[below left=of c1] {first frame};
    \draw[->] (c1) -- (\camAngle:\arrowLength);
    \node[minimum size=1em,draw] (object) at (\camAngle:3cm) {};
-   \draw[dashed,name path=line1] (c1) -- (object) node[label={180:{$s$}}] {};
+   \draw[dashed,name path=line1] (c1) -- (object) node[label={180:{$o_1$}}] {};
    \node[label={0:{$c_2$}},right=3cm of c1] (c2) {};
    \fill (c2) circle (3pt);
    \draw[dashed,name path=line2] (c2) -- (object);
@@ -29,7 +29,7 @@
    \coordinate (tmp2) at ($(tmp) + (-2cm,0)$);
    \path[name path=line3] (tmp1) -- ($(tmp1) !5cm! (tmp2)$);
    \draw[name intersections={of=line1 and line3}]
-   node[label={180:{$s_2$}},minimum size=1em,draw,fill=white] (object2) at (intersection-1) {};
+   node[label={180:{$o_2$}},minimum size=1em,draw,fill=white] (object2) at (intersection-1) {};
    \draw[dashed] (tmp1) -- (object2);
 \end{tikzpicture}
 
